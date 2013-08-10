@@ -35,9 +35,9 @@ flickr.photos.search({ user_id: flickr.user_id }, function(err, res) {
 
 All results are in JSON format. For obvious reasons.
 
-### Downloading all your Flickr stuff
+### Downloading all your Flickr stuffs
 
-You can use this module to very easily download all your flickr stuff:
+You can use this module to very easily download all your flickr stuffs:
 
 ```
 var FlickrAPI = require("FlickrAPI"),
@@ -49,9 +49,9 @@ That's all you need to run. This will generate a data directory with
 your images in `./data/images` (in several sizes), and the information
 architecture (metadata, sets, collections, etc) in `./data/ia`.
 
-### Using all your Flickr stuff offline
+### Using all your Flickr stuffs offline
 
-If you downloaded all your Flickr stuff, you can use these in your
+If you downloaded all your Flickr stuffs, you can use these in your
 node apps by "dry loading" Flickr:
 
 ```
@@ -93,8 +93,8 @@ prompt: oauth_verifier: []
 
 This will open a browser that allows you to consent to the app
 accessing your most private of private parts. On Flickr. If you
-do, you'll get an number code that you need to pass so that the
-FlickrAPI can negotiate access tokens with Flickr. Doing so
+do, you'll get an authorisation code that you need to pass so that
+the FlickrAPI can negotiate access tokens with Flickr. Doing so
 continues the program:
 
 ```
