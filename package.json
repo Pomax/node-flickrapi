@@ -1,0 +1,23 @@
+{
+  "name": "FlickrAPI",
+  "version": "0.1.0",
+  "author": "Pomax <pomax@nihongoresources.com>",
+  "description": "A node.js module for using the Flickr API with an API key and secret",
+  "dependencies": {
+    "open": "0.0.x",
+    "prompt": "0.2.x"
+  },
+  "main": "./src/FlickrAPI",
+  "license": "MIT",
+  "engines": {
+    "node": ">=0.8"
+  },
+  "keywords": [
+    "flickr",
+    "api"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Pomax/node-flickrapi.git"
+  }
+}
