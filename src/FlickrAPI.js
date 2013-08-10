@@ -89,12 +89,12 @@ module.exports = (function Flickr() {
 
     // effect authentication
     checkToken(options, function(err, access) {
-      var flickrAPI = require("./flickr-api-object");
+      var APIBuilder = require("./flickr-api-object");
       if(!access) {
         requestToken(options, function(err, body) {
-          onAuthenticated(err, flickrAPI(options));
+          APIBuilder(options, onAuthenticated);
         });
-      } else { onAuthenticated(err, flickrAPI(options)); }
+      } else { APIBuilder(options, onAuthenticated); }
     });
   };
 

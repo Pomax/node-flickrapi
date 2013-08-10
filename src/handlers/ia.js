@@ -15,6 +15,8 @@ module.exports = (function() {
     "data/ia/photosets",
     "data/ia/collections",
     "data/ia/comments",
+    "data/flickr",
+    "data/flickr/methods"
   ];
 
   function ensureDirectories() {
@@ -44,11 +46,7 @@ module.exports = (function() {
     }
   }
 
-  return function(dataDir) {
-    dataDir = dataDir || "./";
-    directories = directories.map(function(dir) {
-      return dataDir + dir;
-    });
+  return function() {
     ensureDirectories();
 
     var photos = readAll(directories[10], function(a,b,items) {

@@ -1,7 +1,6 @@
 var fs = require("fs"),
     download = require("./download"),
     getSetMetadata = require("./sets"),
-    JSON = require("./PJSON"),
     photos = [];
 
 /**

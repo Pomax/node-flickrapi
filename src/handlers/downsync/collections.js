@@ -1,5 +1,4 @@
 var fs = require("fs"),
-    JSON = require("./PJSON"),
     collections = [];
 
 /**

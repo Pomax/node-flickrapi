@@ -1,6 +1,5 @@
 var fs = require("fs"),
     getCollectionMetadata = require("./collections"),
-    JSON = require("./PJSON"),
     sets = [];
 
 /**

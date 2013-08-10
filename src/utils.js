@@ -11,6 +11,19 @@ module.exports = (function() {
   var crypto = require("crypto"),
       request = require("request");
 
+  /**
+   * Pretty-print JSON files, because we will want
+   * to inspect them manually, as good humans.
+   */
+  module.exports = (function() {
+    if (!JSON.prettyprint) {
+      JSON.prettyprint = function prettyprint(data) {
+        return this.stringify(data, undefined, 2);
+      };
+    }
+    return JSON;
+  }());
+
   return {
 
     /**
@@ -74,8 +87,9 @@ module.exports = (function() {
     /**
      * Call the Flickr API
      */
-    queryFlickr: function(queryArguments, flickrOptions, processResult) {
+    queryFlickr: function(queryArguments, flickrOptions, processResult, errors) {
       queryArguments.format = "json";
+      queryArguments.api_key = flickrOptions.key;
       flickrOptions = this.setAuthVals(flickrOptions);
       var url = "http://ycpi.api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
@@ -84,13 +98,16 @@ module.exports = (function() {
           flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
 
       request.get(flickrURL, function(error, response, body) {
-        // remove silly flickr function wrapper
+        // we can transform the error into something more
+        // indicative if "errors" is an array of known errors
+        // for this specific method call.
         if(!error) {
           body = JSON.parse(body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}'));
           if(body.stat !== "ok") {
             return processResult(new Error(body.message));
           }
         }
+
         processResult(error, body);
       });
     },
