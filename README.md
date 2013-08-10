@@ -4,21 +4,21 @@ Because it seems like there haven't been any implemented yet.
 
 ## how to use this package
 
-The initial require is simply `require("FlickrAPI")` after making
-sure you added FlickrAPI to your package.json, either manually or
-by running `npm install FlickrAPI --save` for the project you're
+The initial require is simply `require("flickrapi")` after making
+sure you added flickrapi to your package.json, either manually or
+by running `npm install flickrapi --save` for the project you're
 using it in.
 
 Once available, you can authenticate with flickr, which will
 result in a callback that gives you the actual API object:
 
 ```
-var Flickr = require("FlickrAPI"),
-    FlickrOptions = {
+var Flickr = require("flickrapi"),
+    flickrOptions = {
       key: "API key that you get from Flickr",
       secret: "API key secret that you get from Flickr"
     };
-Flickr.authenticate(FlickrOptions, function(error, flickr) {
+Flickr.authenticate(flickrOptions, function(error, flickr) {
   // we can now use "flickr" as our API object
 });
 ```
@@ -40,9 +40,9 @@ All results are in JSON format. For obvious reasons.
 You can use this module to very easily download all your flickr stuffs:
 
 ```
-var FlickrAPI = require("FlickrAPI"),
-    FlickrOptions = { ... };
-Flickr.authenticate(FlickrOptions, FlickrAPI.downsync);
+var Flickr = require("flickrapi"),
+    flickrOptions = { ... };
+Flickr.authenticate(flickrOptions, flickrapi.downsync);
 ```
 
 That's all you need to run. This will generate a data directory with
@@ -55,7 +55,7 @@ If you downloaded all your Flickr stuffs, you can use these in your
 node apps by "dry loading" Flickr:
 
 ```
-var FlickrAPI = require("FlickrAPI"),
+var Flickr = require("flickrapi"),
     flickrData = Flickr.loadLocally();
 ```
 
@@ -94,7 +94,7 @@ prompt: oauth_verifier: []
 This will open a browser that allows you to consent to the app
 accessing your most private of private parts. On Flickr. If you
 do, you'll get an authorisation code that you need to pass so that
-the FlickrAPI can negotiate access tokens with Flickr. Doing so
+the flickrapi can negotiate access tokens with Flickr. Doing so
 continues the program:
 
 ```
@@ -113,7 +113,7 @@ export FLICKR_ACCESS_TOKEN_SECRET="99c038c9fc77673e"
 
 Add these variables to your environment, or put them in an `.env`
 file for use with `habitat` or the like, or put them straight into
-your source code to use the FlickrAPI:
+your source code to use the flickrapi:
 
 ```
 var FlickrOptions = {
@@ -125,5 +125,5 @@ var FlickrOptions = {
     }
 ```
 
-The FlickrAPI package will now be able to authenticate with Flickr
+The flickrapi package will now be able to authenticate with Flickr
 without constantly needing to ask you for permission.
