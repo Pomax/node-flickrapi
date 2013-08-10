@@ -28,12 +28,33 @@ as they are listed on http://www.flickr.com/services/api, so
 if you wish to get all your own photos, you would call:
 
 ```
-flickr.photos.search({ user_id: flickr.user_id }, function(err, res) {
-  // res is our result object.
+flickr.photos.search({
+  user_id: flickr.options.user_id,
+  page: 1,
+  per_page: 500
+}, function(err, result) {
+  // result is Flickr's response
 });
 ```
 
 All results are in JSON format. For obvious reasons.
+
+### flickr.options
+
+In addition to the standard Flickr functions, the `flickr` object
+also has an `options` property, which looks like this:
+
+```
+{
+  key: "your API key",
+  secret: "your API key secret",
+  user_id: "your user id, based on your first-time authorisation",
+  access_token: "The preauthorised Flickr access token,
+  access_token_secret: "Its corresponding secret",
+  oauth_timestamp: "the timestamp for the last flickr API call",
+  oauth_nonce: "the cryptographic nonce that request used"
+}
+```
 
 ### Downloading all your Flickr stuffs
 
