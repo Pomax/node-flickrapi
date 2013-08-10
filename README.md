@@ -1,6 +1,6 @@
 # A Node.js implementation of the Flickr API
 
-Because it seems like there haven't been any implemented yet.
+With oauth authentication for Flickr API keys.
 
 ## how to use this package
 
@@ -49,8 +49,8 @@ also has an `options` property, which looks like this:
   key: "your API key",
   secret: "your API key secret",
   user_id: "your user id, based on your first-time authorisation",
-  access_token: "The preauthorised Flickr access token,
-  access_token_secret: "Its corresponding secret",
+  access_token: "the preauthorised Flickr access token",
+  access_token_secret: "its corresponding secret",
   oauth_timestamp: "the timestamp for the last flickr API call",
   oauth_nonce: "the cryptographic nonce that request used"
 }
@@ -58,7 +58,7 @@ also has an `options` property, which looks like this:
 
 ### Downloading all your Flickr stuffs
 
-You can use this module to very easily download all your flickr stuffs:
+You can use this module to very easily download all your Flickr stuffs:
 
 ```
 var Flickr = require("flickrapi"),
@@ -70,10 +70,10 @@ That's all you need to run. This will generate a data directory with
 your images in `./data/images` (in several sizes), and the information
 architecture (metadata, sets, collections, etc) in `./data/ia`.
 
-### Using all your Flickr stuffs offline
+### Using all your Flickr stuffs in an app
 
 If you downloaded all your Flickr stuffs, you can use these in your
-node apps by "dry loading" Flickr:
+own node apps by "dry loading" Flickr:
 
 ```
 var Flickr = require("flickrapi"),
@@ -87,13 +87,13 @@ This will give you an object with the following structure:
   photos: [photo objects],
   photo_keys: [photo.id array, sorted on publish date],
   photosets: [set objects],
-  photoset_keys: [set.id array, sorted on publish date],
+  photoset_keys: [set.id array, sorted on creation date],
   collections: [collection objects],
-  collection_keys: [collection.id array, sorted on publish date],
+  collection_keys: [collection.id array, sorted on title],
 }
 ```
 
-Note sure what these objects look like? head over to your `./data/ia`
+Not sure what these objects look like? head over to your `./data/ia`
 directory and just open a .json file in your favourite text editor.
 
 ## On first run
