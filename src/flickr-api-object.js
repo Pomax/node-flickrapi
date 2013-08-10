@@ -93,7 +93,7 @@ module.exports = (function() {
       return handleResult(methodDefinition);
     }
 
-    console.log("fetching "+method_name+" definition from Flickr");
+    console.log("fetching definition for "+method_name);
     Utils.queryFlickr({
       method: "flickr.reflection.getMethodInfo",
       method_name: method_name
