@@ -96,7 +96,16 @@ This will give you an object with the following structure:
 Not sure what these objects look like? head over to your `./data/ia`
 directory and just open a .json file in your favourite text editor.
 
-## On first run
+### On first run
+
+### Fetching the API
+
+On first run, the package will fetch all known methods from
+Flickr, and cache them for future use. This can take a bit,
+as there are a fair number of methods, but is inconsequential
+on subsequent package loading.
+
+## Authenticating with Flickr
 
 On first run, the authentication function will notice that
 there are no `access_token` and `access_token_secret` values
