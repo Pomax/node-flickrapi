@@ -61,7 +61,7 @@ module.exports = (function() {
 
     var collections = readAll(directories[12], function(a,b,items) {
       a = items[a].title;
-      b = items[b].titlee;
+      b = items[b].title;
       return a === b ? 0 : b < a ? -1 : -1;
     });
 
