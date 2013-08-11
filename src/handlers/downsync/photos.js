@@ -1,6 +1,9 @@
 var fs = require("fs"),
     download = require("./download"),
     getSetMetadata = require("./sets"),
+    progress = require("progress"),
+    progressBarAggregate,
+    progressBar,
     photos = [];
 
 /**
@@ -12,6 +15,9 @@ function fetchPhotoMetadata(flickr, photo, next) {
   var id = photo.id,
       secret = photo.secret,
       filename = "data/ia/photos/"+id+".json";
+
+  // record progress
+  progressBar.tick();
 
   if(fs.existsSync(filename)) {
     photo = JSON.parse(fs.readFileSync(filename));
@@ -64,11 +70,10 @@ function processPhotos(flickr, photo_idx, total) {
       }(flickr, photo_idx, total));
 
   if(!photo) {
-    console.log("for some reason, photo " + photo_idx + " is undefined...");
+    console.error("for some reason, photo " + photo_idx + " is undefined...");
     return next();
   }
 
-  console.log("photo " + photo_idx + ": " + photo.id);
   fetchPhotoMetadata(flickr, photo, next);
 }
 
@@ -77,6 +82,9 @@ function processPhotos(flickr, photo_idx, total) {
 function aggregatePhotos(flickr, user_id, per_page, page, tally, total) {
   if(tally >= total) {
     console.log("done fetching photo information from Flickr.");
+    console.log();
+    console.log("Downloading photos and metadata from Flickr.");
+    progressBar = new progress('  [:bar] :current/:total', { total: total });
     setTimeout(function() {
       processPhotos(flickr, 0, total);
     }, 1);
@@ -90,7 +98,7 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total) {
   }, function(error, result) {
     var batch = result.photos.photo;
     tally += batch.length;
-    console.log("stored "+tally+"/" + total + " photo records");
+    progressBarAggregate.tick(per_page);
     photos = photos.concat(batch);
     aggregatePhotos(flickr, user_id, per_page, page+1, tally, total);
   });
@@ -99,4 +107,7 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total) {
 /**
  * export just this function
  */
-module.exports = aggregatePhotos;
+module.exports = function(flickr, user_id, per_page, page, tally, total) {
+  progressBarAggregate = new progress('  [:bar] :current/:total', { total: total });
+  aggregatePhotos(flickr, user_id, per_page, page, tally, total);
+}

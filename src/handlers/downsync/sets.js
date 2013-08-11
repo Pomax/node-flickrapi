@@ -1,5 +1,7 @@
 var fs = require("fs"),
     getCollectionMetadata = require("./collections"),
+    progress = require("progress"),
+    progressBar,
     sets = [];
 
 /**
@@ -25,7 +27,8 @@ function processPhotosets(flickr, set_idx, total) {
         };
       }(flickr, set_idx, total));
 
-  console.log("set " + set_idx + ": " + id);
+  // record progress
+  progressBar.tick();
 
   if(fs.existsSync(filename)) {
     next();
@@ -60,6 +63,9 @@ function getSetMetadata(flickr) {
       return console.log(error);
     }
     sets = result.photosets.photoset;
+    console.log();
+    console.log("Downloading set metadata from Flickr.");
+    progressBar = new progress('  [:bar] :current/:total', { total: sets.length });
     processPhotosets(flickr, 0, sets.length);
   });
 }

@@ -1,4 +1,6 @@
 var fs = require("fs"),
+    progress = require("progress"),
+    progressBar,
     collections = [];
 
 /**
@@ -19,7 +21,8 @@ function processCollections(flickr, collection_idx, total) {
         }, 1);
       };
 
-  console.log("collection " + collection_idx + ": " + id);
+  // record progress
+  progressBar.tick();
 
   if(fs.existsSync(filename)) {
     return next();
@@ -35,6 +38,9 @@ function getCollectionMetadata(flickr) {
     per_page: 500
   }, function(error, result) {
     collections = result.collections.collection;
+    console.log();
+    console.log("Downloading collection metadata from Flickr.");
+    progressBar = new progress('  [:bar] :current/:total', { total: collections.length });
     processCollections(flickr, 0, collections.length);
   });
 }

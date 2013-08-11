@@ -57,9 +57,9 @@ module.exports = function download(photo, completed) {
     }
     dest = dir + "/data/images/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
   	if(!fs.existsSync(dest)) {
-      console.log("downloading "+url+" to " + dest)
+//      console.log("downloading "+url+" to " + dest)
   	  get(url, dest, function() {
-        console.log("finished downloading " + id + "_" + key);
+//        console.log("finished downloading " + id + "_" + key);
         track()
       });
   	} else { track(); }
