@@ -64,11 +64,11 @@ module.exports = (function Flickr() {
         return callback(err);
       }
       var response = Utils.parseRestResponse(body);
-      options.userid = response.user_nsid;
+      options.user_id = response.user_nsid;
       options.access_token = response.oauth_token;
       options.access_token_secret = response.oauth_token_secret;
-      console.log("\n\nAdd the following two lines to your .env:\n");
-      console.log("export FLICKR_USER_ID=\"" + options.userid + "\"");
+      console.log("\n\nAdd the following variables to your environment:\n");
+      console.log("export FLICKR_USER_ID=\"" + options.user_id + "\"");
       console.log("export FLICKR_ACCESS_TOKEN=\"" + options.access_token + "\"");
       console.log("export FLICKR_ACCESS_TOKEN_SECRET=\"" + options.access_token_secret + "\"");
       console.log();
@@ -82,9 +82,9 @@ module.exports = (function Flickr() {
    * an app, obtaining authorization keys values if it
    * does not already have them.
    */
-  var authenticate = function(options, onAuthenticated) {
+  var authenticate = function(options, next) {
     if(!options) {
-      return onAuthenticated(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\nGo visit http://www.flickr.com/services/apps/create/apply to get one."));
+      return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\nGo visit http://www.flickr.com/services/apps/create/apply to get one."));
     }
 
     // effect authentication
@@ -92,9 +92,9 @@ module.exports = (function Flickr() {
       var APIBuilder = require("./flickr-api-object");
       if(!access) {
         requestToken(options, function(err, body) {
-          APIBuilder(options, onAuthenticated);
+          return next(new Error("Rerun after updating your environment"));
         });
-      } else { APIBuilder(options, onAuthenticated); }
+      } else { APIBuilder(options, next); }
     });
   };
 
