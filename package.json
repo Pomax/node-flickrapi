@@ -6,7 +6,8 @@
   "dependencies": {
     "open": "0.0.x",
     "prompt": "0.2.x",
-    "request": "2.26.x"
+    "request": "2.26.x",
+    "progress": "~1.0.0"
   },
   "main": "./src/FlickrAPI",
   "license": "MIT",

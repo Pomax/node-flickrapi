@@ -92,7 +92,7 @@ module.exports = (function Flickr() {
       var APIBuilder = require("./flickr-api-object");
       if(!access) {
         requestToken(options, function(err, body) {
-          return next(new Error("Rerun after updating your environment"));
+          APIBuilder(options, next);
         });
       } else { APIBuilder(options, next); }
     });

@@ -7,6 +7,8 @@ module.exports = (function() {
 
   var fs = require("fs"),
       Utils = require("./utils"),
+      progress = require("progress"),
+      progressBar,
       API = {};
 
   /**
@@ -20,6 +22,9 @@ module.exports = (function() {
 
     var method_name = methods[method_idx],
         filename = "data/flickr/methods/" + method_name + ".json";
+
+    // advance the progress bar
+    progressBar.tick();
 
     var handleResult = function(result) {
       var method = result.method,
@@ -93,7 +98,6 @@ module.exports = (function() {
       return handleResult(methodDefinition);
     }
 
-    console.log("fetching definition for "+method_name);
     Utils.queryFlickr({
       method: "flickr.reflection.getMethodInfo",
       method_name: method_name
@@ -106,7 +110,6 @@ module.exports = (function() {
       fs.writeFileSync(filename, JSON.prettyprint(result));
       return handleResult(result);
     });
-
   }
 
   /**
@@ -120,6 +123,7 @@ module.exports = (function() {
       var methods = result.methods.method.map(function(v) {
         return v._content;
       });
+      progressBar = new progress('  fetching method signatures [:bar] :percent', { total: methods.length });
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
