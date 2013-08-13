@@ -63,12 +63,25 @@ You can use this module to very easily download all your Flickr stuffs:
 ```
 var Flickr = require("flickrapi"),
     flickrOptions = { ... };
-Flickr.authenticate(flickrOptions, flickrapi.downsync);
+Flickr.authenticate(flickrOptions, flickrapi.downsync());
 ```
 
 That's all you need to run. This will generate a data directory with
 your images in `./data/images` (in several sizes), and the information
 architecture (metadata, sets, collections, etc) in `./data/ia`.
+
+If you want this in a different directory, you can pass the dir as an
+argument to the downsync function:
+
+```
+var Flickr = require("flickrapi"),
+    flickrOptions = { ... };
+Flickr.authenticate(flickrOptions, flickrapi.downsync("userdata/me"));
+```
+
+This will now create a `./data` for the flickr API information, but\
+also a `./userdata/me/` directory that contains the `images` and `ia`
+dirs with your personal data.
 
 ### Using all your Flickr stuffs in an app
 
