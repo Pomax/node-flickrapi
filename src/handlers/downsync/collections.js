@@ -14,7 +14,7 @@ function processCollections(flickr, collection_idx, total) {
 
   var collection = collections[collection_idx],
       id = collection.id,
-      filename = "data/ia/collections/"+id+".json",
+      filename =flickr.options.locals.dirstructure.ia.collections + "/" + id + ".json",
       next = function() {
         setTimeout(function() {
           processCollections(flickr, collection_idx+1, total);

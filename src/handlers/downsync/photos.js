@@ -14,14 +14,14 @@ var fs = require("fs"),
 function fetchPhotoMetadata(flickr, photo, next) {
   var id = photo.id,
       secret = photo.secret,
-      filename = "data/ia/photos/"+id+".json";
+      filename = flickr.options.locals.dirstructure.ia.photos + "/" + id + ".json";
 
   // record progress
   progressBar.tick();
 
   if(fs.existsSync(filename)) {
     photo = JSON.parse(fs.readFileSync(filename));
-    return download(photo, next);
+    return download(flickr, photo, next);
   }
 
   flickr.photos.getInfo({
@@ -42,7 +42,7 @@ function fetchPhotoMetadata(flickr, photo, next) {
     // TODO: get all comments and notes
 
     fs.writeFile(filename, JSON.prettyprint(photo), function() {
-      return download(photo, next);
+      return download(flickr, photo, next);
     });
   });
 }

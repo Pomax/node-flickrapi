@@ -11,25 +11,18 @@ var http = require('http'),
     get = function(url, dest, cb) {
       var file = fs.createWriteStream(dest);
       var request = http.get(url, function(response) {
-        /*
-        if (response.statusCode === 302 && url.indexOf("staticflickr")>-1) {
-          get(url.replace("staticflickr","static.flickr"), dest, cb);
-          return;
-        }
-        */
         response.pipe(file);
         file.on('finish', function() {
           file.close();
           if (cb) cb();
         });
       });
-    },
-    dir = process.cwd();
+    };
 
 /**
  * Download all the interesting formats for this photo
  */
-module.exports = function download(photo, completed) {
+module.exports = function download(flickr, photo, completed) {
   var id = photo.id,
       farm = photo.farm,
       server = photo.server,
@@ -48,14 +41,15 @@ module.exports = function download(photo, completed) {
         if(trackRecord === 0) {
           completed();
         }
-      };
+      },
+      imageRoot = flickr.options.locals.dirstructure.images.root;
 
   keys.forEach(function(key) {
     url = photoURL + key + "." + (key==="o"? format: "jpg");
     if(key==="o") {
       url = url.replace("_"+secret+"_", "_"+osecret+"_");
     }
-    dest = dir + "/data/images/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
+    dest = imageRoot + "/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
   	if(!fs.existsSync(dest)) {
 //      console.log("downloading "+url+" to " + dest)
   	  get(url, dest, function() {

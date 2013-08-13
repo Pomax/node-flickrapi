@@ -14,18 +14,21 @@
  *
  * TODO: comments and notes
  */
-module.exports = (function() {
+module.exports = function(location) {
+  location = location || "./data";
+
   var fs = require("fs"),
       aggregatePhotos = require("./photos");
 
   // directory structure
-  require("../ia")();
+  var data = require("../ia")(location);
 
   /**
    * Kick off the down-syncing process
    */
   return function(err, flickr) {
     if(err) { return console.log(err); }
+    flickr.options.locals = data;
 
     // grab all photo data.
     console.log("downloading photo records from Flickr...");
@@ -39,4 +42,4 @@ module.exports = (function() {
       aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total));
     });
   };
-}());
+};

@@ -17,7 +17,7 @@ function processPhotosets(flickr, set_idx, total) {
 
   var set = sets[set_idx],
       id = set.id,
-      filename = "data/ia/photosets/"+id+".json",
+      filename = flickr.options.locals.dirstructure.ia.photosets + "/" + id + ".json",
       next = (function(flickr, set_idx, total) {
         var next_id = set_idx +1;
         return function() {
