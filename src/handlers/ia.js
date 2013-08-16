@@ -100,22 +100,42 @@ module.exports = (function() {
    * I.A. builder
    */
   return function(location) {
+    location = location || "./data";
     var dirstructure = ensureDirectories(location);
 
     // photos are ranked by publication date
     var photos = readAll(dirstructure.ia.photos, function(a,b,items) {
       return items[b].dates.posted - items[a].dates.posted;
     });
+
     // sets are ranked by creation date
     var photosets = readAll(dirstructure.ia.photosets, function(a,b,items) {
       return items[b].date_create - items[a].date_create;
     });
+
+    // crosslink photos and sets
+    photosets.keys.forEach(function(key) {
+      var set = photosets.data[key];
+      set.photos.forEach(function(id) {
+        if(!photos.data[id].sets) {
+          photos.data[id].sets = [];
+        }
+        var idx = set.photos.indexOf(id);
+        photos.data[id].sets.push({
+          id: set.id,
+          prev: (idx > 0 ? photos.data[set.photos[idx-1]] : false),
+          next: (idx < set.photos.length-1 ? photos.data[set.photos[idx+1]] : false)
+        });
+      });
+    });
+
     // collections are sorted alphabetically
     var collections = readAll(dirstructure.ia.collections, function(a,b,items) {
       a = items[a].title;
       b = items[b].title;
       return a === b ? 0 : b < a ? -1 : -1;
     });
+
     // our final IA object
     return {
       photos: photos.data,
