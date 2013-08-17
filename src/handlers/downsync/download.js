@@ -4,7 +4,9 @@ var http = require('http'),
       "o" : "original",
       "t" : "thumbnail",
       "m" : "small",
-      "z" : "medium",
+      "z" : "medium",       // 640px
+      // "c" : "medium",    // 800px
+      // "b" : "large",     // 1024px
       "s" : "square/small",
       "q" : "square/medium"
     },

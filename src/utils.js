@@ -102,9 +102,16 @@ module.exports = (function() {
         // indicative if "errors" is an array of known errors
         // for this specific method call.
         if(!error) {
-          body = JSON.parse(body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}'));
-          if(body.stat !== "ok") {
-            return processResult(new Error(body.message));
+          try {
+
+            body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
+            body = JSON.parse(body);
+            if(body.stat !== "ok") {
+              return processResult(new Error(body.message));
+            }
+          } catch (e) {
+            console.error("could not parse body as JSON: ", body);
+            return processResult(new Error("could not parse body as JSON"));
           }
         }
 
