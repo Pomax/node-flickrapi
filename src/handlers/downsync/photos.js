@@ -11,7 +11,7 @@ var fs = require("fs"),
  * flickr, or from .json file if we already have it)
  * and get all the associated photographs.
  */
-function fetchPhotoMetadata(flickr, photo, next) {
+function fetchPhotoMetadata(flickr, photo_idx, photo, next) {
   var id = photo.id,
       secret = photo.secret,
       filename = flickr.options.locals.dirstructure.ia.photos + "/" + id + ".json";
@@ -74,7 +74,7 @@ function processPhotos(flickr, photo_idx, total) {
     return next();
   }
 
-  fetchPhotoMetadata(flickr, photo, next);
+  fetchPhotoMetadata(flickr, photo_idx, photo, next);
 }
 
 
