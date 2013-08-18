@@ -62,6 +62,11 @@ function fetchPhotoMetadata(flickr, photo_idx, photo, next) {
   }
 
   var getSizes = function() {
+    if(fs.existsSync(filename_md)) {
+      photo = JSON.parse(fs.readFileSync(filename_md));
+      return getMetaData();
+    }
+
     flickr.photos.getSizes({
       photo_id: id
     }, function(error, result) {
