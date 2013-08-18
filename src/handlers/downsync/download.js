@@ -4,20 +4,24 @@ var http = require('http'),
       "o" : "original",
       "t" : "thumbnail",
       "m" : "small",
-      "z" : "medium",       // 640px
-      // "c" : "medium",    // 800px
-      // "b" : "large",     // 1024px
+      "z" : "medium",
+      "c" : "medium800",
+      "b" : "large",
       "s" : "square/small",
       "q" : "square/medium"
     },
-    get = function(url, dest, cb) {
+    get = function(url, dest, key, photo, cb) {
       var file = fs.createWriteStream(dest);
       var request = http.get(url, function(response) {
         response.pipe(file);
         file.on('finish', function() {
           file.close();
-          if (cb) cb();
+          photo.sizes.push(key);
         });
+        if (cb) { cb(); }
+      }).on('error', function(err) {
+        console.log(err);
+        if (cb) { cb(err); }
       });
     };
 
@@ -34,7 +38,7 @@ module.exports = function download(flickr, photo, completed) {
       photoURL = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_",
       url,
       dest,
-      keys = Object.keys(locations),
+      keys = photo.sizes,
       // track how many images are left to download
       trackRecord = keys.length,
       track = function() {
@@ -53,11 +57,7 @@ module.exports = function download(flickr, photo, completed) {
     }
     dest = imageRoot + "/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
   	if(!fs.existsSync(dest)) {
-//      console.log("downloading "+url+" to " + dest)
-  	  get(url, dest, function() {
-//        console.log("finished downloading " + id + "_" + key);
-        track()
-      });
+  	  get(url, dest, key, photo, track);
   	} else { track(); }
   });
 }

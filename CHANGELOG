@@ -1,0 +1,11 @@
+v0.2.1
+	* comments are now downloaded for each photo
+	* contexts are now downloaded for each photo
+  * "Large" and "medium 800" images are downloaded for each photo
+  * photos now indicate the image sizes that Flickr has for them
+
+v0.1.x
+  * downsync downloads:
+    - photos
+    - photosets
+    - collections

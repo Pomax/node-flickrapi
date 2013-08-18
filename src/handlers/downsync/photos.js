@@ -1,10 +1,23 @@
-var fs = require("fs"),
+var async = require("async"),
+    fs = require("fs"),
     download = require("./download"),
     getSetMetadata = require("./sets"),
     progress = require("progress"),
     progressBarAggregate,
     progressBar,
-    photos = [];
+    photos = [],
+    sizeMap = {
+      "Square": "s",
+      "Large Square": "q",
+      "Thumbnail": "t",
+      "Small": "m",
+      "Medium 640": "z",
+      "Medium 800": "c",
+      "Large": "b",
+      "Original": "o"
+    };
+
+
 
 /**
  * Given a photo object, get its info (either from
@@ -14,37 +27,99 @@ var fs = require("fs"),
 function fetchPhotoMetadata(flickr, photo_idx, photo, next) {
   var id = photo.id,
       secret = photo.secret,
-      filename = flickr.options.locals.dirstructure.ia.photos + "/" + id + ".json";
+      sizes = [],
+      filename_cmt = flickr.options.locals.dirstructure.ia.photos.comments + "/" + id + ".json",
+      filename_ctx = flickr.options.locals.dirstructure.ia.photos.contexts + "/" + id + ".json",
+      filename_md = flickr.options.locals.dirstructure.ia.photos.root + "/" + id + ".json";
 
   // record progress
   progressBar.tick();
 
-  if(fs.existsSync(filename)) {
-    photo = JSON.parse(fs.readFileSync(filename));
-    return download(flickr, photo, next);
+  var getMetaData = function() {
+    if(fs.existsSync(filename_md)) {
+      photo = JSON.parse(fs.readFileSync(filename_md));
+      return download(flickr, photo, next);
+    }
+
+    flickr.photos.getInfo({
+      photo_id: id,
+      secret: secret
+    }, function(error, result) {
+      if(error) {
+        console.log(photo_idx + " returned a query error");
+        return console.log(error);
+      }
+      photo = result.photo;
+      if(!photo) {
+        console.log(photo_idx + " is somehow not a photo");
+        return console.log(result);
+      }
+      photo.sizes = sizes;
+      fs.writeFile(filename_md, JSON.prettyprint(photo), function() {
+        return download(flickr, photo, next);
+      });
+    });
   }
 
-  flickr.photos.getInfo({
-    photo_id: id,
-    secret: secret
-  }, function(error, result) {
-    if(error) {
-      console.log(photo_idx + " returned a query error");
-      return console.log(error);
-    }
-    var photo = result.photo;
-
-    if(!photo) {
-      console.log(photo_idx + " is somehow not a photo");
-      return console.log(result);
-    }
-
-    // TODO: get all comments and notes
-
-    fs.writeFile(filename, JSON.prettyprint(photo), function() {
-      return download(flickr, photo, next);
+  var getSizes = function() {
+    flickr.photos.getSizes({
+      photo_id: id
+    }, function(error, result) {
+      if(error) {
+        console.log(photo_idx + " returned a query error");
+        return console.log(error);
+      }
+      sizes = result.sizes.size.filter(function(s) {
+        return !!sizeMap[s.label];
+      }).map(function(s) {
+        return sizeMap[s.label];
+      });
+      getMetaData();
     });
-  });
+  }
+
+  var getContexts = function() {
+    if(!fs.existsSync(filename_ctx)) {
+      flickr.photos.getAllContexts({
+        photo_id: id
+      }, function(error, result) {
+        if(error) {
+          console.log(photo_idx + " returned a query error");
+          return console.log(error);
+        }
+        delete result.stat;
+        fs.writeFile(filename_ctx, JSON.prettyprint(result), function() {
+          return getSizes();
+        });
+      });
+    }
+    else { getSizes(); }
+  }
+
+  var getComments = function() {
+    if(!fs.existsSync(filename_cmt)) {
+      flickr.photos.comments.getList({
+        photo_id: id
+      }, function(error, result) {
+        if(error) {
+          console.log(photo_idx + " returned a query error");
+          return console.log(error);
+        }
+        var comments = result.comments;
+        if(!comments) {
+          console.log(photo_idx + " is somehow not a photo");
+          return console.log(result);
+        }
+        fs.writeFile(filename_cmt, JSON.prettyprint(comments), function() {
+          return getContexts();
+        });
+      });
+    }
+    else { getContexts(); }
+  }
+
+  // run through our chain
+  getComments();
 }
 
 /**
