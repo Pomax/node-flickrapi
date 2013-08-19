@@ -1,5 +1,6 @@
 module.exports = (function() {
-  var fs = require("fs");
+  var fs = require("fs"),
+      utils = require("../utils");
 
   var directories = [
     ".",
@@ -21,32 +22,15 @@ module.exports = (function() {
     "ia/collections"
   ];
 
-  // shorthand function
-  function mkdir(dir) {
-    var trymkdir = function(dir) {
-      try {
-        fs.mkdirSync(dir);
-        console.log("creating " + dir);
-      }
-      catch (e) { /* we really don't care if it already exists */ }
-    };
-    var f = "";
-    dir.replace("./",'').split("/").forEach(function(d) {
-      f += d + "/";
-      trymkdir(f);
-    });
-    return dir;
-  }
-
   /**
    * Ensure that all directories that are necessary, exist
    */
   function ensureDirectories(location) {
-    mkdir(location);
+    utils.mkdir(location);
 
     var dirs = directories.map(function(dir) {
       dir = location + "/" + dir;
-      mkdir(dir);
+      utils.mkdir(dir);
       return dir;
     });
 
@@ -78,8 +62,8 @@ module.exports = (function() {
         collections: dirs[16]
       },
       flickr: {
-        root: mkdir("data/flickr"),
-        methods: mkdir("data/flickr/methods")
+        root: utils.mkdir("data/flickr"),
+        methods: utils.mkdir("data/flickr/methods")
       }
     };
   }

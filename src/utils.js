@@ -9,6 +9,7 @@
 module.exports = (function() {
   "use strict";
   var crypto = require("crypto"),
+      fs = require("fs"),
       request = require("request");
 
   /**
@@ -25,6 +26,27 @@ module.exports = (function() {
   }());
 
   return {
+
+    /**
+     * shorthand function
+     */
+    mkdir: function(dir) {
+      var trymkdir = function(dir) {
+        try {
+          fs.mkdirSync(dir);
+          //console.log("creating " + dir);
+        }
+        catch (e) {
+          /* we really don't care if it already exists */
+        }
+      };
+      var f = "";
+      dir.replace("./",'').split("/").forEach(function(d) {
+        f += d + "/";
+        trymkdir(f);
+      });
+      return dir;
+    },
 
     /**
      * Update an options object for use with Flickr oauth

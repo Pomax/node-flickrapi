@@ -21,7 +21,8 @@ module.exports = (function() {
     }
 
     var method_name = methods[method_idx],
-        filename = "data/flickr/methods/" + method_name + ".json";
+        mdir = "data/flickr/methods",
+        filename = mdir + "/" + method_name + ".json";
 
     // advance the progress bar
     progressBar.tick();
@@ -96,6 +97,8 @@ module.exports = (function() {
     if(fs.existsSync(filename)) {
       var methodDefinition = JSON.parse(fs.readFileSync(filename));
       return handleResult(methodDefinition);
+    } else {
+      Utils.mkdir(mdir);
     }
 
     Utils.queryFlickr({
@@ -123,11 +126,14 @@ module.exports = (function() {
       var methods = result.methods.method.map(function(v) {
         return v._content;
       });
-      progressBar = new progress('  fetching method signatures [:bar] :percent', { total: methods.length });
+      if(!progressBar) {
+        progressBar = new progress('  fetching method signatures [:bar] :percent', { total: methods.length });
+      }
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
-    var filename = "data/flickr/flickr.reflection.getMethods.json";
+    var mdir = "./data/flickr",
+        filename = mdir + "/flickr.reflection.getMethods.json";
     if(fs.existsSync(filename)) {
       var methodListing = JSON.parse(fs.readFileSync(filename));
       return handleResults(methodListing);
@@ -143,6 +149,7 @@ module.exports = (function() {
       if(error) {
         return console.log(new Error(error));
       }
+      Utils.mkdir(mdir);
       fs.writeFileSync(filename, JSON.prettyprint(result));
       handleResults(result);
     });
