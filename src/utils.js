@@ -113,6 +113,7 @@ module.exports = (function() {
       // set essential values
       queryArguments.format = "json";
       queryArguments.api_key = flickrOptions.key;
+      queryArguments.oauth_token = flickrOptions.access_token;
       queryArguments.oauth_signature_method = "HMAC-SHA1";
 
       // set call-specific values
