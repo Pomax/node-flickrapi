@@ -71,7 +71,7 @@ module.exports = (function() {
   /**
    * Read all content from a directory
    */
-  function readAll(dir, comparator) {
+  function readAll(dir, keyproperty, comparator) {
     var files = fs.readdirSync(dir),
         items = {},
         stats;
@@ -79,34 +79,35 @@ module.exports = (function() {
       stats = fs.statSync(dir + "/" + file);
       if(stats.isFile()) {
         item = JSON.parse(fs.readFileSync(dir + "/" + file));
-        items[item.id] = item;
+        if(keyproperty) {
+          items[item[keyproperty]] = item;
+        } else {
+          items[file.replace(".json", '')] = item;
+        }
       }
     });
     var keys = Object.keys(items);
-    keys = keys.sort(function(a,b) {
-      return comparator(a,b,items);
-    });
+    if(comparator) {
+      keys = keys.sort(function(a,b) {
+        return comparator(a,b,items);
+      });
+    }
     return {
       keys: keys,
       data: items
     }
   }
 
-  /**
-   * I.A. builder
-   */
-  return function(location) {
+  // Cross-reference the various data sets, if there is data
+  function crossReference(dirstructure, photos, photosets, collections) {
+    if(!photos.keys) return;
 
-    var dirstructure = ensureDirectories(location);
-
-    // photos are ranked by publication date
-    var photos = readAll(dirstructure.ia.photos.root, function(a,b,items) {
-      return items[b].dates.posted - items[a].dates.posted;
-    });
-
-    // sets are ranked by creation date
-    var photosets = readAll(dirstructure.ia.photosets, function(a,b,items) {
-      return items[b].date_create - items[a].date_create;
+    // hook up photo comments and contexts
+    var comments = readAll(dirstructure.ia.photos.comments);
+    var contexts = readAll(dirstructure.ia.photos.contexts);
+    photos.keys.forEach(function(id) {
+      photos.data[id].comments = comments.data[id].comment;
+      photos.data[id].contexts = contexts.data[id];
     });
 
     // crosslink photos and sets
@@ -118,32 +119,56 @@ module.exports = (function() {
             if(!photos.data[id].sets) {
               photos.data[id].sets = [];
             }
-            var idx = set.photos.indexOf(id);
+            var idx = set.photos.indexOf(id),
+                prev = (idx > 0 ? photos.data[set.photos[idx-1]] : false),
+                next = (idx < set.photos.length-1 ? photos.data[set.photos[idx+1]] : false);
             photos.data[id].sets.push({
               id: set.id,
-              prev: (idx > 0 ? photos.data[set.photos[idx-1]] : false),
-              next: (idx < set.photos.length-1 ? photos.data[set.photos[idx+1]] : false)
+              prev: prev,
+              next: next
             });
           });
         }
       });
     }
+  }
 
+  /**
+   * I.A. builder
+   */
+  return function(location) {
+    var dirstructure = ensureDirectories(location);
+
+    // photos are ranked by publication date
+    var photos = readAll(dirstructure.ia.photos.root, "id", function(a,b,items) {
+      return items[b].dates.posted - items[a].dates.posted;
+    });
+    // sets are ranked by creation date
+    var photosets = readAll(dirstructure.ia.photosets, "id", function(a,b,items) {
+      return items[b].dateuploaded - items[a].dateuploaded;
+    });
     // collections are sorted alphabetically
-    var collections = readAll(dirstructure.ia.collections, function(a,b,items) {
+    var collections = readAll(dirstructure.ia.collections, "id", function(a,b,items) {
       a = items[a].title;
       b = items[b].title;
       return a === b ? 0 : b < a ? -1 : -1;
     });
 
+    // perform cross-referencing
+    crossReference(dirstructure, photos, photosets, collections);
+
     // our final IA object
     return {
+      // photos
       photos: photos.data,
       photo_keys: photos.keys,
+      // sets
       photosets: photosets.data,
       photoset_keys: photosets.keys,
+      // collections
       collections: collections.data,
       collection_keys: collections.keys,
+      // dir adminstration
       dirstructure: dirstructure
     }
   }
