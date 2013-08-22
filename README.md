@@ -123,8 +123,17 @@ on subsequent package loading.
 On first run, the authentication function will notice that
 there are no `access_token` and `access_token_secret` values
 set, and will negotiate these with Flickr using their oauth
-API. Once this finishes, the app notify you that you need
-additional environment variables to properly use it, such as:
+API, based on the permissions you request for your API key.
+
+By default, the only permissions are "read" permissions, but
+you can override this by adding a `permissions` property to
+the options object:
+
+* `permissions: "read"` will give the app read-only access (default)
+* `permissions: "write"` will give it read + write access
+* `permissions: "delete"` will give it read, write and delete access
+
+Running the app will show output such as the following block:
 
 ```
 $> node app
@@ -134,11 +143,11 @@ $> node app
 prompt: oauth_verifier: []
 ```
 
-This will open a browser that allows you to consent to the app
-accessing your most private of private parts. On Flickr. If you
-do, you'll get an authorisation code that you need to pass so that
-the flickrapi can negotiate access tokens with Flickr. Doing so
-continues the program:
+Once the app reaches this point it open a browser, allowing you to
+consent to the app accessing your most private of private parts. On
+Flickr, at least. If you agree to authorize it, you will get an
+authorisation code that you need to pass so that the flickrapi can
+negotiate access tokens with Flickr. Doing so continues the program:
 
 ```
 $> node app
@@ -155,8 +164,8 @@ export FLICKR_ACCESS_TOKEN_SECRET="99c038c9fc77673e"
 ```
 
 Add these variables to your environment, or put them in an `.env`
-file for use with `habitat` or the like, or put them straight into
-your source code to use the flickrapi:
+file for use with `process.env` or the `habitat` package or the like,
+or put them straight into your source code to use the flickrapi:
 
 ```
 var FlickrOptions = {
@@ -169,4 +178,4 @@ var FlickrOptions = {
 ```
 
 The flickrapi package will now be able to authenticate with Flickr
-without constantly needing to ask you for permission.
+without constantly needing to ask you for permission to access data.

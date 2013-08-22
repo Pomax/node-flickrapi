@@ -2,7 +2,7 @@
   "name": "flickrapi",
   "version": "0.2.4",
   "author": "Pomax <pomax@nihongoresources.com>",
-  "description": "A node.js module for the Flickr API (for use with an API key)",
+  "description": "A node.js module for the Flickr API (for use with an API key, oauth enabled)",
   "dependencies": {
     "async": "~0.2.9",
     "open": "0.0.x",
@@ -17,7 +17,8 @@
   },
   "keywords": [
     "flickr",
-    "api"
+    "api",
+    "oauth"
   ],
   "repository": {
     "type": "git",
