@@ -110,9 +110,16 @@ module.exports = (function() {
      * Call the Flickr API
      */
     queryFlickr: function(queryArguments, flickrOptions, processResult, errors) {
+      // set essential values
       queryArguments.format = "json";
       queryArguments.api_key = flickrOptions.key;
+      queryArguments.oauth_signature_method = "HMAC-SHA1";
+
+      // set call-specific values
       flickrOptions = this.setAuthVals(flickrOptions);
+      queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
+      queryArguments.oauth_timestamp = flickrOptions.oauth_timestamp;
+
       var url = "http://ycpi.api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
           data = this.formBaseString(url, queryString),
