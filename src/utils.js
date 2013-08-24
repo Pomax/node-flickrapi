@@ -10,7 +10,44 @@ module.exports = (function() {
   "use strict";
   var crypto = require("crypto"),
       fs = require("fs"),
-      request = require("request");
+      request = require("request"),
+      statusCodes = {
+        400: "Bad Request",
+        401: "Unauthorized",
+        402: "Payment Required",
+        403: "Forbidden",
+        404: "Not Found",
+        405: "Method Not Allowed",
+        406: "Not Acceptable",
+        407: "Proxy Authentication Required",
+        408: "Request Timeout",
+        409: "Conflict",
+        410: "Gone",
+        411: "Length Required",
+        412: "Precondition Failed",
+        413: "Request Entity Too Large",
+        414: "Request-URI Too Long",
+        415: "Unsupported Media Type",
+        416: "Requested Range Not Satisfiable",
+        417: "Expectation Failed",
+        428: "Precondition Required",
+        429: "Too Many Requests",
+        431: "Request Header Fields Too Large",
+        450: "Blocked By Windows Parental Controls",
+        499: "Client Closed Request",
+        500: "Internal Server Error",
+        501: "Not Implemented",
+        502: "Bad Gateway",
+        503: "Service Unavailable",
+        504: "Gateway Timeout",
+        505: "HTTP Version Not Supported",
+        506: "Variant Also Negotiates",
+        507: "Insufficient Storage",
+        508: "Loop Detected",
+        509: "Bandwidth Limit Exceeded",
+        510: "Not Extended",
+        511: "Network Authentication Required"
+      };
 
   /**
    * Pretty-print JSON files, because we will want
@@ -128,20 +165,23 @@ module.exports = (function() {
           flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
 
       request.get(flickrURL, function(error, response, body) {
+        if(!body) {
+          error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
+          return processResult(error);
+        }
+
         // we can transform the error into something more
         // indicative if "errors" is an array of known errors
         // for this specific method call.
         if(!error) {
           try {
-
             body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
             body = JSON.parse(body);
             if(body.stat !== "ok") {
               return processResult(new Error(body.message));
             }
           } catch (e) {
-            console.error("could not parse body as JSON: ", body);
-            return processResult(new Error("could not parse body as JSON"));
+            return processResult("could not parse body as JSON");
           }
         }
 
