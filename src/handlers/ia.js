@@ -115,6 +115,9 @@ module.exports = (function() {
       photosets.keys.forEach(function(key) {
         var set = photosets.data[key];
         if(set.photos) {
+          set.photos = set.photos.sort(function(a,b) {
+            return photos.data[a].dates.posted - photos.data[b].dates.posted;
+          });
           set.photos.forEach(function(id) {
             if(!photos.data[id].sets) {
               photos.data[id].sets = [];
@@ -145,7 +148,7 @@ module.exports = (function() {
     });
     // sets are ranked by creation date
     var photosets = readAll(dirstructure.ia.photosets, "id", function(a,b,items) {
-      return items[b].dateuploaded - items[a].dateuploaded;
+      return items[b].date_create - items[a].date_create;
     });
     // collections are sorted alphabetically
     var collections = readAll(dirstructure.ia.collections, "id", function(a,b,items) {
