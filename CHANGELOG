@@ -1,7 +1,24 @@
+v0.2.9
+  * downsync now updates entries on disk that were updated on Flickr
+    since the last downsync, rather than requiring you delete your
+    ia directory and redownloading all the .json data.
+
+v0.2.8
+  * photos are correctly sorted in photosets
+
+v0.2.6
+  * comments and contexts are cross-referenced into photos
+
+v0.2.5
+  * functions calls are always correctly auth'd
+  * app permissions can be passed during the `authenticate` call,
+    defaulting to "read".
+
 v0.2.1
-	* comments are now downloaded for each photo
-	* contexts are now downloaded for each photo
-  * "Large" and "medium 800" images are downloaded for each photo
+  * downsync now downloads:
+    - comments for each photo
+    - contexts for each photo
+  * "large" and "medium 800" images are downloaded for each photo
   * photos now indicate the image sizes that Flickr has for them
 
 v0.1.x
@@ -9,3 +26,5 @@ v0.1.x
     - photos
     - photosets
     - collections
+
+Versions not listed are bug fix releases, rather than feature releases.
