@@ -7,7 +7,7 @@ module.exports = (function() {
 
   var fs = require("fs"),
       Utils = require("./utils"),
-      progress = require("progress"),
+      Progress = require("progress"),
       progressBar,
       API = {};
 
@@ -54,7 +54,7 @@ module.exports = (function() {
           if(!callOptions.hasOwnProperty(arg.name)) {
             return callback(new Error("missing required argument '"+arg.name+"' in call to "+method_name));
           }
-        };
+        }
 
         // effect a new timestampe and nonce prior to calling
         flickrOptions = Utils.setAuthVals(flickrOptions);
@@ -127,7 +127,7 @@ module.exports = (function() {
         return v._content;
       });
       if(!progressBar) {
-        progressBar = new progress('  fetching method signatures [:bar] :percent', { total: methods.length });
+        progressBar = new Progress('  fetching method signatures [:bar] :percent', { total: methods.length });
       }
       return parseMethods(flickrOptions, methods, 0, finished);
     };

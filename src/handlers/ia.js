@@ -74,15 +74,27 @@ module.exports = (function() {
   function readAll(dir, keyproperty, comparator) {
     var files = fs.readdirSync(dir),
         items = {},
-        stats;
+        stats,
+        filePath;
     files.forEach(function(file) {
-      stats = fs.statSync(dir + "/" + file);
+      filePath = dir + "/" + file;
+      stats = fs.statSync(filePath);
       if(stats.isFile()) {
-        item = JSON.parse(fs.readFileSync(dir + "/" + file));
-        if(keyproperty) {
-          items[item[keyproperty]] = item;
-        } else {
-          items[file.replace(".json", '')] = item;
+        if(stats.size === 0) {
+          return fs.unlinkSync(filePath);
+        }
+        try {
+          var fileData = fs.readFileSync(filePath);
+          item = JSON.parse(fileData);
+          if(keyproperty) {
+            items[item[keyproperty]] = item;
+          } else {
+            items[file.replace(".json", '')] = item;
+          }
+        } catch (e) {
+          console.error("file: " + filePath);
+          console.error("file data: " + fileData);
+          throw e;
         }
       }
     });
@@ -95,7 +107,7 @@ module.exports = (function() {
     return {
       keys: keys,
       data: items
-    }
+    };
   }
 
   // Cross-reference the various data sets, if there is data
@@ -106,8 +118,13 @@ module.exports = (function() {
     var comments = readAll(dirstructure.ia.photos.comments);
     var contexts = readAll(dirstructure.ia.photos.contexts);
     photos.keys.forEach(function(id) {
-      photos.data[id].comments = comments.data[id].comment;
-      photos.data[id].contexts = contexts.data[id];
+      var photo = photos.data[id];
+      if (comments.data[id]) {
+        photos.data[id].comments = comments.data[id].comment;
+      }
+      if (contexts.data[id]) {
+        photos.data[id].contexts = contexts.data[id];
+      }
     });
 
     // crosslink photos and sets
@@ -116,16 +133,23 @@ module.exports = (function() {
         var set = photosets.data[key];
         if(set.photos) {
           set.photos = set.photos.sort(function(a,b) {
+            if (!photos.data[a] || !photos.data[b]) {
+              return 0;
+            }
             return photos.data[a].dates.posted - photos.data[b].dates.posted;
           });
           set.photos.forEach(function(id) {
-            if(!photos.data[id].sets) {
-              photos.data[id].sets = [];
+            var photo = photos.data[id];
+            if(!photo) {
+              return;
+            }
+            if(!photo.sets) {
+              photo.sets = [];
             }
             var idx = set.photos.indexOf(id),
                 prev = (idx > 0 ? photos.data[set.photos[idx-1]] : false),
                 next = (idx < set.photos.length-1 ? photos.data[set.photos[idx+1]] : false);
-            photos.data[id].sets.push({
+            photo.sets.push({
               id: set.id,
               prev: prev,
               next: next
@@ -173,6 +197,6 @@ module.exports = (function() {
       collection_keys: collections.keys,
       // dir adminstration
       dirstructure: dirstructure
-    }
-  }
+    };
+  };
 }());

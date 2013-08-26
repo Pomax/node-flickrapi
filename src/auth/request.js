@@ -44,7 +44,7 @@ module.exports = (function() {
       });
       new RequestAuthorization(options, requestCompleted);
     });
-  }
+  };
 
   RequestTokenFunction.prototype = {
     url: "http://www.flickr.com/services/oauth/request_token",

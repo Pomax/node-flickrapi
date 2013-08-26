@@ -39,7 +39,7 @@ module.exports = function(location) {
         return console.log(error);
       }
       console.log("Found " + result.photos.total + " photos to downsync.");
-      aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total));
+      aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total, 10));
     });
   };
 };

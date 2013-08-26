@@ -24,11 +24,7 @@ function processCollections(flickr, collection_idx, total) {
   // record progress
   progressBar.tick();
 
-  if(fs.existsSync(filename)) {
-    return next();
-  } else {
-    fs.writeFile(filename, JSON.prettyprint(collection), next);
-  }
+  fs.writeFile(filename, JSON.prettyprint(collection), next);
 }
 
 function getCollectionMetadata(flickr) {

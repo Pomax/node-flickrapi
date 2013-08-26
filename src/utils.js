@@ -106,7 +106,7 @@ module.exports = (function() {
       var args = [],
           append = function(key) {
             args.push(key + "=" + queryArguments[key]);
-          }
+          };
       Object.keys(queryArguments).sort().forEach(append);
       return args.join("&");
     },
@@ -128,7 +128,7 @@ module.exports = (function() {
       constituents.forEach(function(pair) {
         keyval = pair.split("=");
         response[keyval[0]] = keyval[1];
-      })
+      });
       return response;
     },
 

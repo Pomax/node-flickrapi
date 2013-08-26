@@ -9,21 +9,28 @@ var http = require('http'),
       "b" : "large",
       "s" : "square/small",
       "q" : "square/medium"
-    },
-    get = function(url, dest, key, photo, cb) {
-      var file = fs.createWriteStream(dest);
-      var request = http.get(url, function(response) {
+    };
+
+function getFromURL(url, dest, key, photo, cb) {
+  var file = fs.createWriteStream(dest),
+      handleRequest = function(response) {
         response.pipe(file);
         file.on('finish', function() {
           file.close();
           photo.sizes.push(key);
         });
-        if (cb) { cb(); }
-      }).on('error', function(err) {
+        if (cb) {
+          cb();
+        }
+      },
+      errorHandler = function(err) {
         console.log(err);
-        if (cb) { cb(err); }
-      });
-    };
+        if (cb) {
+          cb(err);
+        }
+      };
+  http.get(url, handleRequest).on('error', errorHandler);
+}
 
 /**
  * Download all the interesting formats for this photo
@@ -56,8 +63,8 @@ module.exports = function download(flickr, photo, completed) {
       url = url.replace("_"+secret+"_", "_"+osecret+"_");
     }
     dest = imageRoot + "/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
-  	if(!fs.existsSync(dest)) {
-  	  get(url, dest, key, photo, track);
-  	} else { track(); }
+    if(!fs.existsSync(dest)) {
+      getFromURL(url, dest, key, photo, track);
+    } else { track(); }
   });
-}
+};

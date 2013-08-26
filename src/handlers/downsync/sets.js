@@ -30,27 +30,24 @@ function processPhotosets(flickr, set_idx, total) {
   // record progress
   progressBar.tick();
 
-  if(fs.existsSync(filename)) {
-    next();
-  } else {
-    flickr.photosets.getPhotos({
-      photoset_id: set.id,
-      page: 1,
-      per_page: 500
-    }, function(error, result) {
-      if (error) {
-        return console.log(error);
+  // TODO: download photos if new set, or known set with updates
+  flickr.photosets.getPhotos({
+    photoset_id: set.id,
+    page: 1,
+    per_page: 500
+  }, function(error, result) {
+    if (error) {
+      return console.log(error);
+    }
+    set.photos = result.photoset.photo.map(function(photo) {
+      if(photo.isprimary === "1") {
+        set.primary = photo.id;
       }
-      set.photos = result.photoset.photo.map(function(photo) {
-        if(photo.isprimary === "1") {
-          set.primary = photo.id;
-        }
-        return photo.id;
-      });
-
-      fs.writeFile(filename, JSON.prettyprint(set), next);
+      return photo.id;
     });
-  }
+
+    fs.writeFile(filename, JSON.prettyprint(set), next);
+  });
 }
 
 function getSetMetadata(flickr) {
