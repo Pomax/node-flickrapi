@@ -6,7 +6,7 @@
   "dependencies": {
     "async": "~0.2.9",
     "open": "0.0.x",
-    "progress": "~1.0.0",
+    "progress": "https://github.com/Pomax/node-progress/archive/master.tar.gz",
     "prompt": "0.2.x",
     "request": "2.26.x"
   },
