@@ -1,3 +1,6 @@
+v0.2.11
+  * updated the progress package. It's now well-behaved on OSX.
+
 v0.2.9
   * downsync now updates entries on disk that were updated on Flickr
     since the last downsync, rather than requiring you delete your
