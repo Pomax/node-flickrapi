@@ -1,6 +1,6 @@
 {
   "name": "flickrapi",
-  "version": "0.2.11",
+  "version": "0.2.12",
   "author": "Pomax <pomax@nihongoresources.com>",
   "description": "A node.js module for the Flickr API (for use with an API key, oauth enabled)",
   "dependencies": {
