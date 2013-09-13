@@ -221,7 +221,7 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
             files.forEach(function(file) {
               fs.unlink( file, function(err, result){ if(err) { console.error(err); }});
             });
-          })
+          });
         });
       }
       // Move on to processing our list of photos
