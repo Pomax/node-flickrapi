@@ -1,12 +1,12 @@
 {
   "name": "flickrapi",
-  "version": "0.2.10",
+  "version": "0.2.11",
   "author": "Pomax <pomax@nihongoresources.com>",
   "description": "A node.js module for the Flickr API (for use with an API key, oauth enabled)",
   "dependencies": {
     "async": "~0.2.9",
     "open": "0.0.x",
-    "progress": "https://github.com/Pomax/node-progress/archive/master.tar.gz",
+    "progress": "1.0.1",
     "prompt": "0.2.x",
     "request": "2.26.x"
   },

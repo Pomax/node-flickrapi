@@ -1,8 +1,11 @@
-v0.2.11
+v0.2.12
   * downsync will now prune entries that you removed from Flickr,
     but still have in your mirror, but only when the `downsync`
     function is called with the option second `removeDeleted`
     parameter set to `true`.
+
+v0.2.11
+  * updated the progress package. It's now well-behaved on OSX.
 
 v0.2.9
   * downsync now updates entries on disk that were updated on Flickr
