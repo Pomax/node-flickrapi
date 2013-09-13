@@ -1,4 +1,4 @@
-v0.2.12
+v0.2.13
   * downsync will now prune entries that you removed from Flickr,
     but still have in your mirror, but only when the `downsync`
     function is called with the option second `removeDeleted`

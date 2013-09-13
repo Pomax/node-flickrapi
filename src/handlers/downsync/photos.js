@@ -2,6 +2,7 @@ var async = require("async"),
     fs = require("fs"),
     download = require("./download"),
     getSetMetadata = require("./sets"),
+    glob = require("glob"),
     progress = require("progress"),
     progressBarAggregate,
     progressBar,
@@ -200,7 +201,7 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
       // delete any photos that were deleted from flickr, if specified
       if(removeDeleted) {
         var ia = flickr.options.locals,
-            dirs = ia.dirstructure.dirs,
+            dirs = ia.dirstructure,
             keys = ia.photo_keys.slice(),
             pos;
         photos.forEach(function(photo) {
@@ -208,12 +209,19 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
           if(pos===-1) return;
           keys.splice(pos,1);
         });
+        if(keys.length>0) {
+          console.log("Pruning files from the local mirror that were deleted on Flickr");
+          console.log("(reason: downsync called with --prune or removeDeleted==true)");
+        }
         // prune the remaining photos
         keys.forEach(function(key) {
-          console.log(key + " was removed on flickr; unlinking...");
-          dirs.forEach(function(dir) {
-            fs.unlink( dir + "/" + key + ".*", function(err, result){} );
-          });
+          var match = dirs.root + "/**/" + key + ".*";
+          glob(match, function (err, files) {
+            if(err) { return console.error(err); }
+            files.forEach(function(file) {
+              fs.unlink( file, function(err, result){ if(err) { console.error(err); }});
+            });
+          })
         });
       }
       // Move on to processing our list of photos

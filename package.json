@@ -5,6 +5,7 @@
   "description": "A node.js module for the Flickr API (for use with an API key, oauth enabled)",
   "dependencies": {
     "async": "~0.2.9",
+    "glob": "~3.2.6",
     "open": "0.0.x",
     "progress": "1.0.1",
     "prompt": "0.2.x",
