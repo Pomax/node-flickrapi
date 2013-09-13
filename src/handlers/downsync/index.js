@@ -14,8 +14,9 @@
  *
  * TODO: comments and notes
  */
-module.exports = function(location) {
+module.exports = function(location, removeDeleted) {
   location = location || "./data";
+  removeDeleted = removeDeleted || false;
 
   var fs = require("fs"),
       aggregatePhotos = require("./photos");
@@ -39,7 +40,7 @@ module.exports = function(location) {
         return console.log(error);
       }
       console.log("Found " + result.photos.total + " photos to downsync.");
-      aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total, 10));
+      aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total, 10), removeDeleted);
     });
   };
 };

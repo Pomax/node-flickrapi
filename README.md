@@ -83,6 +83,25 @@ This will now create a `./data` for the flickr API information, but\
 also a `./userdata/me/` directory that contains the `images` and `ia`
 dirs with your personal data.
 
+### Syncing with Flickr
+
+Syncing is a mostly a matter or running the downsync function again.
+This will update anything that was updated or added on Flickr, but
+will not delete anything from your local mirror that was deleted
+from Flickr unless specifically told to do so, by passing a second
+argument (internally known as the "removeDeleted" flag in the code)
+to the `downsync` function call:
+
+```
+var Flickr = require("flickrapi"),
+    flickrOptions = { ... };
+Flickr.authenticate(flickrOptions, flickrapi.downsync("userdata/me", true));
+```
+
+If `true`, this will delete local files that were removed on Flickr
+(e.g. photos that you didn't like anymore, etc). If `false`, or
+omitted, no pruning of the local mirror will be performed.
+
 ### Using all your Flickr stuffs in an app
 
 If you downloaded all your Flickr stuffs, you can use these in your

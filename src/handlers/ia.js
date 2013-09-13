@@ -36,6 +36,7 @@ module.exports = (function() {
 
     // structured directories object
     return {
+      dirs: dirs,
       root: dirs[0],
       images: {
         root: dirs[1],

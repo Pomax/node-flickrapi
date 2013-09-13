@@ -190,13 +190,32 @@ function processPhotos(flickr, photo_idx, total) {
 /**
  * this function grabs all photo definitions from Flickr
  */
-function aggregatePhotos(flickr, user_id, per_page, page, tally, total) {
+function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDeleted) {
   if(tally >= total) {
     console.log("done fetching photo information from Flickr.");
     console.log();
     console.log("Downloading photos and metadata from Flickr.");
     progressBar = new progress('  [:bar] :current/:total', { total: total });
     setTimeout(function() {
+      // delete any photos that were deleted from flickr, if specified
+      if(removeDeleted) {
+        var ia = flickr.options.locals,
+            dirs = ia.dirstructure.dirs,
+            keys = ia.photo_keys.slice(),
+            pos;
+        photos.forEach(function(photo) {
+          pos = keys.indexOf(photo.id);
+          if(pos===-1) return;
+          keys.splice(pos,1);
+        });
+        // prune the remaining photos
+        keys.forEach(function(key) {
+          console.log(key + " was removed on flickr; unlinking...");
+          dirs.forEach(function(dir) {
+            fs.unlink( dir + "/" + key + ".*", function(err, result){} );
+          });
+        });
+      }
       // Move on to processing our list of photos
       processPhotos(flickr, 0, total);
     }, 1);
@@ -212,14 +231,14 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total) {
     tally += batch.length;
     progressBarAggregate.tick(per_page);
     photos = photos.concat(batch);
-    aggregatePhotos(flickr, user_id, per_page, page+1, tally, total);
+    aggregatePhotos(flickr, user_id, per_page, page+1, tally, total, removeDeleted);
   });
 }
 
 /**
  * export just this function
  */
-module.exports = function(flickr, user_id, per_page, page, tally, total) {
+module.exports = function(flickr, user_id, per_page, page, tally, total, removeDeleted) {
   progressBarAggregate = new progress('  [:bar] :current/:total', { total: total });
-  aggregatePhotos(flickr, user_id, per_page, page, tally, total);
+  aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDeleted);
 };
