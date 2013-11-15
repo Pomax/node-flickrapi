@@ -83,6 +83,10 @@ This will now create a `./data` for the flickr API information, but\
 also a `./userdata/me/` directory that contains the `images` and `ia`
 dirs with your personal data.
 
+FlickrMirror, available at https://github.com/Pomax/flickrmirror, bolts
+a UI on top of the FlickrAPI module to give you an instant frontend
+for your photographs and Flickr information about them.
+
 ### Syncing with Flickr
 
 Syncing is a mostly a matter or running the downsync function again.
@@ -210,3 +214,12 @@ and the smallest size available to your application will be the
 However, if you do have ImageMagick installed, this will generate
 an extra image dir as `ia/images/square/tiny` that can be used by
 your application if pinhead images are required.
+
+## Software that uses FlickrAPI
+
+The most obvious application that uses this package is FlickrMirror,
+available at https://github.com/Pomax/flickrmirror, which mirrors
+your Flickr data and acts as alternative frontend for your photographs
+(and sets and collections) using a default styling based on the old
+Flickr look, but as open source so you can change the look and feel
+however you like.
