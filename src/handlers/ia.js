@@ -12,6 +12,7 @@ module.exports = (function() {
     "images/medium800",
     "images/large",
     "images/square",
+    "images/square/tiny",
     "images/square/small",
     "images/square/medium",
     "ia",
@@ -35,32 +36,40 @@ module.exports = (function() {
     });
 
     // structured directories object
+    var ctr = (function() {
+      var counter = 0;
+      return function() {
+        return counter++;
+      };
+    }());
+
     return {
       dirs: dirs,
-      root: dirs[0],
+      root: dirs[ctr()],
       images: {
-        root: dirs[1],
-        original: dirs[2],
-        thumbnail: dirs[3],
-        small: dirs[4],
-        medium: dirs[5],
-        medium800: dirs[6],
-        large: dirs[7],
+        root: dirs[ctr()],
+        original: dirs[ctr()],
+        thumbnail: dirs[ctr()],
+        small: dirs[ctr()],
+        medium: dirs[ctr()],
+        medium800: dirs[ctr()],
+        large: dirs[ctr()],
         square: {
-          root: dirs[8],
-          small: dirs[9],
-          medium: dirs[10]
+          root: dirs[ctr()],
+          tiny: dirs[ctr()],
+          small: dirs[ctr()],
+          medium: dirs[ctr()]
         }
       },
       ia: {
-        root: dirs[11],
+        root: dirs[ctr()],
         photos: {
-          root: dirs[12],
-          comments: dirs[13],
-          contexts: dirs[14]
+          root: dirs[ctr()],
+          comments: dirs[ctr()],
+          contexts: dirs[ctr()]
         },
-        photosets: dirs[15],
-        collections: dirs[16]
+        photosets: dirs[ctr()],
+        collections: dirs[ctr()]
       },
       flickr: {
         root: utils.mkdir("data/flickr"),

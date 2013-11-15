@@ -1,5 +1,7 @@
-var http = require('http'),
-    fs = require('fs');
+var fs = require('fs'),
+    http = require('http'),
+    imagemagick = require('imagemagick'),
+    have_imagemagick = true,
     locations = {
       "o" : "original",
       "t" : "thumbnail",
@@ -11,6 +13,9 @@ var http = require('http'),
       "q" : "square/medium"
     };
 
+/**
+ * Retrieve image resources from the web
+ */
 function getFromURL(url, dest, key, photo, cb) {
   var file = fs.createWriteStream(dest),
       handleRequest = function(response) {
@@ -33,6 +38,27 @@ function getFromURL(url, dest, key, photo, cb) {
 }
 
 /**
+ * convert "small" (75x75) images to "tiny" (20x20) pinhead images
+ */
+function generatePinhead(id, imdir, completed) {
+  if(have_imagemagick) {
+    imagemagick.resize({
+      srcPath: imdir.square.small + "/" + id + ".jpg",
+      dstPath: imdir.square.tiny + "/" + id + ".jpg",
+      width:   20,
+      height:  20
+    }, function(err) {
+      if(err) {
+        have_imagemagick = false;
+      }
+      completed();
+    });
+  } else {
+    completed();
+  }
+}
+
+/**
  * Download all the interesting formats for this photo
  */
 module.exports = function download(flickr, photo, completed) {
@@ -46,16 +72,17 @@ module.exports = function download(flickr, photo, completed) {
       url,
       dest,
       keys = photo.sizes,
+      imdir = flickr.options.locals.dirstructure.images,
+      imageRoot = imdir.root,
       // track how many images are left to download
       trackRecord = keys.length,
       track = function() {
         trackRecord--;
         // if there are no images left to download, we can hand control back.
         if(trackRecord === 0) {
-          completed();
+          generatePinhead(id, imdir, completed);
         }
-      },
-      imageRoot = flickr.options.locals.dirstructure.images.root;
+      };
 
   keys.forEach(function(key) {
     url = photoURL + key + "." + (key==="o"? format: "jpg");

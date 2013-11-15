@@ -198,3 +198,15 @@ var FlickrOptions = {
 
 The flickrapi package will now be able to authenticate with Flickr
 without constantly needing to ask you for permission to access data.
+
+## Optional dependency for ImageMagick
+
+This package has some code that will turn "square/small" images,
+which are 75x75, into "tiny" 20x20 pinhead images. If you don't
+have ImageMagick installed, then this will simply do nothing
+and the smallest size available to your application will be the
+75x75 square thumbnail images.
+
+However, if you do have ImageMagick installed, this will generate
+an extra image dir as `ia/images/square/tiny` that can be used by
+your application if pinhead images are required.
