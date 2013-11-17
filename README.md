@@ -52,7 +52,8 @@ also has an `options` property, which looks like this:
   access_token: "the preauthorised Flickr access token",
   access_token_secret: "its corresponding secret",
   oauth_timestamp: "the timestamp for the last flickr API call",
-  oauth_nonce: "the cryptographic nonce that request used"
+  oauth_nonce: "the cryptographic nonce that request used",
+  afterDownsync: <you can bind a arg-less callback function here>
 }
 ```
 
