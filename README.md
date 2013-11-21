@@ -53,7 +53,8 @@ also has an `options` property, which looks like this:
   access_token_secret: "its corresponding secret",
   oauth_timestamp: "the timestamp for the last flickr API call",
   oauth_nonce: "the cryptographic nonce that request used",
-  afterDownsync: <you can bind a arg-less callback function here>
+  afterDownsync: <optional, you can bind an arg-less callback function here>
+  permissions: <optional, default value is 'read', see below>
 }
 ```
 
@@ -167,9 +168,9 @@ $> node app
 prompt: oauth_verifier: []
 ```
 
-Once the app reaches this point it open a browser, allowing you to
-consent to the app accessing your most private of private parts. On
-Flickr, at least. If you agree to authorize it, you will get an
+Once the app reaches this point it will open a browser, allowing you
+to consent to the app accessing your most private of private parts.
+On Flickr, at least. If you agree to authorize it, you will get an
 authorisation code that you need to pass so that the flickrapi can
 negotiate access tokens with Flickr. Doing so continues the program:
 
