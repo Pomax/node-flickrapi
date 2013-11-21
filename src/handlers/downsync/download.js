@@ -42,20 +42,31 @@ function getFromURL(url, dest, key, photo, cb) {
  */
 function generatePinhead(id, imdir, completed) {
   if(have_imagemagick) {
-    imagemagick.resize({
-      srcPath: imdir.square.small + "/" + id + ".jpg",
-      dstPath: imdir.square.tiny + "/" + id + ".jpg",
-      width:   20,
-      height:  20
-    }, function(err) {
-      if(err) {
-        have_imagemagick = false;
-      }
+    // The imagemagick module will throw if imagemagick
+    // is not actually instead, rather than do a callback
+    // with an 'err' function argument...
+    try {
+      imagemagick.resize({
+        srcPath: imdir.square.small + "/" + id + ".jpg",
+        dstPath: imdir.square.tiny + "/" + id + ".jpg",
+        width:   20,
+        height:  20
+      }, function(err) {
+        // If some error occurred, rather than figure out
+        // what it is, we're just going to ignore IM:
+        if(err) { have_imagemagick = false; }
+        completed();
+      });
+    }
+
+    // Assume the imagemagic application does not exist.
+    catch (e) {
+      have_imagemagick = false;
       completed();
-    });
-  } else {
-    completed();
+    }
   }
+
+  else { completed(); }
 }
 
 /**
