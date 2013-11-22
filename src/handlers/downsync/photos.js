@@ -248,5 +248,5 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
  */
 module.exports = function(flickr, user_id, per_page, page, tally, total, removeDeleted) {
   progressBarAggregate = new progress('  [:bar] :current/:total', { total: total });
-  aggregatePhotos(flickr, user_id, per_page, page, tally, 10, removeDeleted);
+  aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDeleted);
 };
