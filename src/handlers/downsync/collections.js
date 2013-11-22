@@ -1,4 +1,5 @@
 var fs = require("fs"),
+    download = require("./download").downloadIcons,
     progress = require("progress"),
     progressBar,
     collections = [];
@@ -23,10 +24,10 @@ function processCollections(flickr, collection_idx, total) {
         }, 1);
       };
 
-  // record progress
   progressBar.tick();
-
-  fs.writeFile(filename, JSON.prettyprint(collection), next);
+  download(flickr, collection, function() {
+    fs.writeFile(filename, JSON.prettyprint(collection), next);
+  });
 }
 
 function getCollectionMetadata(flickr) {

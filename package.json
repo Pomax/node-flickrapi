@@ -9,8 +9,7 @@
     "open": "0.0.x",
     "progress": "1.0.1",
     "prompt": "0.2.x",
-    "request": "2.26.x",
-    "imagemagick": "~0.1.3"
+    "request": "2.26.x"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

@@ -15,6 +15,9 @@ module.exports = (function() {
     "images/square/tiny",
     "images/square/small",
     "images/square/medium",
+    "images/icon",
+    "images/icon/small",
+    "images/icon/large",
     "ia",
     "ia/photos",
     "ia/photos/comments",
@@ -59,6 +62,11 @@ module.exports = (function() {
           tiny: dirs[ctr()],
           small: dirs[ctr()],
           medium: dirs[ctr()]
+        },
+        icon: {
+          root: dirs[ctr()],
+          small: dirs[ctr()],
+          large: dirs[ctr()]
         }
       },
       ia: {

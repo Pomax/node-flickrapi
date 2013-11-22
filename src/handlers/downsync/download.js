@@ -1,7 +1,5 @@
 var fs = require('fs'),
     http = require('http'),
-    imagemagick = require('imagemagick'),
-    have_imagemagick = true,
     locations = {
       "o" : "original",
       "t" : "thumbnail",
@@ -17,12 +15,15 @@ var fs = require('fs'),
  * Retrieve image resources from the web
  */
 function getFromURL(url, dest, key, photo, cb) {
+  if(key && !photo && !cb) { cb = key; key = undefined; }
   var file = fs.createWriteStream(dest),
       handleRequest = function(response) {
         response.pipe(file);
         file.on('finish', function() {
           file.close();
-          photo.sizes.push(key);
+          if(key) {
+            photo.sizes.push(key);
+          }
         });
         if (cb) {
           cb();
@@ -38,71 +39,65 @@ function getFromURL(url, dest, key, photo, cb) {
 }
 
 /**
- * convert "small" (75x75) images to "tiny" (20x20) pinhead images
- */
-function generatePinhead(id, imdir, completed) {
-  if(have_imagemagick) {
-    // The imagemagick module will throw if imagemagick
-    // is not actually instead, rather than do a callback
-    // with an 'err' function argument...
-    try {
-      imagemagick.resize({
-        srcPath: imdir.square.small + "/" + id + ".jpg",
-        dstPath: imdir.square.tiny + "/" + id + ".jpg",
-        width:   20,
-        height:  20
-      }, function(err) {
-        // If some error occurred, rather than figure out
-        // what it is, we're just going to ignore IM:
-        if(err) { have_imagemagick = false; }
-        completed();
-      });
-    }
-
-    // Assume the imagemagic application does not exist.
-    catch (e) {
-      have_imagemagick = false;
-      completed();
-    }
-  }
-
-  else { completed(); }
-}
-
-/**
  * Download all the interesting formats for this photo
  */
-module.exports = function download(flickr, photo, completed) {
-  var id = photo.id,
-      farm = photo.farm,
-      server = photo.server,
-      secret = photo.secret,
-      osecret = photo.originalsecret,
-      format = photo.originalformat,
-      photoURL = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_",
-      url,
-      dest,
-      keys = photo.sizes,
-      imdir = flickr.options.locals.dirstructure.images,
-      imageRoot = imdir.root,
-      // track how many images are left to download
-      trackRecord = keys.length,
-      track = function() {
-        trackRecord--;
-        // if there are no images left to download, we can hand control back.
-        if(trackRecord === 0) {
-          generatePinhead(id, imdir, completed);
-        }
-      };
+module.exports = {
+  downloadIcons: function(flickr, collection, completed) {
+    var imdir = flickr.options.locals.dirstructure.images,
+        icondir = imdir.icon,
+        remotesmall = collection.iconsmall,
+        remotelarge = collection.iconlarge,
+        small = icondir.small + "/" + remotesmall.substring(remotesmall.lastIndexOf("/") + 1),
+        large = icondir.large + "/" + remotelarge.substring(remotelarge.lastIndexOf("/") + 1);
 
-  keys.forEach(function(key) {
-    url = photoURL + key + "." + (key==="o"? format: "jpg");
-    if(key==="o") {
-      url = url.replace("_"+secret+"_", "_"+osecret+"_");
+    collection.iconlarge = large;
+    collection.iconsmall = small;
+
+    var getLarge = function(cb) {
+      if(!fs.existsSync(large)) {
+        getFromURL(remotelarge, large, cb);
+      } else { cb(); }
     }
-    dest = imageRoot + "/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
-    if(!fs.existsSync(dest)) {
-      getFromURL(url, dest, key, photo, track);
-    } else { track(); }
-  });
+
+    var getSmall = function(cb) {
+      var gl = function() { getLarge(cb); }
+      if(!fs.existsSync(small)) {
+        getFromURL(remotesmall, small, gl);
+      } else { gl(); }
+    }
+
+    getSmall(completed);
+  },
+  downloadPhoto: function(flickr, photo, completed) {
+    var id = photo.id,
+        farm = photo.farm,
+        server = photo.server,
+        secret = photo.secret,
+        osecret = photo.originalsecret,
+        format = photo.originalformat,
+        photoURL = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_",
+        url,
+        dest,
+        keys = photo.sizes,
+        imdir = flickr.options.locals.dirstructure.images,
+        imageRoot = imdir.root,
+        // track how many images are left to download
+        trackRecord = keys.length,
+        track = function() {
+          trackRecord--;
+          // if there are no images left to download, we can hand control back.
+          if(trackRecord === 0) { completed(); }
+        };
+
+    keys.forEach(function(key) {
+      url = photoURL + key + "." + (key==="o"? format: "jpg");
+      if(key==="o") {
+        url = url.replace("_"+secret+"_", "_"+osecret+"_");
+      }
+      dest = imageRoot + "/" + locations[key] + "/" + id + "." + (key==="o"? format: "jpg");
+      if(!fs.existsSync(dest)) {
+        getFromURL(url, dest, key, photo, track);
+      } else { track(); }
+    });
+  }
 };
