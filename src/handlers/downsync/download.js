@@ -43,15 +43,16 @@ function getFromURL(url, dest, key, photo, cb) {
  */
 module.exports = {
   downloadIcons: function(flickr, collection, completed) {
-    var imdir = flickr.options.locals.dirstructure.images,
+    var root = flickr.options.locals.dirstructure.root.replace("/.",''),
+        imdir = flickr.options.locals.dirstructure.images,
         icondir = imdir.icon,
         remotesmall = collection.iconsmall,
         remotelarge = collection.iconlarge,
         small = icondir.small + "/" + remotesmall.substring(remotesmall.lastIndexOf("/") + 1),
         large = icondir.large + "/" + remotelarge.substring(remotelarge.lastIndexOf("/") + 1);
 
-    collection.iconlarge = large;
-    collection.iconsmall = small;
+    collection.iconlarge = large.replace(root, '');
+    collection.iconsmall = small.replace(root, '');
 
     var getLarge = function(cb) {
       if(!fs.existsSync(large)) {
