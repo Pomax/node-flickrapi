@@ -15,6 +15,8 @@ var fs = require('fs'),
  * Retrieve image resources from the web
  */
 function getFromURL(url, dest, key, photo, cb) {
+  "use strict";
+
   if(key && !photo && !cb) { cb = key; key = undefined; }
   var file = fs.createWriteStream(dest),
       handleRequest = function(response) {
@@ -58,14 +60,14 @@ module.exports = {
       if(!fs.existsSync(large)) {
         getFromURL(remotelarge, large, cb);
       } else { cb(); }
-    }
+    };
 
     var getSmall = function(cb) {
-      var gl = function() { getLarge(cb); }
+      var gl = function() { getLarge(cb); };
       if(!fs.existsSync(small)) {
         getFromURL(remotesmall, small, gl);
       } else { gl(); }
-    }
+    };
 
     getSmall(completed);
   },

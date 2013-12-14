@@ -8,6 +8,8 @@ var fs = require("fs"),
  * Collections
  */
 function processCollections(flickr, collection_idx, total) {
+  "use strict";
+
   if(collection_idx >= total) {
     console.log("done fetching collection metadata.");
     var handler = flickr.options.afterDownsync;

@@ -15,6 +15,8 @@
  * TODO: comments and notes
  */
 module.exports = function(location, removeDeleted) {
+  "use strict";
+
   location = location || "./data";
   removeDeleted = removeDeleted || false;
 

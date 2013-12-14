@@ -1,3 +1,13 @@
+v0.2.20
+  * all code uses strict pragma, and passes linting.
+
+v0.2.18
+  * added collection icon image mirroring, so you don't need
+    to create your own pinhead collages.
+
+v0.2.16
+  * "on downsync complete" callback added
+
 v0.2.14
   * downsync will now prune entries that you removed from Flickr,
     but still have in your mirror, but only when the `downsync`

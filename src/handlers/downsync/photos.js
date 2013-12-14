@@ -24,6 +24,8 @@ var async = require("async"),
  * and get all the associated photographs.
  */
 function processPhoto(flickr, photo_idx, photo, next) {
+  "use strict";
+
   var id = photo.id,
       secret = photo.secret,
       sizes = [],

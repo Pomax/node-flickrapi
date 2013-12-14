@@ -1,4 +1,6 @@
 module.exports = (function() {
+  "use strict";
+
   var fs = require("fs"),
       utils = require("../utils");
 
@@ -103,7 +105,7 @@ module.exports = (function() {
         }
         try {
           var fileData = fs.readFileSync(filePath);
-          item = JSON.parse(fileData);
+          var item = JSON.parse(fileData);
           if(keyproperty) {
             items[item[keyproperty]] = item;
           } else {

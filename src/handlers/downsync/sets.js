@@ -8,6 +8,8 @@ var fs = require("fs"),
  * Sets
  */
 function processPhotosets(flickr, set_idx, total) {
+  "use strict";
+
   if(set_idx >= total) {
     console.log("done fetching set metadata.");
     return setTimeout(function() {
