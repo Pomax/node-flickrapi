@@ -84,7 +84,8 @@ module.exports = (function Flickr() {
    */
   var authenticate = function(options, next) {
     if(!options) {
-      return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\nGo visit http://www.flickr.com/services/apps/create/apply to get one."));
+      return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\n"+
+                            "Visit http://www.flickr.com/services/apps/create/apply to get one."));
     }
 
     // effect authentication
