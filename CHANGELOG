@@ -1,3 +1,7 @@
+v0.2.22
+  * also compiles to client-side library now, with a precompiled
+    library in the ./browser directory.
+
 v0.2.21
   * all code uses strict pragma, and passes linting.
 

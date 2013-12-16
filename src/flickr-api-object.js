@@ -6,10 +6,10 @@ module.exports = (function() {
   "use strict";
 
   var fs = require("fs"),
-      Utils = require("./utils"),
       Progress = require("progress"),
       progressBar,
-      API = {};
+      API = {},
+      Utils = {};
 
   /**
    *
@@ -40,41 +40,7 @@ module.exports = (function() {
           errors = result.errors.error;
 
       // build the API function
-      var flickrAPIFunction = function(callOptions, callback) {
-        // no options -> rebind callback
-        if(callOptions && !callback) {
-          callback = callOptions;
-          callOptions = {};
-        }
-
-        // missing required arguments?
-        for(var r=0, last=required.length, arg; r<last; r++) {
-          arg = required[r];
-          if(arg.name === "api_key") continue;
-          if(!callOptions.hasOwnProperty(arg.name)) {
-            return callback(new Error("missing required argument '"+arg.name+"' in call to "+method_name));
-          }
-        }
-
-        // effect a new timestampe and nonce prior to calling
-        flickrOptions = Utils.setAuthVals(flickrOptions);
-
-        // set up authorized method access
-        var queryArguments = {
-          oauth_consumer_key: flickrOptions.key,
-          oauth_token: flickrOptions.access_token,
-          method: method_name
-        };
-
-        // set up bindings for method-specific args
-        Object.keys(callOptions).forEach(function(key) {
-          queryArguments[key] = callOptions[key];
-        });
-
-        // and ultimately, everything calls Utils.queryFlickr
-        Utils.queryFlickr(queryArguments, flickrOptions, callback, errors);
-      };
-
+      var flickrAPIFunction = Utils.generateAPIFunction(method_name, flickrOptions, required, optional, errors);
 
       // bind hierarchically
       var curr = API,
@@ -119,8 +85,9 @@ module.exports = (function() {
    * Build the Flickr API object based on what Flickr tells
    * us are all the functions that are available.
    */
-  return function(flickrOptions, finished) {
+  return function(flickrOptions, utilityLibrary, finished) {
     API.options = flickrOptions;
+    Utils = utilityLibrary;
 
     var handleResults = function(result) {
       var methods = result.methods.method.map(function(v) {

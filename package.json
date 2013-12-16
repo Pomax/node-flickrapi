@@ -9,7 +9,8 @@
     "open": "0.0.x",
     "progress": "1.0.1",
     "prompt": "0.2.x",
-    "request": "2.26.x"
+    "request": "2.26.x",
+    "node-minify": "~0.8.1"
   },
   "devDependencies": {
     "grunt": "~0.4.1",

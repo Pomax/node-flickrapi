@@ -93,9 +93,9 @@ module.exports = (function Flickr() {
       var APIBuilder = require("./flickr-api-object");
       if(!access) {
         requestToken(options, function(err, body) {
-          new APIBuilder(options, next);
+          new APIBuilder(options, Utils, next);
         });
-      } else { new APIBuilder(options, next); }
+      } else { new APIBuilder(options, Utils, next); }
     });
   };
 

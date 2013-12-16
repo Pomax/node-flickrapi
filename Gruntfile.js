@@ -4,15 +4,12 @@ module.exports = function( grunt ) {
 
     jshint: {
       files: [
-        "Gruntfile.js",
-        "test.js",
+        "*.js",
+        "browser/Utils.js",
         "src/**/*.js"
       ]
     }
   });
-
   grunt.loadNpmTasks("grunt-contrib-jshint");
-
   grunt.registerTask("default", ["jshint"]);
-
 };

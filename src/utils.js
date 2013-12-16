@@ -144,19 +144,70 @@ module.exports = (function() {
     },
 
     /**
+     * Validate an api call
+     */
+    checkRequirements: function(method_name, required, callOptions, callback) {
+      for(var r=0, last=required.length, arg; r<last; r++) {
+        arg = required[r];
+        if(arg.name === "api_key") continue;
+        if(!callOptions.hasOwnProperty(arg.name)) {
+          return callback(new Error("missing required argument '"+arg.name+"' in call to "+method_name));
+        }
+      }
+    },
+
+    /**
+     * Generate the query arguments for querying flickr
+     */
+    generateQueryArguments: function(method_name, flickrOptions, callOptions) {
+      // set up authorized method access
+      var queryArguments = {
+        method: method_name,
+        format: "json",
+        api_key: flickrOptions.key
+      };
+
+      // set up bindings for method-specific args
+      Object.keys(callOptions).forEach(function(key) {
+        queryArguments[key] = callOptions[key];
+      });
+
+      return queryArguments;
+    },
+
+    /**
+     * Generate an API function
+     */
+    generateAPIFunction: function(method_name, flickrOptions, required, optional, errors) {
+      var Utils = this;
+      var fn = function(callOptions, callback) {
+        // no options -> rebind callback
+        if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
+        Utils.checkRequirements(method_name, required, callOptions, callback);
+        var queryArguments = Utils.generateQueryArguments(method_name, flickrOptions, callOptions);
+        Utils.queryFlickr(queryArguments, flickrOptions, callback, errors);
+      };
+      fn.data = {
+        required: required,
+        optional: optional,
+        errors: errors
+      };
+      return fn;
+    },
+
+    /**
      * Call the Flickr API
      */
     queryFlickr: function(queryArguments, flickrOptions, processResult, errors) {
-      // set essential values
-      queryArguments.format = "json";
-      queryArguments.api_key = flickrOptions.key;
-      queryArguments.oauth_token = flickrOptions.access_token;
-      queryArguments.oauth_signature_method = "HMAC-SHA1";
-
-      // set call-specific values
+      // effect a new timestampe and nonce prior to calling
       flickrOptions = this.setAuthVals(flickrOptions);
+
+      // set essential values
       queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
       queryArguments.oauth_timestamp = flickrOptions.oauth_timestamp;
+      queryArguments.oauth_consumer_key = flickrOptions.key;
+      queryArguments.oauth_token = flickrOptions.access_token;
+      queryArguments.oauth_signature_method = "HMAC-SHA1";
 
       var url = "http://ycpi.api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
