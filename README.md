@@ -213,3 +213,21 @@ your Flickr data and acts as alternative frontend for your photographs
 (and sets and collections) using a default styling based on the old
 Flickr look, but as open source so you can change the look and feel
 however you like.
+
+# Compiling the client-side library
+
+You can run the `node compile` command to (re)generate a flickrapi.js
+client-side library, in the `browser` directory. This generates a
+sparse library that will not tell you what's wrong when things go
+wrong, and won't check whether or not the arguments you're passing
+fulfill the method requirements.
+
+If you need this information, `node compile dev` will generate a
+flickrapi.dev.js library that has all the information needed while
+developing. Simply replace this with the flickrapi.js library in
+production.
+
+Note that `node compile` (with or without `dev`) will also generate
+a minified library. For dev work, there's not much point in using
+this, but for production the size reduction that the minified
+version brings is probably worth it.

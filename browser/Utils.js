@@ -34,23 +34,7 @@ module.exports = {
     });
     return queryArguments;
   },
-  generateAPIFunction: function(method_name, flickrOptions, required, optional, errors) {
-    var Utils = this;
-    var fn = function(callOptions, callback) {
-      // no options -> rebind callback
-      if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
-      Utils.checkRequirements(method_name, required, callOptions, callback);
-      var queryArguments = Utils.generateQueryArguments(method_name, flickrOptions, callOptions);
-      Utils.queryFlickr(queryArguments, flickrOptions, callback, errors);
-    };
-    fn.data = {
-      required: required,
-      optional: optional,
-      errors: errors
-    };
-    return fn;
-  },
-  queryFlickr: function(queryArguments, flickrOptions, processResult, errors) {
+  queryFlickr: function(queryArguments, flickrOptions, processResult) {
     var protocol = (window.location.protocol.indexOf("http") === -1 ? "http:" : ""),
         url = "//api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
@@ -69,9 +53,6 @@ module.exports = {
             return processResult(error);
           }
 
-          // we can transform the error into something more
-          // indicative if "errors" is an array of known errors
-          // for this specific method call.
           if(!error) {
             try {
               body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');

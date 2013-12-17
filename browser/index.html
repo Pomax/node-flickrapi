@@ -3,9 +3,86 @@
 <head>
 <meta charset="utf-8">
 <title>Flickr api test</title>
-<script src="flickrapi.min.js"></script>
+<script src="flickrapi.dev.js"></script>
+<style type="text/css">
+
+  input:focus { outline: none; }
+  input:required:invalid { border: 1px solid red; background: rgba(255,0,0,0.2); }
+  input:required:valid { border: 1px solid grey; }
+  input { width:20em; font-family: courier; font-size: 16px; }
+
+  .required { border-left: 3px solid rgb(0,125,255); }
+  .optional { border-left: 3px solid rgb(0,185,0); }
+  #arguments div { padding-left: 1em; padding-bottom: 1em; }
+  #arguments div * { margin: 0; margin-top: 0.2em;}
+
+</style>
 </head>
 <body>
-  This is a test file.
+  <p>Fill in your Flickr API key here, and then hit the test button to query Flickr</p>
+  <label for="api_key">API key:</label>
+  <input id="api_key" type="text" pattern="[0-9a-fA-F]{32}" required>
+  <label for="methods">flickr method:</label>
+  <select id="methods"><option>&nbsp;</option></select>
+  <button onclick="testFlickrAPI()">test flickr</button>
+  <div id="arguments"></div>
+  <script>
+    function testFlickrAPI() {
+    	var api_key = document.getElementById("api_key").value;
+	    var flickr = new Flickr({ key: api_key });
+	    flickr.photos.search({
+	      text: "red+panda"
+	    }, function(err, response) {
+	      if(err) {
+	      	console.error(err);
+	      }
+	      console.log(response);
+	    });
+    }
+
+    var select = document.getElementById("methods");
+    Flickr.methodNames.forEach(function(name) {
+      var option = document.createElement("option");
+      option.value = name;
+      option.innerHTML = name;
+      if (name === "flickr.photos.search") {
+        option.selected = true;
+      }
+      select.appendChild(option);
+    });
+    select.onchange = function(evt) {
+      var method = select.options[select.selectedIndex].value,
+          steps = method.split("."),
+          fn = Flickr.prototype;
+      steps.splice(0,1);
+      while(steps.length > 0) {
+        fn = fn[steps.splice(0,1)[0]];
+      }
+      var data = fn.data;
+      var div = document.getElementById("arguments");
+      div.innerHTML = "";
+      ["required","optional"].forEach(function(type) {
+        if(data[type].length > 0) {
+          data[type].forEach(function(r) {
+            var t = document.createElement("div");
+            t.setAttribute("class", type);
+            div.appendChild(t);
+            var v;
+            v = document.createElement("label");
+            v.for = method;
+            v.innerHTML = r.name;
+            t.appendChild(v);
+            v = document.createElement("input");
+            v.id = method;
+            v.type = "text";
+            t.appendChild(v);
+            v = document.createElement("p");
+            v.innerHTML = r._content;
+            t.appendChild(v);
+          });
+        }
+      })
+    }
+  </script>
 </body>
 </html>

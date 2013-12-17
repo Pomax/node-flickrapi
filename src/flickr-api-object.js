@@ -32,12 +32,27 @@ module.exports = (function() {
           hierarchy = method_name.split(".").slice(1),
           args = result.arguments.argument,
           required = args.filter(function(argument) {
-            return argument.optional === "0";
+            if(argument.optional !== "0") {
+              return false;
+            }
+            delete argument.optional;
+            return true;
           }),
           optional = args.filter(function(argument) {
-            return argument.optional === "1";
+            if(argument.optional !== "1") {
+              return false;
+            }
+            delete argument.optional;
+            return true;
           }),
-          errors = result.errors.error;
+          // get call-specific errors
+          errCap = 50,
+          errors = result.errors.error.filter(function(err) {
+            return +(err.code) < errCap;
+          });
+
+      // also append the generic error knowledge
+      Utils.extendErrors(result.errors.error, errCap);
 
       // build the API function
       var flickrAPIFunction = Utils.generateAPIFunction(method_name, flickrOptions, required, optional, errors);
