@@ -1,4 +1,4 @@
-v0.2.24
+v0.2.25
   * client side improvment: much smaller production library,
     acceptably sized dev library.
   * README documentation ammended for client-side library use.
