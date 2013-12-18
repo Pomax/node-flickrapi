@@ -217,17 +217,19 @@ however you like.
 # Compiling the client-side library
 
 You can run the `node compile` command to (re)generate a flickrapi.js
-client-side library, in the `browser` directory. This generates a
-sparse library that will not tell you what's wrong when things go
-wrong, and won't check whether or not the arguments you're passing
-fulfill the method requirements.
+client-side library, saved to the `browser` directory. This generates
+a sparse library that will let you call all public methods (but
+currently not any method that requires read-private, write, or delete
+permissions), but will not tell you what's wrong when errors occur.
 
 If you need this information, `node compile dev` will generate a
-flickrapi.dev.js library that has all the information needed while
-developing. Simply replace this with the flickrapi.js library in
-production.
+flickrapi.dev.js library that has all the information needed for
+developing work; simply use this during development and use the
+flickrapi.js library in production.
 
-Note that `node compile` (with or without `dev`) will also generate
-a minified library. For dev work, there's not much point in using
-this, but for production the size reduction that the minified
-version brings is probably worth it.
+Note that no `min` version is generated; For development there is
+no sense in using one, and the savings on the production version
+are too small to matter (it's only 10kb smaller). If you server
+can serve content gzipped, the minification will have no effect
+on the gzipped size anyway (using gzip, the plain library is ~4.5kb,
+with the dev version being ~30kb).

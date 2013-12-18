@@ -13,6 +13,7 @@ module.exports = {
     return args.join("&");
   },
   checkRequirements: function(method_name, required, callOptions, callback) {
+    required = required || [];
     for(var r=0, last=required.length, arg; r<last; r++) {
       arg = required[r];
       if(arg.name === "api_key") continue;
@@ -20,6 +21,21 @@ module.exports = {
         return callback(new Error("missing required argument '"+arg.name+"' in call to "+method_name));
       }
     }
+  },
+  generateAPIFunction: function(method) {
+    return function(callOptions, callback) {
+      if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
+      var queryArguments = Utils.generateQueryArguments(method.name, this.flickrOptions, callOptions);
+      Utils.queryFlickr(queryArguments, this.flickrOptions, method.security, callback);
+    };
+  },
+  generateAPIDevFunction: function(method) {
+    return function(callOptions, callback) {
+      if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
+      Utils.checkRequirements(method.name, method.required, callOptions, callback);
+      var queryArguments = Utils.generateQueryArguments(method.name, this.flickrOptions, callOptions);
+      Utils.queryFlickr(queryArguments, this.flickrOptions, method.security, callback, method.errors);
+    };
   },
   generateQueryArguments: function(method_name, flickrOptions, callOptions) {
     // set up authorized method access
@@ -34,11 +50,19 @@ module.exports = {
     });
     return queryArguments;
   },
-  queryFlickr: function(queryArguments, flickrOptions, processResult) {
+  queryFlickr: function(queryArguments, flickrOptions, security, processResult) {
     var protocol = (window.location.protocol.indexOf("http") === -1 ? "http:" : ""),
         url = "//api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
         flickrURL = protocol + url + "?" + queryString;
+
+    // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
+    // if so, those are currently not supported. Send an error-notification.
+    if(security.requiredperms > 0) {
+      return processResult(new Error("signed calls (write/delete) currently not supported"));
+    }
+
+    // TODO: add in permission support for perms > 0, using POST calls.
 
     var xhr = new XMLHttpRequest();
     xhr.open("GET", flickrURL, true);
@@ -58,7 +82,7 @@ module.exports = {
               body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
               body = JSON.parse(body);
               if(body.stat !== "ok") {
-                return processResult(new Error(body.message));
+                return processResult(body.message);
               }
             } catch (e) {
               return processResult("could not parse body as JSON");

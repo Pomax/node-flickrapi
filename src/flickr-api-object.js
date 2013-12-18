@@ -31,6 +31,11 @@ module.exports = (function() {
       var method = result.method,
           hierarchy = method_name.split(".").slice(1),
           args = result.arguments.argument,
+          security = {
+            needslogin: parseInt(method.needslogin,10),
+            needssigning: parseInt(method.needssigning,10),
+            requiredperms: parseInt(method.requiredperms,10)
+          },
           required = args.filter(function(argument) {
             if(argument.optional !== "0") {
               return false;
@@ -55,7 +60,8 @@ module.exports = (function() {
       Utils.extendErrors(result.errors.error, errCap);
 
       // build the API function
-      var flickrAPIFunction = Utils.generateAPIFunction(method_name, flickrOptions, required, optional, errors);
+      var flickrAPIFunction = Utils.generateAPIFunction(method_name, flickrOptions, security, required, optional, errors);
+      flickrAPIFunction.security = security;
 
       // bind hierarchically
       var curr = API,

@@ -194,43 +194,37 @@ module.exports = (function() {
     /**
      * Generate an API function
      */
-    generateAPIFunction: function(method_name, flickrOptions, required, optional, errors) {
+    generateAPIFunction: function(method_name, flickrOptions, security, required, optional, errors) {
       var Utils = this, fn;
+
       // code path for compiling the client-side JS library
       if(typeof process.CLIENT_COMPILE !== "undefined") {
-        if(process.argv.indexOf("dev") > -1) {
-          fn = function(callOptions, callback) {
-            if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
-            Utils.checkRequirements(method_name, required, callOptions, callback);
-            var queryArguments = Utils.generateQueryArguments(method_name, this.flickrOptions, callOptions);
-            Utils.queryFlickr(queryArguments, this.flickrOptions, callback, errors);
-          };
-          fn.data = {
-            required: required,
-            optional: optional,
-            errors: errors,
-            name: method_name,
-            url: "http://www.flickr.com/services/api/"+method_name+".html"
-          };
-        }
-
-        else {
-          fn = function(callOptions, callback) {
-            if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
-            var queryArguments = Utils.generateQueryArguments(method_name, this.flickrOptions, callOptions);
-            Utils.queryFlickr(queryArguments, this.flickrOptions, callback, false);
-          };
-        }
+       fn = function(callOptions, callback) {
+          if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
+          var queryArguments = Utils.generateQueryArguments(method_name, this.flickrOptions, callOptions);
+          Utils.queryFlickr(queryArguments, this.flickrOptions, security, callback);
+        };
       }
+
       // server-side code path
       else {
         fn = function(callOptions, callback) {
           if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
           Utils.checkRequirements(method_name, required, callOptions, callback);
           var queryArguments = Utils.generateQueryArguments(method_name, flickrOptions, callOptions);
-          Utils.queryFlickr(queryArguments, flickrOptions, callback, errors);
+          Utils.queryFlickr(queryArguments, flickrOptions, security, callback, errors);
         };
       }
+
+      fn.data = {
+        required: required,
+        optional: optional,
+        errors: errors,
+        security: security,
+        name: method_name,
+        url: "http://www.flickr.com/services/api/"+method_name+".html"
+      };
+
       return fn;
     },
 
@@ -238,7 +232,7 @@ module.exports = (function() {
      * Call the Flickr API
      */
     // FIXME: "errors" is currently not used
-    queryFlickr: function(queryArguments, flickrOptions, processResult, errors) {
+    queryFlickr: function(queryArguments, flickrOptions, security, processResult, errors) {
       // effect a new timestampe and nonce prior to calling
       flickrOptions = this.setAuthVals(flickrOptions);
 
