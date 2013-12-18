@@ -49,7 +49,7 @@
       delete data.errors;
       delete data.url;
     });
-  }
+  };
 
   /**
    * Write out a (nested) object
