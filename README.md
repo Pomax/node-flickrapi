@@ -1,6 +1,8 @@
-# A Node.js implementation of the Flickr API
+# A Node.js, and client-side, implementation of the Flickr API
 
-With oauth authentication for Flickr API keys.
+With oauth authentication for Flickr API keys if you're using
+it server-side (authenticated calls from the browser are too
+insecure to support for the moment, and will throw an error).
 
 ## how to use this package
 
