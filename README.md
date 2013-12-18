@@ -4,12 +4,12 @@ With oauth authentication for Flickr API keys if you're using
 it server-side (authenticated calls from the browser are too
 insecure to support for the moment, and will throw an error).
 
-## how to use this package
+## how to use this package with Node.js
 
-The initial require is simply `require("flickrapi")` after making
-sure you added flickrapi to your package.json, either manually or
-by running `npm install flickrapi --save` for the project you're
-using it in.
+The initial require in your code is simply `require("flickrapi")`
+after making sure you added flickrapi to your package.json, either
+manually or by running `npm install flickrapi --save` for the project
+you're using it in.
 
 Once available, you can authenticate with flickr, which will
 result in a callback that gives you the actual API object:
