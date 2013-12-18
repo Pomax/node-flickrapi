@@ -233,3 +233,22 @@ are too small to matter (it's only 10kb smaller). If you server
 can serve content gzipped, the minification will have no effect
 on the gzipped size anyway (using gzip, the plain library is ~4.5kb,
 with the dev version being ~30kb).
+
+## Using the client-side library
+
+The client-side library is basically the same as the server-side
+library. Create an instance as:
+```
+var flickr = new Flickr({
+  key: "1234ABCD1234ABCD1234ABCD1234ABCD"
+});
+```
+and then query Flickr using:
+```
+flickr.photos.search({
+  text: "red+panda"
+}, function(err, result) {
+  if(err) { throw new Error(err); }
+  // do something with result
+}
+```
