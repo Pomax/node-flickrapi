@@ -1,6 +1,7 @@
-v0.2.23
-  * client side improvment: much smaller production library, acceptably
-    sized dev library.
+v0.2.24
+  * client side improvment: much smaller production library,
+    acceptably sized dev library.
+  * README documentation ammended for client-side library use.
 
 v0.2.22
   * also compiles to client-side library now, with a precompiled
