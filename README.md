@@ -255,7 +255,7 @@ flickrapi.js library in production.
 
 Note that no `min` version is generated; For development there is
 no sense in using one, and the savings on the production version
-are too small to matter (it's only 10kb smaller). If you server
+are too small to matter (it's only 10kb smaller). If your server
 can serve content gzipped, the minification will have no effect
 on the gzipped size anyway (using gzip, the plain library is ~4.5kb,
 with the dev version being ~30kb).
