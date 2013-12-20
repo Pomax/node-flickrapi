@@ -1,3 +1,9 @@
+v0.2.26
+  * Flickr API proxying, so that your app can use query flickr
+    server side and send the response back over your own API
+    url. Because client-side Flickr-API calls cannot be signed
+    securely.
+
 v0.2.25
   * client side improvment: much smaller production library,
     acceptably sized dev library.

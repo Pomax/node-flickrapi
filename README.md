@@ -4,6 +4,10 @@ With oauth authentication for Flickr API keys if you're using
 it server-side (authenticated calls from the browser are too
 insecure to support for the moment, and will throw an error).
 
+You also get API route proxying so you can call the Flickr
+methods through your own server and get Flickr responses back
+for free. Super handy.
+
 ## How to use the client-side library
 
 Script-load the `browser/flickrapi.dev.js` library during
@@ -124,7 +128,7 @@ FlickrMirror, available at https://github.com/Pomax/flickrmirror, bolts
 a UI on top of the FlickrAPI module to give you an instant frontend
 for your photographs and Flickr information about them.
 
-### Syncing with Flickr
+#### Syncing with Flickr
 
 Syncing is a mostly a matter or running the downsync function again.
 This will update anything that was updated or added on Flickr, but
@@ -143,7 +147,7 @@ If `true`, this will delete local files that were removed on Flickr
 (e.g. photos that you didn't like anymore, etc). If `false`, or
 omitted, no pruning of the local mirror will be performed.
 
-### Using all your Flickr stuffs in an app
+#### Using all your Flickr stuffs in an app
 
 If you downloaded all your Flickr stuffs, you can use these in your
 own node apps by "dry loading" Flickr:
@@ -239,6 +243,54 @@ var FlickrOptions = {
 
 The flickrapi package will now be able to authenticate with Flickr
 without constantly needing to ask you for permission to access data.
+
+## Flickr API proxying for connect/express apps
+
+If your app is a connect or express app, you get Flickr API proxying
+for free. Simply set it up and then call your own API route in the
+same way you would call the Flickr API, minus the security credentials,
+since the servers side Flickr api object already has those baked in.
+
+As an example, the test.js script for node-flickrapi uses the
+following code to set up the local API route:
+
+```
+var express = require("express");
+Flickr.authenticate(FlickrOptions, function(error, flickr) {
+  var app = express();
+  app.configure(function() {
+    [...]
+    flickr.proxy(app, "/service/rest");
+  });
+  [...]
+});
+```
+
+All calls use the `POST` verb. To test the local API route,
+a simple cURL will do:
+
+```
+curl -X POST -H "Content-Type: application/json"
+             -d '{"text":"red+pandas"}'
+             http://127.0.0.1:3000/service/rest/flickr.photos.search
+```
+
+Note that there is no user authentication baked in, so if you want
+to make sure only "logged in users" get to use that local API route,
+you'll need to pass an authentication middleware function as third
+argument to flickr.proxy:
+
+```
+function authenticator(req, res, next) {
+  // assuming your session management uses req.session:
+  if(req.session.authenticated) {
+    return next();
+  }
+  next({status:403, message: "not authorised to call API methods"});
+}
+
+flickr.proxy(app, "/service/rest", authenticator);
+```
 
 ## (Re)compiling the client-side library
 

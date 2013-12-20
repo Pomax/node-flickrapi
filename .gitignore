@@ -1,5 +1,6 @@
+.env
 data
 userdata
 node_modules
 .npmignore
-test.js
+

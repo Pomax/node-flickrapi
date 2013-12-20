@@ -16,7 +16,10 @@ module.exports = (function() {
    */
   function parseMethods(flickrOptions, methods, method_idx, finished) {
     if(method_idx >= methods.length) {
-      setTimeout(function() { finished(null, API); }, 1);
+      setTimeout(function() {
+        require("./handlers/connectProxy.js").proxy(API);
+        finished(null, API);
+      }, 1);
       return;
     }
 
