@@ -1,3 +1,15 @@
+v0.2.27
+  * oauth authentication now allows you to specify your own
+    callback endpoint. If not specified, the out-of-band method
+    is still used, requiring users to type an authentication
+    code that they receive in the browser. Otherwise all they
+    have to do is press the "I authorise this app" button.
+  * updated the test.js file to allow one-step downsyncing,
+    to save people the hassle of having to write an app around
+    the module. If you just want your flickr data, add your
+    Flickr API key information to the .env file, and then call
+    "node test --downsync"
+
 v0.2.26
   * Flickr API proxying, so that your app can use query flickr
     server side and send the response back over your own API

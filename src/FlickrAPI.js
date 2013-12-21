@@ -19,7 +19,8 @@
 module.exports = (function Flickr() {
   "use strict";
 
-  var request = require("request"),
+  var fs = require("fs"),
+      request = require("request"),
       Utils = require("./utils"),
       RequestTokenFunction = require("./auth/request");
 
@@ -67,12 +68,18 @@ module.exports = (function Flickr() {
       options.user_id = response.user_nsid;
       options.access_token = response.oauth_token;
       options.access_token_secret = response.oauth_token_secret;
-      console.log("\n\nAdd the following variables to your environment:\n");
-      console.log("export FLICKR_USER_ID=\"" + options.user_id + "\"");
-      console.log("export FLICKR_ACCESS_TOKEN=\"" + options.access_token + "\"");
-      console.log("export FLICKR_ACCESS_TOKEN_SECRET=\"" + options.access_token_secret + "\"");
-      console.log();
-      callback(null, true);
+      if (options.callback === "oob") {
+        console.log("\n\nAdd the following variables to your environment:\n");
+        console.log("export FLICKR_USER_ID=\"" + options.user_id + "\"");
+        console.log("export FLICKR_ACCESS_TOKEN=\"" + options.access_token + "\"");
+        console.log("export FLICKR_ACCESS_TOKEN_SECRET=\"" + options.access_token_secret + "\"");
+        console.log();
+      }
+      callback(false, {
+        FLICKR_USER_ID: '"' + options.user_id + '"',
+        FLICKR_ACCESS_TOKEN: '"' + options.access_token + '"',
+        FLICKR_ACCESS_TOKEN_SECRET: '"' + options.access_token_secret + '"'
+      });
     };
     new RequestTokenFunction(options, receivedToken);
   };
@@ -88,11 +95,27 @@ module.exports = (function Flickr() {
                             "Visit http://www.flickr.com/services/apps/create/apply to get one."));
     }
 
+    // out-of-browser authentication unless specified otherwise
+    if(!options.callback) { options.callback = "oob"; }
+
     // effect authentication
     checkToken(options, function(err, access) {
       var APIBuilder = require("./flickr-api-object");
       if(!access) {
         requestToken(options, function(err, body) {
+          if(options.callback !== "oob") {
+            options.processCredentials = options.processCredentials || function(data) {
+              // default function writes creds to .env
+              console.log("Credentials object:");
+              console.log(JSON.stringify(data,null,2));
+              var envContent = fs.readFileSync(".env") + "\n";
+              Object.keys(data).forEach(function(key) {
+                envContent += "export " + key + "=" + data[key] + "\n";
+              });
+              fs.writeFileSync(".env", envContent);
+            }
+            options.processCredentials(body);
+          }
           new APIBuilder(options, Utils, next);
         });
       } else { new APIBuilder(options, Utils, next); }

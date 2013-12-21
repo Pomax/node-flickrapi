@@ -128,7 +128,19 @@ FlickrMirror, available at https://github.com/Pomax/flickrmirror, bolts
 a UI on top of the FlickrAPI module to give you an instant frontend
 for your photographs and Flickr information about them.
 
-#### Syncing with Flickr
+#### One-step downsyncing
+
+If you just want to immediately downsync all your data, simply use
+the `test.js` application with the --downsync runtime argument.
+Simply add your Flickr API key information to the `.env` file and
+then run
+
+`> node test --downsync`
+
+Done. Authenticate, and then just wait for it to finish. You now
+have a mirror of all your Flickr data.
+
+#### Syncing with Flickr in your code
 
 Syncing is a mostly a matter or running the downsync function again.
 This will update anything that was updated or added on Flickr, but
@@ -243,6 +255,58 @@ var FlickrOptions = {
 
 The flickrapi package will now be able to authenticate with Flickr
 without constantly needing to ask you for permission to access data.
+
+### Using your own oauth callback endpoint
+
+By default the oauth callback is set to "out-of-band". You can see
+this in the `.env` file as the `FLICK_CALLBACK="oob"` parameter, but
+if this is omitted the code falls back to oob automatically. For
+automated processes, or if you don't want your uers to have to type
+anything in a console, you can override this by setting your own oauth
+callback endpoint URL.
+
+Using a custom callback endpoint, the oauth procedure will contact
+the indicated endpoint with the authentication information, rather
+than requiring your users to manually copy/paste the authentication
+values.
+
+**Note** your users will still need to authenticate the app from a browser.
+
+To use a custom endpoint, add the URL to the options as the `callback`
+property:
+
+```
+var options = ...;
+options.callback: "http://.../...";
+Flickr.authenticate(options, function(error, flickr) {
+  ...
+}
+```
+
+Adding an `export FLICKR_CALLBACK="http://..."` to your environment
+will automatically take care of this. The callback URL handler will
+at its minimum need to implement the following middleware function:
+
+```
+function(req, res) {
+  res.write("");
+  options.exchange(req.query);
+}
+```
+
+However, having the response tell the user that authorisation was
+received and that they can safely close this window/tab is generally
+a good idea.
+
+If you wish to call the exchange function manually, the object
+expected by `options.exchange` looks like this:
+
+```
+{
+  oauth_token: "...",
+  oauth_verifier: "..."
+}
+```
 
 ## Flickr API proxying for connect/express apps
 

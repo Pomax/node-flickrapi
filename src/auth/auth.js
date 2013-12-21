@@ -14,11 +14,19 @@ module.exports = (function() {
         oauth_token_secret = options.oauth_token_secret,
         authURL = "http://www.flickr.com/services/oauth/authorize";
     open(authURL + "?oauth_token=" + oauth_token + "&perms=" + options.permissions);
-    prompt.start();
-    prompt.get(['oauth_verifier'], function(err, res) {
-      options.oauth_verifier = res.oauth_verifier.trim();
-      new ExchangeTokens(options, requestCompleted);
-    });
+    if(options.callback === "oob") {
+      prompt.start();
+      prompt.get(['oauth_verifier'], function(err, res) {
+        options.oauth_verifier = res.oauth_verifier.trim();
+        new ExchangeTokens(options, requestCompleted);
+      });
+    }
+    else {
+      options.exchange = function(tokens) {
+        options.oauth_verifier = tokens.oauth_verifier;
+        new ExchangeTokens(options, requestCompleted);
+      };
+    }
   };
 
   return RequestAuthorization;
