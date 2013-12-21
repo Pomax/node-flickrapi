@@ -113,7 +113,7 @@ module.exports = (function Flickr() {
                 envContent += "export " + key + "=" + data[key] + "\n";
               });
               fs.writeFileSync(".env", envContent);
-            }
+            };
             options.processCredentials(body);
           }
           new APIBuilder(options, Utils, next);

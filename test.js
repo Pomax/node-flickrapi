@@ -32,11 +32,11 @@ if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
       env = habitat.load();
       FlickrOptions = env.get("FLICKR");
     });
-  })
+  });
   server = app.listen(4321, function(err, result) {
     if (err) { console.error(err); process.exit(1); }
     console.log("auth server listening on port 4321");
-  })
+  });
 }
 
 
