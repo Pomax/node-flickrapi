@@ -73,7 +73,9 @@ Utils.queryProxyEndpoint = function (queryArguments, flickrOptions, processResul
 Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     var xhr = new XMLHttpRequest();
     xhr.open(verb, url, true);
-    xhr.setRequestHeader("Content-Type", "application/json");
+    if(postdata) {
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4) {
         if(xhr.status == 200) {
