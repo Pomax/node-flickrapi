@@ -11,7 +11,7 @@ module.exports = (function() {
     options = Utils.setAuthVals(options);
 
     var queryArguments = {
-          oauth_consumer_key:     options.key,
+          oauth_consumer_key:     options.api_key,
           oauth_nonce:            options.oauth_nonce,
           oauth_signature_method: "HMAC-SHA1",
           oauth_timestamp:        options.oauth_timestamp,
