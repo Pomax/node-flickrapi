@@ -42,8 +42,10 @@ module.exports = {
     var queryArguments = {
       method: method_name,
       format: "json",
-      api_key: flickrOptions.key
     };
+    if(flickrOptions.key) {
+      api_key: flickrOptions.api_key
+    }
     // set up bindings for method-specific args
     Object.keys(callOptions).forEach(function(key) {
       queryArguments[key] = callOptions[key];
@@ -51,48 +53,76 @@ module.exports = {
     return queryArguments;
   },
   queryFlickr: function(queryArguments, flickrOptions, security, processResult) {
-    var protocol = (window.location.protocol.indexOf("http") === -1 ? "http:" : ""),
-        url = "//api.flickr.com/services/rest/",
+    if(flickrOptions.endpoint) {
+      return this.queryProxyEndpoint(queryArguments, flickrOptions, processResult);
+    }
+    return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
+  },
+  /**
+   * When contacting Flickr "regularly", permission levels greater than 0 (public access)
+   * cannot be securely dealt with. read-only, write, and delete all require oauth
+   * authentication keys, and these should never, ever, be stored at the client.
+   */
+  queryFlickrAPI: function(queryArguments, flickrOptions, security, processResult) {
+    var url = "//api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
-        flickrURL = protocol + url + "?" + queryString;
-
+        flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
     // if so, those are currently not supported. Send an error-notification.
     if(security.requiredperms > 0) {
       return processResult(new Error("signed calls (write/delete) currently not supported"));
     }
-
-    // TODO: add in permission support for perms > 0, using POST calls.
-
+    this.handleURLRequest("GET", flickrURL, processResult);
+  },
+  /**
+   * When we're contacting a Flickr API proxy, we can rely on the fact that it will
+   * take care of oauth authentication for us, and so we do not need to do any kind
+   * of security permissions check for the requested methods.
+   */
+  queryProxyEndpoint: function(queryArguments, flickrOptions, processResult) {
+    var queryString = this.formQueryString(queryArguments),
+        url = flickrOptions.endpoint + "?" + queryString;
+    this.handleURLRequest("POST", url, processResult, queryArguments);
+  },
+  /**
+   * Perform an asynchronous URL request.
+   */
+  handleURLRequest: function(verb, url, processResult, postdata) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", flickrURL, true);
+    xhr.open(verb, url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4) {
         if(xhr.status == 200) {
           var error = false,
               body = xhr.responseText;
-
+          // we get a response, but there's no response body. That's a problem.
           if(!body) {
             error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
             return processResult(error);
           }
-
+          // we get a response, and there were no errors
           if(!error) {
             try {
               body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
               body = JSON.parse(body);
               if(body.stat !== "ok") {
+                // There was a request error, and the JSON .stat property
+                // will tell us what that error was.
                 return processResult(body.message);
               }
             } catch (e) {
+              // general JSON error
               return processResult("could not parse body as JSON");
             }
           }
-
+          // Some kind of other error occurred. Simply call the process
+          // handler blindly with both the error and error body.
           processResult(error, body);
         }
+        else { processResult("HTTP status not 200 (received "+xhr.status+")"); }
       }
     };
-    xhr.send(null);
+    xhr.send(postdata ? JSON.stringify(postdata) : null);
   }
 };

@@ -38,8 +38,10 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
     var queryArguments = {
       method: method_name,
       format: "json",
-      api_key: flickrOptions.key
     };
+    if(flickrOptions.key) {
+      api_key: flickrOptions.api_key
+    }
     // set up bindings for method-specific args
     Object.keys(callOptions).forEach(function(key) {
       queryArguments[key] = callOptions[key];
@@ -47,47 +49,64 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
     return queryArguments;
   };
 Utils.queryFlickr = function (queryArguments, flickrOptions, security, processResult) {
-    var protocol = (window.location.protocol.indexOf("http") === -1 ? "http:" : ""),
-        url = "//api.flickr.com/services/rest/",
+    if(flickrOptions.endpoint) {
+      return this.queryProxyEndpoint(queryArguments, flickrOptions, processResult);
+    }
+    return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
+  };
+Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
+    var url = "//api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
-        flickrURL = protocol + url + "?" + queryString;
-
+        flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
     // if so, those are currently not supported. Send an error-notification.
     if(security.requiredperms > 0) {
       return processResult(new Error("signed calls (write/delete) currently not supported"));
     }
-
+    this.handleURLRequest("GET", flickrURL, processResult);
+  };
+Utils.queryProxyEndpoint = function (queryArguments, flickrOptions, processResult) {
+    var queryString = this.formQueryString(queryArguments),
+        url = flickrOptions.endpoint + "?" + queryString;
+    this.handleURLRequest("POST", url, processResult, queryArguments);
+  };
+Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", flickrURL, true);
+    xhr.open(verb, url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4) {
         if(xhr.status == 200) {
           var error = false,
               body = xhr.responseText;
-
+          // we get a response, but there's no response body. That's a problem.
           if(!body) {
             error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
             return processResult(error);
           }
-
+          // we get a response, and there were no errors
           if(!error) {
             try {
               body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
               body = JSON.parse(body);
               if(body.stat !== "ok") {
+                // There was a request error, and the JSON .stat property
+                // will tell us what that error was.
                 return processResult(body.message);
               }
             } catch (e) {
+              // general JSON error
               return processResult("could not parse body as JSON");
             }
           }
-
+          // Some kind of other error occurred. Simply call the process
+          // handler blindly with both the error and error body.
           processResult(error, body);
         }
+        else { processResult("HTTP status not 200 (received "+xhr.status+")"); }
       }
     };
-    xhr.send(null);
+    xhr.send(postdata ? JSON.stringify(postdata) : null);
   };
  Utils.errors = {
     "96": {
@@ -120,6 +139,11 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
         "message": "Service currently unavailable",
         "_content": "The requested service is temporarily unavailable."
     },
+    "106": {
+        "code": 106,
+        "message": "Write operation failed",
+        "_content": "The requested operation failed due to a temporary issue."
+    },
     "108": {
         "code": "108",
         "message": "Invalid frob",
@@ -151,7 +175,9 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
         "_content": "One or more arguments contained a URL that has been used for abuse on Flickr."
     }
 };
- var Flickr = function (flickrOptions) { this.bindOptions(flickrOptions); };
+ var Flickr = function (flickrOptions) {
+  this.bindOptions(flickrOptions);
+};
  Flickr.prototype = {};
  Flickr.methods = {
  "flickr.activity.userComments": {
@@ -677,6 +703,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "max_fave_date",
     "_content": "Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp."
+   },
+   {
+    "name": "get_user_info",
+    "_content": "Include info for the user who's favorites are being returned."
    }
   ],
   "errors": [
@@ -835,6 +865,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "primary_photo_id",
     "_content": "The first photo to add to your gallery"
+   },
+   {
+    "name": "full_result",
+    "_content": "Get the result in the same format as galleries.getList"
    }
   ],
   "errors": [
@@ -982,6 +1016,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "page",
     "_content": "The page of results to return. If this argument is omitted, it defaults to 1."
+   },
+   {
+    "name": "primary_photo_extras",
+    "_content": "A comma-delimited list of extra information to fetch for the primary photo. Currently supported fields are: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o"
    }
   ],
   "security": {
@@ -1683,6 +1721,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "per_page",
     "_content": "Number of groups to return per page. If this argument is omitted, it defaults to 400. The maximum allowed value is 400."
+   },
+   {
+    "name": "extras",
+    "_content": "can take the value icon_urls_deep and return the various buddy icon sizes for the group. It can only be done by blessed APIs"
    }
   ],
   "security": {
@@ -2211,9 +2253,9 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    }
   ],
   "security": {
-   "needslogin": 1,
-   "needssigning": 1,
-   "requiredperms": 1
+   "needslogin": 0,
+   "needssigning": 0,
+   "requiredperms": 0
   },
   "name": "flickr.people.getPhotos",
   "url": "http://www.flickr.com/services/api/flickr.people.getPhotos.html"
@@ -2468,6 +2510,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "include_faves",
     "_content": ""
+   },
+   {
+    "name": "sort",
+    "_content": "Get the comments sorted. If value is date-posted-desc,  the comments are returned in reverse chronological order. The default is chronological."
    }
   ],
   "errors": [
@@ -4713,6 +4759,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "description",
     "_content": "A description of the photoset. May contain limited html."
+   },
+   {
+    "name": "full_result",
+    "_content": "If this is set, we get the same result as a getList API would give, along with extras: url_sq,url_t,url_s,url_m"
    }
   ],
   "errors": [
@@ -4929,6 +4979,10 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
    {
     "name": "per_page",
     "_content": "The number of sets to get per page. If paging is enabled, the maximum number of sets per page is 500."
+   },
+   {
+    "name": "primary_photo_extras",
+    "_content": "A comma-delimited list of extra information to fetch for the primary photo. Currently supported fields are: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o"
    }
   ],
   "errors": [

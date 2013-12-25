@@ -48,9 +48,9 @@ Flickr.authenticate(FlickrOptions, function(error, flickr) {
   app.configure(function() {
     app.disable('x-powered-by');
     app.use(express.compress());
-    app.use(express.bodyParser());
+    app.use(express.json());
     app.use(express.static("browser"));
-    flickr.proxy(app, "/service/rest");
+    flickr.proxy(app, "/service/rest/");
   });
 
   server = app.listen(3000, function(err, result) {

@@ -23,11 +23,10 @@ module.exports = {
      * middleware handler for API calls
      */
     function proxyAPICall(req, res) {
-      var method = req.params.FlickrAPIMethod;
+      var method = req.body.method;
       var apiFunction = proxyMethods[method];
       console.log("API call: "+method);
       if(apiFunction) {
-        console.log(req.body);
         apiFunction(req.body, function(err, result) {
           res.json(err || result);
         });
@@ -42,8 +41,7 @@ module.exports = {
      */
     API.proxy = function(app, route, authenticator) {
       authenticator =  authenticator || function(_,__,next) { next(); };
-      app.param("FlickrAPIMethod", function(req, res, next, method) { next(); });
-      app.post(route + "/:FlickrAPIMethod", authenticator, proxyAPICall);
+      app.post(route, authenticator, proxyAPICall);
     };
   }
 };

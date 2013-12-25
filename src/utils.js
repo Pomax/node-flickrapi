@@ -179,14 +179,15 @@ module.exports = (function() {
       // set up authorized method access
       var queryArguments = {
         method: method_name,
-        format: "json",
         api_key: flickrOptions.key
       };
 
       // set up bindings for method-specific args
-      Object.keys(callOptions).forEach(function(key) {
-        queryArguments[key] = callOptions[key];
-      });
+      if (callOptions) {
+        Object.keys(callOptions).forEach(function(key) {
+          queryArguments[key] = callOptions[key];
+        });
+      }
 
       return queryArguments;
     },
@@ -231,8 +232,13 @@ module.exports = (function() {
     /**
      * Call the Flickr API
      */
-    // FIXME: "errors" is currently not used
     queryFlickr: function(queryArguments, flickrOptions, security, processResult, errors) {
+      if(arguments.length === 3) {
+        processResult = arguments[2];
+        security = {};
+        errors = {};
+      }
+
       // effect a new timestampe and nonce prior to calling
       flickrOptions = this.setAuthVals(flickrOptions);
 
@@ -242,6 +248,9 @@ module.exports = (function() {
       queryArguments.oauth_consumer_key = flickrOptions.key;
       queryArguments.oauth_token = flickrOptions.access_token;
       queryArguments.oauth_signature_method = "HMAC-SHA1";
+
+      // force JSON request
+      queryArguments.format = "json";
 
       var url = "http://ycpi.api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
@@ -266,9 +275,11 @@ module.exports = (function() {
               return processResult(new Error(body.message));
             }
           } catch (e) {
-            return processResult("could not parse body as JSON");
+            return processResult("could not parse body as JSON: " + body);
           }
         }
+
+        // FIXME: "errors" is currently not used
 
         processResult(error, body);
       });

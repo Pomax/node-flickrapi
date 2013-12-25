@@ -8,7 +8,10 @@
   "use strict";
   process.CLIENT_COMPILE = true;
 
-  var APIBuilder = require("./src/flickr-api-object.js"),
+  var habitat = require("habitat"),
+      env = habitat.load(),
+      flickrOptions = env.get("FLICKR"),
+      APIBuilder = require("./src/flickr-api-object.js"),
       Utils = require("./src/utils.js"),
       filename = "flickrapi";
 
@@ -28,7 +31,7 @@
   var methods = {};
   var setupMethods = function(node, name) {
     name = name || "flickr";
-    if(typeof node === "function") {
+    if(typeof node === "function" && node.data) {
       Object.keys(node.data).forEach(function(key){
         if(!node.data[key] || node.data[key].length === 0) {
           delete node.data[key];
@@ -84,7 +87,12 @@
   /**
    * Compile a client-side library based on the flickr-api-object code.
    */
-  new APIBuilder({}, Utils, function(err, flickr) {
+  new APIBuilder(flickrOptions, Utils, function(err, flickr) {
+    if(err) {
+      console.error(err);
+      process.exit(1);
+    }
+
     delete flickr.options;
     buffer.write("(function() {");
 
@@ -94,7 +102,9 @@
     buffer.write(" Utils.errors = " + JSON.stringify(Utils.getCallErrors(),false, 4) + ";");
 
     // Flickr object definition
-    buffer.write(" var Flickr = " + (function(flickrOptions) { this.bindOptions(flickrOptions); }).toString() + ";");
+    buffer.write(" var Flickr = " + (function(flickrOptions) {
+  this.bindOptions(flickrOptions);
+}).toString() + ";");
     buffer.write(" Flickr.prototype = {};");
 
 

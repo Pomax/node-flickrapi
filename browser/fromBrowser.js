@@ -1,6 +1,18 @@
-function testFlickrAPI() {
-  var api_key = document.getElementById("api_key").value;
-  var flickr = new Flickr({ key: api_key });
+function testFlickrAPI(proxied) {
+  var api_key, flickr;
+
+  // local API proxy test
+  if(proxied) {
+    flickr = new Flickr({ endpoint: "//localhost:3000/service/rest/" });
+  }
+
+  // plain Flickr access with API key
+  else {
+    api_key = document.getElementById("api_key").value;
+    flickr = new Flickr({ key: api_key });
+  }
+
+  // run a search.
   flickr.photos.search({
     text: "red+panda"
   }, function(err, response) {

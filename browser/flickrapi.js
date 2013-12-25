@@ -38,8 +38,10 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
     var queryArguments = {
       method: method_name,
       format: "json",
-      api_key: flickrOptions.key
     };
+    if(flickrOptions.key) {
+      api_key: flickrOptions.api_key
+    }
     // set up bindings for method-specific args
     Object.keys(callOptions).forEach(function(key) {
       queryArguments[key] = callOptions[key];
@@ -47,47 +49,64 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
     return queryArguments;
   };
 Utils.queryFlickr = function (queryArguments, flickrOptions, security, processResult) {
-    var protocol = (window.location.protocol.indexOf("http") === -1 ? "http:" : ""),
-        url = "//api.flickr.com/services/rest/",
+    if(flickrOptions.endpoint) {
+      return this.queryProxyEndpoint(queryArguments, flickrOptions, processResult);
+    }
+    return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
+  };
+Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
+    var url = "//api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
-        flickrURL = protocol + url + "?" + queryString;
-
+        flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
     // if so, those are currently not supported. Send an error-notification.
     if(security.requiredperms > 0) {
       return processResult(new Error("signed calls (write/delete) currently not supported"));
     }
-
+    this.handleURLRequest("GET", flickrURL, processResult);
+  };
+Utils.queryProxyEndpoint = function (queryArguments, flickrOptions, processResult) {
+    var queryString = this.formQueryString(queryArguments),
+        url = flickrOptions.endpoint + "?" + queryString;
+    this.handleURLRequest("POST", url, processResult, queryArguments);
+  };
+Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     var xhr = new XMLHttpRequest();
-    xhr.open("GET", flickrURL, true);
+    xhr.open(verb, url, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
     xhr.onreadystatechange = function() {
       if(xhr.readyState === 4) {
         if(xhr.status == 200) {
           var error = false,
               body = xhr.responseText;
-
+          // we get a response, but there's no response body. That's a problem.
           if(!body) {
             error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
             return processResult(error);
           }
-
+          // we get a response, and there were no errors
           if(!error) {
             try {
               body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
               body = JSON.parse(body);
               if(body.stat !== "ok") {
+                // There was a request error, and the JSON .stat property
+                // will tell us what that error was.
                 return processResult(body.message);
               }
             } catch (e) {
+              // general JSON error
               return processResult("could not parse body as JSON");
             }
           }
-
+          // Some kind of other error occurred. Simply call the process
+          // handler blindly with both the error and error body.
           processResult(error, body);
         }
+        else { processResult("HTTP status not 200 (received "+xhr.status+")"); }
       }
     };
-    xhr.send(null);
+    xhr.send(postdata ? JSON.stringify(postdata) : null);
   };
  Utils.errors = {
     "96": {
@@ -120,6 +139,11 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
         "message": "Service currently unavailable",
         "_content": "The requested service is temporarily unavailable."
     },
+    "106": {
+        "code": 106,
+        "message": "Write operation failed",
+        "_content": "The requested operation failed due to a temporary issue."
+    },
     "108": {
         "code": "108",
         "message": "Invalid frob",
@@ -151,7 +175,9 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
         "_content": "One or more arguments contained a URL that has been used for abuse on Flickr."
     }
 };
- var Flickr = function (flickrOptions) { this.bindOptions(flickrOptions); };
+ var Flickr = function (flickrOptions) {
+  this.bindOptions(flickrOptions);
+};
  Flickr.prototype = {};
  Flickr.methods = {
  "flickr.activity.userComments": {
@@ -692,9 +718,9 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
  },
  "flickr.people.getPhotos": {
   "security": {
-   "needslogin": 1,
-   "needssigning": 1,
-   "requiredperms": 1
+   "needslogin": 0,
+   "needssigning": 0,
+   "requiredperms": 0
   },
   "name": "flickr.people.getPhotos"
  },

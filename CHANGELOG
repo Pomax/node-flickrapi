@@ -1,3 +1,14 @@
+v0.3.0
+  * In order to align the module with the Flickr API's property
+    names, the "key" property has been renamed to "api_key" in
+    the client-side library, as well as the server-side module.
+    As this breaks upgrades, the version has been moved up from
+    0.2 to 0.3
+  * The clientside library can be given a custom endpoint to
+    make it query proxies for the Flickr API, to get around
+    the security problems that stem from having a client side
+    library needing to use private credentials.
+
 v0.2.27
   * oauth authentication now allows you to specify your own
     callback endpoint. If not specified, the out-of-band method
