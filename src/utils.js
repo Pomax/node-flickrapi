@@ -179,7 +179,7 @@ module.exports = (function() {
       // set up authorized method access
       var queryArguments = {
         method: method_name,
-        api_key: flickrOptions.key
+        api_key: flickrOptions.api_key
       };
 
       // set up bindings for method-specific args
@@ -245,7 +245,7 @@ module.exports = (function() {
       // set essential values
       queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
       queryArguments.oauth_timestamp = flickrOptions.oauth_timestamp;
-      queryArguments.oauth_consumer_key = flickrOptions.key;
+      queryArguments.oauth_consumer_key = flickrOptions.api_key;
       queryArguments.oauth_token = flickrOptions.access_token;
       queryArguments.oauth_signature_method = "HMAC-SHA1";
 

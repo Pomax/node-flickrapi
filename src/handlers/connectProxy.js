@@ -25,7 +25,7 @@ module.exports = {
     function proxyAPICall(req, res) {
       var method = req.body.method;
       var apiFunction = proxyMethods[method];
-      console.log("API call: "+method);
+      //console.log("API call: "+method);
       if(apiFunction) {
         apiFunction(req.body, function(err, result) {
           res.json(err || result);

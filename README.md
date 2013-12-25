@@ -18,7 +18,7 @@ You can access Flickr by creating an API instance as:
 
 ```
 var flickr = new Flickr({
-  key: "1234ABCD1234ABCD1234ABCD1234ABCD"
+  api_key: "1234ABCD1234ABCD1234ABCD1234ABCD"
 });
 ```
 
@@ -81,7 +81,7 @@ result in a callback that gives you the actual API object:
 ```
 var Flickr = require("flickrapi"),
     flickrOptions = {
-      key: "API key that you get from Flickr",
+      api_key: "API key that you get from Flickr",
       secret: "API key secret that you get from Flickr"
     };
 Flickr.authenticate(flickrOptions, function(error, flickr) {
@@ -112,7 +112,7 @@ also has an `options` property, which looks like this:
 
 ```
 {
-  key: "your API key",
+  api_key: "your API key",
   secret: "your API key secret",
   user_id: "your user id, based on your first-time authorisation",
   access_token: "the preauthorised Flickr access token",
@@ -272,7 +272,7 @@ or put them straight into your source code to use the flickrapi:
 
 ```
 var FlickrOptions = {
-      key: "your API key",
+      api_key: "your API key",
       secret: "your API key secret",
       user_ud: "...",
       access_token: "...",

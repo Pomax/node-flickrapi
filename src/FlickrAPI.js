@@ -6,7 +6,7 @@
   signature: authenticate(options, callback)
 
   options argument: {
-    key: "your api key from flickr",
+    api_key: "your api key from flickr",
     secret: "your api key secret from flickr",
     user_id: negotiated through first-time authenticate() call
     access_token: negotiated through first-time authenticate() call
@@ -37,7 +37,7 @@ module.exports = (function Flickr() {
           method = "flickr.auth.oauth.checkToken",
           queryArguments = {
           method: method,
-          oauth_consumer_key: options.key,
+          oauth_consumer_key: options.api_key,
           oauth_nonce: options.oauth_nonce,
           oauth_timestamp: options.oauth_timestamp,
           oauth_signature_method: "HMAC-SHA1",

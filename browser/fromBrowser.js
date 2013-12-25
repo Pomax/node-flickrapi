@@ -9,7 +9,7 @@ function testFlickrAPI(proxied) {
   // plain Flickr access with API key
   else {
     api_key = document.getElementById("api_key").value;
-    flickr = new Flickr({ key: api_key });
+    flickr = new Flickr({ api_key: api_key });
   }
 
   // run a search.

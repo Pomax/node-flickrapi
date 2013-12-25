@@ -39,7 +39,7 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
       method: method_name,
       format: "json",
     };
-    if(flickrOptions.key) {
+    if(flickrOptions.api_key) {
       api_key: flickrOptions.api_key
     }
     // set up bindings for method-specific args
