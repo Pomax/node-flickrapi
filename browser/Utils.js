@@ -44,7 +44,7 @@ module.exports = {
       format: "json",
     };
     if(flickrOptions.api_key) {
-      api_key: flickrOptions.api_key
+      queryArguments.api_key = flickrOptions.api_key;
     }
     // set up bindings for method-specific args
     Object.keys(callOptions).forEach(function(key) {
