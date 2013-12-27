@@ -37,7 +37,7 @@ module.exports = (function() {
       if(response.oauth_problem) {
         // Occasionally, this will fail.
         // Rerunning it then succeeds just fine.
-        return console.log(options);
+        return;
       }
       Object.keys(response).forEach(function(key) {
         options[key] = response[key];
