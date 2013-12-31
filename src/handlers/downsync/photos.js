@@ -239,7 +239,12 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
   }, function(error, result) {
     var batch = result.photos.photo;
     tally += batch.length;
-    progressBarAggregate.tick(per_page);
+    try {
+      progressBarAggregate.tick(per_page);
+    } catch (e) {
+      // node-progress introduced a bug when counting past 100%
+      // see https://github.com/visionmedia/node-progress/pull/53
+    }
     photos = photos.concat(batch);
     aggregatePhotos(flickr, user_id, per_page, page+1, tally, total, removeDeleted);
   });
