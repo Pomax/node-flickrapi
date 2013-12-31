@@ -1,9 +1,9 @@
 v0.3.8
-  * Image downloads from Flickr that result in broken images
+  * Image downloads from Flickr that result in incomplete images
     will make the download module redownload the file. For JPG
     images this means looking for 0xFFD9 as last two bytes,
     for PNG files the code looks for the IEND chunk in the PNG
-    data.
+    data. No more 0 byte or half-finished images (hopefully).
 
 v0.3.0
   * In order to align the module with the Flickr API's property
