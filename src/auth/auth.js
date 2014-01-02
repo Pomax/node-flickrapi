@@ -12,8 +12,13 @@ module.exports = (function() {
     options.permissions = options.permissions || "read";
     var oauth_token = options.oauth_token,
         oauth_token_secret = options.oauth_token_secret,
-        authURL = "http://www.flickr.com/services/oauth/authorize";
-    open(authURL + "?oauth_token=" + oauth_token + "&perms=" + options.permissions);
+        authURL = "http://www.flickr.com/services/oauth/authorize",
+        browserURL = authURL + "?oauth_token=" + oauth_token + "&perms=" + options.permissions;
+
+    // are we in the browser?
+    if(!options.nobrowser) { open(browserURL); }
+    else { console.log("please visit " + browserURL); }
+
     if(options.callback === "oob") {
       prompt.start();
       prompt.get(['oauth_verifier'], function(err, res) {

@@ -120,7 +120,7 @@ also has an `options` property, which looks like this:
   oauth_timestamp: "the timestamp for the last flickr API call",
   oauth_nonce: "the cryptographic nonce that request used",
   afterDownsync: <optional, you can bind an arg-less callback function here>
-  permissions: <optional, default value is 'read', see below>
+  permissions: <optional, default value is 'read', see "on first run" below>
 }
 ```
 
@@ -334,6 +334,27 @@ expected by `options.exchange` looks like this:
   oauth_verifier: "..."
 }
 ```
+
+### Custom authentication: browserless, noAPI, and silent
+
+There are a number of special options that can also be set to effect
+different authentication procedures. Calling the authenticate function
+with an options object means the following options can also be passed:
+
+```
+options = {
+  ...
+  nobrowser: true, // console.logs the auth URL instead of opening a browser for it.
+  noAPI: true,     // only performs authentication, without building the Flickr API.
+  silent: true ,   // doesn't do an information console print after successful auth.
+  ...
+}
+```
+
+If using `noAPI`, the authentication credentials can be extracted
+from the options object inside the callback function that you pass
+along. The `options.access_token` and `options.access_token_secret`
+will contain the result of the authentication procedure.
 
 ## Flickr API proxying for connect/express apps
 

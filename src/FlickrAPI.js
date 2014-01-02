@@ -68,7 +68,7 @@ module.exports = (function Flickr() {
       options.user_id = response.user_nsid;
       options.access_token = response.oauth_token;
       options.access_token_secret = response.oauth_token_secret;
-      if (options.callback === "oob") {
+      if (options.callback === "oob" && !options.silent) {
         console.log("\n\nAdd the following variables to your environment:\n");
         console.log("export FLICKR_USER_ID=\"" + options.user_id + "\"");
         console.log("export FLICKR_ACCESS_TOKEN=\"" + options.access_token + "\"");
@@ -106,8 +106,10 @@ module.exports = (function Flickr() {
           if(options.callback !== "oob") {
             options.processCredentials = options.processCredentials || function(data) {
               // default function writes creds to .env
-              console.log("Credentials object:");
-              console.log(JSON.stringify(data,null,2));
+              if(!options.silent) {
+                console.log("Credentials object:");
+                console.log(JSON.stringify(data,null,2));
+              }
               var envContent = fs.readFileSync(".env") + "\n";
               Object.keys(data).forEach(function(key) {
                 envContent += "export " + key + "=" + data[key] + "\n";
@@ -116,7 +118,10 @@ module.exports = (function Flickr() {
             };
             options.processCredentials(body);
           }
-          new APIBuilder(options, Utils, next);
+
+          // is this auth only, or also API object creation?
+          if(options.noAPI) { next(false); }
+          else { new APIBuilder(options, Utils, next); }
         });
       } else { new APIBuilder(options, Utils, next); }
     });

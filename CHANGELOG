@@ -1,3 +1,9 @@
+v0.3.11
+  * Added additional options to control the authentication
+    procedure in terms of console logging, opening browsers,
+    etc. See the Custom authentication section in the README
+    for additional details.
+
 v0.3.8
   * Image downloads from Flickr that result in incomplete images
     will make the download module redownload the file. For JPG
