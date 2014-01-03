@@ -15,7 +15,8 @@ module.exports = (function() {
         "b" : "large",
         "s" : "square/small",
         "q" : "square/medium"
-      };
+      },
+      retries = {};
 
   /**
    * Check whether or not the JPG ends in 0xFFD9.
@@ -57,6 +58,14 @@ module.exports = (function() {
   function getFromURL(url, dest, key, photo, cb) {
     if(key && !photo && !cb) { cb = key; key = undefined; }
 
+    if(!retries[dest]) {
+      retries[dest] = 0;
+    } else if (retries[dest] > 5) {
+      var err = "Maximum number of retries reached for " + dest;
+      console.error(err);
+      return cb ? cb(err) : false;
+    }
+
     var file = fs.createWriteStream(dest),
         handleRequest = function(response) {
           response.pipe(file);
@@ -66,6 +75,7 @@ module.exports = (function() {
             validateFile(dest, function(err) {
               if(err) {
                 console.error(err);
+                retries[dest]++;
                 return getFromURL(url, dest, key, photo, cb);
               }
               if(key) {
