@@ -252,7 +252,7 @@ module.exports = (function() {
       // force JSON request
       queryArguments.format = "json";
 
-      var url = "http://ycpi.api.flickr.com/services/rest/",
+      var url = "https://api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
           data = this.formBaseString(url, queryString),
           signature = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret),

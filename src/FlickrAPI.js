@@ -33,7 +33,7 @@ module.exports = (function Flickr() {
     }
 
     options = Utils.setAuthVals(options);
-    var   url = "http://api.flickr.com/services/rest",
+    var   url = "https://api.flickr.com/services/rest",
           method = "flickr.auth.oauth.checkToken",
           queryArguments = {
           method: method,
