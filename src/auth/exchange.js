@@ -30,7 +30,7 @@ module.exports = (function() {
   };
 
   ExchangeTokens.prototype = {
-    url: "http://www.flickr.com/services/oauth/access_token"
+    url: "https://www.flickr.com/services/oauth/access_token"
   };
 
   return ExchangeTokens;

@@ -47,7 +47,7 @@ module.exports = (function() {
   };
 
   RequestTokenFunction.prototype = {
-    url: "http://www.flickr.com/services/oauth/request_token",
+    url: "https://www.flickr.com/services/oauth/request_token",
     formBaseString: function(queryString) {
       return ["GET", encodeURIComponent(this.url), encodeURIComponent(queryString)].join("&");
     }
