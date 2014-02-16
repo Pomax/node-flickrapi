@@ -64,7 +64,7 @@ module.exports = {
    * authentication keys, and these should never, ever, be stored at the client.
    */
   queryFlickrAPI: function(queryArguments, flickrOptions, security, processResult) {
-    var url = "//api.flickr.com/services/rest/",
+    var url = "https://api.flickr.com/services/rest",
         queryString = this.formQueryString(queryArguments),
         flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
