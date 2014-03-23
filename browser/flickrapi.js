@@ -55,7 +55,7 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   };
 Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
-    var url = "https://api.flickr.com/services/rest",
+    var url = "http://ycpi.api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
         flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?

@@ -70,6 +70,8 @@ api key value. Even if you do, it'll get ignored.
 
 ## how to use this package with Node.js
 
+### Access to the full API using `authenticate`
+
 The initial require in your code is simply `require("flickrapi")`
 after making sure you added flickrapi to your package.json, either
 manually or by running `npm install flickrapi --save` for the project
@@ -104,6 +106,28 @@ flickr.photos.search({
 ```
 
 All results are in JSON format. For obvious reasons.
+
+### Access to the full API using `tokenOnly`
+
+There is also a function for creating Flickr API instances that
+can only call public API functions (or will only get public results
+for functions that may potentially access private results, too).
+
+This does not require any oauth negotiation during setup:
+
+```
+var Flickr = require("flickrapi"),
+    flickrOptions = {
+      api_key: "API key that you get from Flickr",
+      secret: "API key secret that you get from Flickr"
+    };
+Flickr.tokenOnly(flickrOptions, function(error, flickr) {
+  // we can now use "flickr" as our API object,
+  // but we can only call public methods and access public data
+});
+```
+
+Results will also be in JSON format (naturally).
 
 ### flickr.options
 
