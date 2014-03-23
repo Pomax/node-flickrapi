@@ -13,13 +13,19 @@ var habitat = require("habitat"),
     env = habitat.load(),
     Flickr = require("./src/FlickrApi"),
     FlickrOptions = env.get("FLICKR"),
-    express = require("express"), app, server;
+    // node test => auth test; node test false => token only test
+    testAuthenticated = (process.argv[2] != "false");
+
+FlickrOptions.api_key = FlickrOptions.key;
+delete FlickrOptions.key;
 
 
 // Set up a temporary oauth callback server if
 // we do not have authentication credentials yet.
 if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
-  app = express();
+  var express = require("express"),
+      app = express(),
+      server;
   app.configure(function(){
     app.get("/", function(req, res){
       res.write("<!doctype html><html><head><meta charset='utf-8'><title>Credentials received</title></head>"+
@@ -31,6 +37,8 @@ if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
       // reload environment
       env = habitat.load();
       FlickrOptions = env.get("FLICKR");
+      FlickrOptions.api_key = FlickrOptions.key;
+      delete FlickrOptions.key;
     });
   });
   server = app.listen(4321, function(err, result) {
@@ -40,11 +48,11 @@ if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
 }
 
 
-// Start up the Flickr API proxy, and call the test.echo
-// method to make sure we are actually able to talk to Flickr.
-Flickr.authenticate(FlickrOptions, function(error, flickr) {
-  app = express();
-
+// set up a simple http server using Express.js
+var setupApp = function(flickr, next) {
+  var express = require("express"),
+      app = express(),
+      server;
   app.configure(function() {
     app.disable('x-powered-by');
     app.use(express.compress());
@@ -52,26 +60,43 @@ Flickr.authenticate(FlickrOptions, function(error, flickr) {
     app.use(express.static("browser"));
     flickr.proxy(app, "/service/rest/");
   });
+  server = app.listen(3000, next);
+};
 
-  server = app.listen(3000, function(err, result) {
+
+// Start up the Flickr API proxy, and call the test.echo
+// method to make sure we are actually able to talk to Flickr.
+if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr) {
+  setupApp(flickr, function(err, result) {
     if (err) { console.error(err); process.exit(1); }
     else {
       console.log("listening on port 3000 (press ctrl-c to exit).");
       flickr.test.echo({"test": "test"}, function(err,result) {
-        if(err) console.log("note: error connecting to the flickr API");
+        if(err) console.log("note: error connecting to the flickr API", err);
       });
+
 
       /**
        *
-       *
        *    Drop in any code you want to test at this point.
        *
+       */
+        flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+          if(err) { return console.log("error:", err); }
+          console.log(result.photos.photo.length + " results found. First result:");
+          console.log(JSON.stringify(result.photos.photo[0],false,2));
+        });
+      /**
+       *
+       *    The code above simply searches for red panda pictures
        *
        */
+
 
       // Simple test code: downsync the user's content,
       // if the --downsync runtime argument was passed.
       if (process.argv.indexOf("--downsync")>-1) {
+
         FlickrOptions.afterDownsync = function() {
           console.log("\nDownsync finished.");
           server.close();
@@ -82,6 +107,38 @@ Flickr.authenticate(FlickrOptions, function(error, flickr) {
         console.log("Downsyncing for user: " + user);
         downsync(false, flickr);
       }
+    }
+  });
+});
+
+// Start up the Flickr API proxy, and call the test.echo
+// method to make sure we are actually able to talk to Flickr.
+// *** THIS PATH DOES NOT USE ANY AUTHENTICATION ***
+if(!testAuthenticated) Flickr.tokenOnly(FlickrOptions, function(error, flickr) {
+  setupApp(flickr, function(err, result) {
+    if (err) { console.error(err); process.exit(1); }
+    else {
+      console.log("listening on port 3000 (press ctrl-c to exit).");
+
+      flickr.test.echo({"test": "test"}, function(err,result) {
+        if(err) { return console.log("note: error connecting to the flickr API"); }
+
+        /**
+         *
+         *    Drop in any code you want to test at this point.
+         *
+         */
+          flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+            if(err) { return console.log("error:", err); }
+            console.log(result.photos.photo.length + " results found. First result:");
+            console.log(JSON.stringify(result.photos.photo[0],false,2));
+          });
+        /**
+         *
+         *    The code above simply searches for red panda pictures
+         */
+
+      });
     }
   });
 });

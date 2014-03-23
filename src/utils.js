@@ -198,8 +198,16 @@ module.exports = (function() {
     generateAPIFunction: function(method_name, flickrOptions, security, required, optional, errors) {
       var Utils = this, fn;
 
+      // Will we need to be authenticated to call this function?
+      if(flickrOptions.tokenonly && security.needslogin===1) {
+        fn = function(callOptions, callback) {
+          if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
+          callback("the "+method_name+" function requires authentication, and can only be called through an authenticated Flickr API instance.");
+        };
+      }
+
       // code path for compiling the client-side JS library
-      if(typeof process.CLIENT_COMPILE !== "undefined") {
+      else if(typeof process.CLIENT_COMPILE !== "undefined") {
        fn = function(callOptions, callback) {
           if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
           var queryArguments = Utils.generateQueryArguments(method_name, this.flickrOptions, callOptions);
@@ -239,15 +247,16 @@ module.exports = (function() {
         errors = {};
       }
 
-      // effect a new timestampe and nonce prior to calling
-      flickrOptions = this.setAuthVals(flickrOptions);
-
-      // set essential values
-      queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
-      queryArguments.oauth_timestamp = flickrOptions.oauth_timestamp;
-      queryArguments.oauth_consumer_key = flickrOptions.api_key;
-      queryArguments.oauth_token = flickrOptions.access_token;
-      queryArguments.oauth_signature_method = "HMAC-SHA1";
+      // do we need to HMAC-SHA1 sign this URL?
+      var authed = !security.needssigning || security.needssigning === 1;
+      if (authed) {
+        flickrOptions = this.setAuthVals(flickrOptions);
+        queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
+        queryArguments.oauth_timestamp = flickrOptions.oauth_timestamp;
+        queryArguments.oauth_consumer_key = flickrOptions.api_key;
+        queryArguments.oauth_token = flickrOptions.access_token;
+        queryArguments.oauth_signature_method = "HMAC-SHA1";
+      }
 
       // force JSON request
       queryArguments.format = "json";
@@ -255,8 +264,8 @@ module.exports = (function() {
       var url = "https://api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
           data = this.formBaseString(url, queryString),
-          signature = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret),
-          flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
+          signature = authed ? "&oauth_signature=" + this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret) : '',
+          flickrURL = url + "?" + queryString + signature;
 
       request.get(flickrURL, function(error, response, body) {
         if(!body) {

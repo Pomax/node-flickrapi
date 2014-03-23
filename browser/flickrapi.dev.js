@@ -55,7 +55,7 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   };
 Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
-    var url = "https://api.flickr.com/services/rest",
+    var url = "http://ycpi.api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
         flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
@@ -430,6 +430,12 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The ID of the collection to fetch information for."
    }
   ],
+  "optional": [
+   {
+    "name": "secure_image_embeds",
+    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
+   }
+  ],
   "errors": [
    {
     "code": "1",
@@ -502,6 +508,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "sort",
     "_content": "The order in which to sort the returned contacts. Defaults to name. The possible values are: name and time."
+   },
+   {
+    "name": "fields",
+    "_content": "The fields can have the following args:\r\nrealname, friend, family,path_alias,location,public_photos_count,can_tag"
    }
   ],
   "errors": [
@@ -1389,6 +1399,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "lang",
     "_content": "The language of the group name and description to fetch.  If the language is not found, the primary language of the group will be returned.\r\n\r\nValid values are the same as <a href=\"/services/feeds/\">in feeds</a>."
+   },
+   {
+    "name": "secure_image_embeds",
+    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
    }
   ],
   "errors": [
@@ -1838,6 +1852,14 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "page",
     "_content": "The page of results to return. If this argument is ommited, it defaults to 1. "
+   },
+   {
+    "name": "user_id",
+    "_content": "NSID of the user, if you want to restrict your search by the groups this user is a member of. NOTE : This is experimental, and only search within the currently signed in user's groups is supported. "
+   },
+   {
+    "name": "safe_search",
+    "_content": "safe_search =1 means only safe groups\r\nsafe_search =2 means all groups\r\nsafe_search =3 means only 18+ groups\r\nDefault is 1. \r\n"
    }
   ],
   "errors": [
@@ -2139,6 +2161,14 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "extras",
     "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: <code>privacy</code>, <code>throttle</code>, <code>restrictions</code>"
+   },
+   {
+    "name": "page",
+    "_content": "Page number for the groups"
+   },
+   {
+    "name": "per_page",
+    "_content": "Number of groups per page"
    }
   ],
   "errors": [
@@ -2397,6 +2427,24 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "Text of the comment"
    }
   ],
+  "optional": [
+   {
+    "name": "secure_image_embeds",
+    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
+   },
+   {
+    "name": "expand_bbml",
+    "_content": "Expand bbml in response"
+   },
+   {
+    "name": "bbml_need_all_photo_sizes",
+    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
+   },
+   {
+    "name": "primary_photo_longest_dimension",
+    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
+   }
+  ],
   "errors": [
    {
     "code": "1",
@@ -2460,6 +2508,32 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "Update the comment to this text."
    }
   ],
+  "optional": [
+   {
+    "name": "use_text_for_links",
+    "_content": "Use text for links"
+   },
+   {
+    "name": "expand_bbml",
+    "_content": "Expand bbml"
+   },
+   {
+    "name": "full_result",
+    "_content": "If the caller wants the full result to be returned (as flickr.photos.comments.getComment), then this parameter should be passed in as 1."
+   },
+   {
+    "name": "secure_image_embeds",
+    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
+   },
+   {
+    "name": "bbml_need_all_photo_sizes",
+    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
+   },
+   {
+    "name": "primary_photo_longest_dimension",
+    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
+   }
+  ],
   "errors": [
    {
     "code": "1",
@@ -2516,6 +2590,26 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "sort",
     "_content": "Get the comments sorted. If value is date-posted-desc,  the comments are returned in reverse chronological order. The default is chronological."
+   },
+   {
+    "name": "secure_image_embeds",
+    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
+   },
+   {
+    "name": "offset",
+    "_content": ""
+   },
+   {
+    "name": "limit",
+    "_content": ""
+   },
+   {
+    "name": "bbml_need_all_photo_sizes",
+    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
+   },
+   {
+    "name": "primary_photo_longest_dimension",
+    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
    }
   ],
   "errors": [
@@ -3121,6 +3215,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "order_by",
     "_content": "Accepts <code>datetaken</code> or <code>dateposted</code> and returns results in the proper order."
+   },
+   {
+    "name": "view_as",
+    "_content": "Can take values public to indicate that the profile has to be viewed as public and returns context only in public setting"
    }
   ],
   "errors": [
@@ -3175,6 +3273,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "secret",
     "_content": "The secret for the photo. If the correct secret is passed then permissions checking is skipped. This enables the 'sharing' of individual photos by passing around the id and secret."
+   },
+   {
+    "name": "extras",
+    "_content": ""
    }
   ],
   "errors": [
@@ -3908,6 +4010,12 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The id of the photo to get a list of people for."
    }
   ],
+  "optional": [
+   {
+    "name": "extras",
+    "_content": "Accepts the following extras: icon_urls, icon_urls_deep, paid_products\r\n\r\nicon_urls, icon_urls_deep: returns the persons buddy icon urls\r\npaid_products: returns if the person is pro or has a add on."
+   }
+  ],
   "errors": [
    {
     "code": "1",
@@ -4113,6 +4221,34 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "is_getty",
     "_content": "Limit the scope of the search to only photos that are for sale on Getty. Default is false."
+   },
+   {
+    "name": "username",
+    "_content": "username/character name of the person whose photos you want to search. "
+   },
+   {
+    "name": "exif_min_exposure",
+    "_content": ""
+   },
+   {
+    "name": "exif_max_exposure",
+    "_content": ""
+   },
+   {
+    "name": "exif_min_aperture",
+    "_content": ""
+   },
+   {
+    "name": "exif_max_aperture",
+    "_content": ""
+   },
+   {
+    "name": "exif_min_focallen",
+    "_content": ""
+   },
+   {
+    "name": "exif_max_focallen",
+    "_content": ""
    }
   ],
   "errors": [

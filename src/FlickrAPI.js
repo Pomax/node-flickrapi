@@ -128,10 +128,25 @@ module.exports = (function Flickr() {
   };
 
   /**
+   * If you only want to use the non-authenticated functions, you can bypass the oauth
+   * authentication and simply never call auth-locked Flickr API functions.
+   */
+  var tokenOnly = function(options, next) {
+    if(!options) {
+      return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\n"+
+                            "Visit http://www.flickr.com/services/apps/create/apply to get one."));
+    }
+    var APIBuilder = require("./flickr-api-object");
+    options.tokenonly = true;
+    new APIBuilder(options, Utils, next);
+  };
+
+  /**
    * The initial Flickr access point.
    */
   return {
     loadLocally: require("./handlers/ia"),
+    tokenOnly: tokenOnly,
     authenticate: authenticate,
     downsync: require("./handlers/downsync")
   };
