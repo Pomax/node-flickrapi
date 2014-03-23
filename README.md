@@ -107,7 +107,7 @@ flickr.photos.search({
 
 All results are in JSON format. For obvious reasons.
 
-### Access to the full API using `tokenOnly`
+### Access to the public API using `tokenOnly`
 
 There is also a function for creating Flickr API instances that
 can only call public API functions (or will only get public results
