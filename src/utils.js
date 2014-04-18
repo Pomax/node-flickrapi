@@ -241,6 +241,7 @@ module.exports = (function() {
      * Call the Flickr API
      */
     queryFlickr: function(queryArguments, flickrOptions, security, processResult, errors) {
+
       if(arguments.length === 3) {
         processResult = arguments[2];
         security = {};
@@ -248,7 +249,7 @@ module.exports = (function() {
       }
 
       // do we need to HMAC-SHA1 sign this URL?
-      var authed = !security.needssigning || security.needssigning === 1;
+      var authed = typeof security.needssigning === "undefined" || security.needssigning === 1;
       if (authed) {
         flickrOptions = this.setAuthVals(flickrOptions);
         queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
@@ -268,6 +269,7 @@ module.exports = (function() {
           flickrURL = url + "?" + queryString + signature;
 
       request.get(flickrURL, function(error, response, body) {
+
         if(!body) {
           error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
           return processResult(error);
@@ -287,8 +289,6 @@ module.exports = (function() {
             return processResult("could not parse body as JSON: " + body);
           }
         }
-
-        // FIXME: "errors" is currently not used
 
         processResult(error, body);
       });
