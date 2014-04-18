@@ -1,6 +1,6 @@
 {
   "name": "flickrapi",
-  "version": "0.3.14",
+  "version": "0.3.15",
   "homepage": "https://github.com/Pomax/node-flickrapi",
   "authors": [
     "Mike Kamermans <pomax@nihongoresources.com>"
