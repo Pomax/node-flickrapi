@@ -1,3 +1,6 @@
+v0.3.17
+  * added catching "no response" errors when querying Flickr.
+
 v0.3.14
   * Added "token only" access, so that the public Flickr API
     calls do not require you to authenticate through oauth.
