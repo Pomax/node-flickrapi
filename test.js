@@ -16,10 +16,6 @@ var habitat = require("habitat"),
     // node test => auth test; node test false => token only test
     testAuthenticated = (process.argv[2] != "false");
 
-FlickrOptions.api_key = FlickrOptions.key;
-delete FlickrOptions.key;
-
-
 // Set up a temporary oauth callback server if
 // we do not have authentication credentials yet.
 if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
