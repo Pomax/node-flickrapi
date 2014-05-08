@@ -270,6 +270,11 @@ module.exports = (function() {
 
       request.get(flickrURL, function(error, response, body) {
 
+        if(!response) {
+          error = "HTTP Error: no response for url [" + flickrURL + "]";
+          return processResult(error);
+        }
+
         if(!body) {
           error = "HTTP Error " + response.statusCode + " (" + statusCodes[response.statusCode] + ")";
           return processResult(error);
@@ -290,7 +295,7 @@ module.exports = (function() {
           }
         }
 
-        processResult(error, body);
+        processResult(false, body);
       });
     },
   };
