@@ -1,3 +1,7 @@
+v0.3.18
+  * switch image download protocol from http: to https: due
+    to a change in Flickr's infrastructure to https-only.
+
 v0.3.17
   * added catching "no response" errors when querying Flickr.
 

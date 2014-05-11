@@ -5,7 +5,7 @@ module.exports = (function() {
   "use strict";
 
   var fs = require('fs'),
-      http = require('http'),
+      https = require('https'),
       locations = {
         "o" : "original",
         "t" : "thumbnail",
@@ -93,7 +93,7 @@ module.exports = (function() {
             cb(err);
           }
         };
-    http.get(url, handleRequest).on('error', errorHandler);
+    https.get(url, handleRequest).on('error', errorHandler);
   }
 
   return {
