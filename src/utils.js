@@ -248,8 +248,9 @@ module.exports = (function() {
         errors = {};
       }
 
+      var authed = security.needssigning === 1;
+
       // do we need to HMAC-SHA1 sign this URL?
-      var authed = typeof security.needssigning === "undefined" || security.needssigning === 1;
       if (authed) {
         flickrOptions = this.setAuthVals(flickrOptions);
         queryArguments.oauth_nonce = flickrOptions.oauth_nonce;
@@ -257,6 +258,11 @@ module.exports = (function() {
         queryArguments.oauth_consumer_key = flickrOptions.api_key;
         queryArguments.oauth_token = flickrOptions.access_token;
         queryArguments.oauth_signature_method = "HMAC-SHA1";
+      }
+
+      // nope - plain API key will suffice
+      else {
+        queryArguments.api_key = flickrOptions.api_key
       }
 
       // force JSON request

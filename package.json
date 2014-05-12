@@ -7,7 +7,7 @@
     "async": "~0.2.9",
     "glob": "~3.2.6",
     "open": "0.0.x",
-    "progress": "1.1.x",
+    "progress": "1.1.4",
     "prompt": "0.2.x",
     "request": "2.26.x"
   },

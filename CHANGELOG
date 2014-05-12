@@ -1,3 +1,6 @@
+v0.3.19
+  * fixed lingering bug in tokenOnly() behaviour
+
 v0.3.18
   * switch image download protocol from http: to https: due
     to a change in Flickr's infrastructure to https-only.
