@@ -131,7 +131,7 @@ module.exports = (function() {
           secret = photo.secret,
           osecret = photo.originalsecret,
           format = photo.originalformat,
-          photoURL = "http://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_",
+          photoURL = "https://farm" + farm + ".staticflickr.com/" + server + "/" + id + "_" + secret + "_",
           url,
           dest,
           keys = photo.sizes,

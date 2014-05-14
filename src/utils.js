@@ -231,7 +231,7 @@ module.exports = (function() {
         errors: errors,
         security: security,
         name: method_name,
-        url: "http://www.flickr.com/services/api/"+method_name+".html"
+        url: "https://www.flickr.com/services/api/"+method_name+".html"
       };
 
       return fn;

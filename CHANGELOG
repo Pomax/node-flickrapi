@@ -1,3 +1,6 @@
+v0.3.20
+  * fixed some remaining http: protocol URLs to be https:
+
 v0.3.19
   * fixed lingering bug in tokenOnly() behaviour
 

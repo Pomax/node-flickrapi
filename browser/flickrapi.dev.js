@@ -55,7 +55,7 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   };
 Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
-    var url = "http://ycpi.api.flickr.com/services/rest/",
+    var url = "https://api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
         flickrURL = url + "?" + queryString;
     // Do we need special permissions? (read private, 1, write, 2, or delete, 3)?
@@ -199,7 +199,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.activity.userComments",
-  "url": "http://www.flickr.com/services/api/flickr.activity.userComments.html"
+  "url": "https://www.flickr.com/services/api/flickr.activity.userComments.html"
  },
  "flickr.activity.userPhotos": {
   "optional": [
@@ -222,7 +222,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.activity.userPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.activity.userPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.activity.userPhotos.html"
  },
  "flickr.auth.checkToken": {
   "required": [
@@ -237,7 +237,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.checkToken",
-  "url": "http://www.flickr.com/services/api/flickr.auth.checkToken.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.checkToken.html"
  },
  "flickr.auth.getFrob": {
   "security": {
@@ -246,7 +246,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.getFrob",
-  "url": "http://www.flickr.com/services/api/flickr.auth.getFrob.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.getFrob.html"
  },
  "flickr.auth.getFullToken": {
   "required": [
@@ -268,7 +268,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.getFullToken",
-  "url": "http://www.flickr.com/services/api/flickr.auth.getFullToken.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.getFullToken.html"
  },
  "flickr.auth.getToken": {
   "required": [
@@ -283,7 +283,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.getToken",
-  "url": "http://www.flickr.com/services/api/flickr.auth.getToken.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.getToken.html"
  },
  "flickr.auth.oauth.checkToken": {
   "required": [
@@ -298,7 +298,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.oauth.checkToken",
-  "url": "http://www.flickr.com/services/api/flickr.auth.oauth.checkToken.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.oauth.checkToken.html"
  },
  "flickr.auth.oauth.getAccessToken": {
   "security": {
@@ -307,7 +307,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.auth.oauth.getAccessToken",
-  "url": "http://www.flickr.com/services/api/flickr.auth.oauth.getAccessToken.html"
+  "url": "https://www.flickr.com/services/api/flickr.auth.oauth.getAccessToken.html"
  },
  "flickr.blogs.getList": {
   "optional": [
@@ -322,7 +322,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.blogs.getList",
-  "url": "http://www.flickr.com/services/api/flickr.blogs.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.blogs.getList.html"
  },
  "flickr.blogs.getServices": {
   "security": {
@@ -331,7 +331,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.blogs.getServices",
-  "url": "http://www.flickr.com/services/api/flickr.blogs.getServices.html"
+  "url": "https://www.flickr.com/services/api/flickr.blogs.getServices.html"
  },
  "flickr.blogs.postPhoto": {
   "required": [
@@ -390,7 +390,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.blogs.postPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.blogs.postPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.blogs.postPhoto.html"
  },
  "flickr.cameras.getBrandModels": {
   "required": [
@@ -412,7 +412,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.cameras.getBrandModels",
-  "url": "http://www.flickr.com/services/api/flickr.cameras.getBrandModels.html"
+  "url": "https://www.flickr.com/services/api/flickr.cameras.getBrandModels.html"
  },
  "flickr.cameras.getBrands": {
   "security": {
@@ -421,7 +421,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.cameras.getBrands",
-  "url": "http://www.flickr.com/services/api/flickr.cameras.getBrands.html"
+  "url": "https://www.flickr.com/services/api/flickr.cameras.getBrands.html"
  },
  "flickr.collections.getInfo": {
   "required": [
@@ -449,7 +449,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.collections.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.collections.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.collections.getInfo.html"
  },
  "flickr.collections.getTree": {
   "optional": [
@@ -480,7 +480,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.collections.getTree",
-  "url": "http://www.flickr.com/services/api/flickr.collections.getTree.html"
+  "url": "https://www.flickr.com/services/api/flickr.collections.getTree.html"
  },
  "flickr.commons.getInstitutions": {
   "security": {
@@ -489,7 +489,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.commons.getInstitutions",
-  "url": "http://www.flickr.com/services/api/flickr.commons.getInstitutions.html"
+  "url": "https://www.flickr.com/services/api/flickr.commons.getInstitutions.html"
  },
  "flickr.contacts.getList": {
   "optional": [
@@ -527,7 +527,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.contacts.getList",
-  "url": "http://www.flickr.com/services/api/flickr.contacts.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.contacts.getList.html"
  },
  "flickr.contacts.getListRecentlyUploaded": {
   "optional": [
@@ -546,7 +546,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.contacts.getListRecentlyUploaded",
-  "url": "http://www.flickr.com/services/api/flickr.contacts.getListRecentlyUploaded.html"
+  "url": "https://www.flickr.com/services/api/flickr.contacts.getListRecentlyUploaded.html"
  },
  "flickr.contacts.getPublicList": {
   "required": [
@@ -582,7 +582,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.contacts.getPublicList",
-  "url": "http://www.flickr.com/services/api/flickr.contacts.getPublicList.html"
+  "url": "https://www.flickr.com/services/api/flickr.contacts.getPublicList.html"
  },
  "flickr.contacts.getTaggingSuggestions": {
   "optional": [
@@ -609,7 +609,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.contacts.getTaggingSuggestions",
-  "url": "http://www.flickr.com/services/api/flickr.contacts.getTaggingSuggestions.html"
+  "url": "https://www.flickr.com/services/api/flickr.contacts.getTaggingSuggestions.html"
  },
  "flickr.favorites.add": {
   "required": [
@@ -646,7 +646,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.favorites.add",
-  "url": "http://www.flickr.com/services/api/flickr.favorites.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.favorites.add.html"
  },
  "flickr.favorites.getContext": {
   "required": [
@@ -696,7 +696,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.favorites.getContext",
-  "url": "http://www.flickr.com/services/api/flickr.favorites.getContext.html"
+  "url": "https://www.flickr.com/services/api/flickr.favorites.getContext.html"
  },
  "flickr.favorites.getList": {
   "optional": [
@@ -734,7 +734,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.favorites.getList",
-  "url": "http://www.flickr.com/services/api/flickr.favorites.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.favorites.getList.html"
  },
  "flickr.favorites.getPublicList": {
   "required": [
@@ -770,7 +770,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.favorites.getPublicList",
-  "url": "http://www.flickr.com/services/api/flickr.favorites.getPublicList.html"
+  "url": "https://www.flickr.com/services/api/flickr.favorites.getPublicList.html"
  },
  "flickr.favorites.remove": {
   "required": [
@@ -808,7 +808,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.favorites.remove",
-  "url": "http://www.flickr.com/services/api/flickr.favorites.remove.html"
+  "url": "https://www.flickr.com/services/api/flickr.favorites.remove.html"
  },
  "flickr.galleries.addPhoto": {
   "required": [
@@ -860,7 +860,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.galleries.addPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.addPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.addPhoto.html"
  },
  "flickr.galleries.create": {
   "required": [
@@ -906,7 +906,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.galleries.create",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.create.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.create.html"
  },
  "flickr.galleries.editMeta": {
   "required": [
@@ -943,7 +943,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.galleries.editMeta",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.editMeta.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.editMeta.html"
  },
  "flickr.galleries.editPhoto": {
   "required": [
@@ -973,7 +973,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.galleries.editPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.editPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.editPhoto.html"
  },
  "flickr.galleries.editPhotos": {
   "required": [
@@ -996,7 +996,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.galleries.editPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.editPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.editPhotos.html"
  },
  "flickr.galleries.getInfo": {
   "required": [
@@ -1011,7 +1011,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.galleries.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.getInfo.html"
  },
  "flickr.galleries.getList": {
   "required": [
@@ -1040,7 +1040,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.galleries.getList",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.getList.html"
  },
  "flickr.galleries.getListForPhoto": {
   "required": [
@@ -1065,7 +1065,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.galleries.getListForPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.getListForPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.getListForPhoto.html"
  },
  "flickr.galleries.getPhotos": {
   "required": [
@@ -1080,7 +1080,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.galleries.getPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.galleries.getPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.galleries.getPhotos.html"
  },
  "flickr.groups.browse": {
   "optional": [
@@ -1102,7 +1102,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.groups.browse",
-  "url": "http://www.flickr.com/services/api/flickr.groups.browse.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.browse.html"
  },
  "flickr.groups.discuss.replies.add": {
   "required": [
@@ -1138,7 +1138,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.discuss.replies.add",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.replies.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.replies.add.html"
  },
  "flickr.groups.discuss.replies.delete": {
   "required": [
@@ -1174,7 +1174,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 3
   },
   "name": "flickr.groups.discuss.replies.delete",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.replies.delete.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.replies.delete.html"
  },
  "flickr.groups.discuss.replies.edit": {
   "required": [
@@ -1224,7 +1224,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.discuss.replies.edit",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.replies.edit.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.replies.edit.html"
  },
  "flickr.groups.discuss.replies.getInfo": {
   "required": [
@@ -1255,7 +1255,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.discuss.replies.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.replies.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.replies.getInfo.html"
  },
  "flickr.groups.discuss.replies.getList": {
   "required": [
@@ -1287,7 +1287,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.discuss.replies.getList",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.replies.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.replies.getList.html"
  },
  "flickr.groups.discuss.topics.add": {
   "required": [
@@ -1332,7 +1332,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.discuss.topics.add",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.topics.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.topics.add.html"
  },
  "flickr.groups.discuss.topics.getInfo": {
   "required": [
@@ -1354,7 +1354,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.discuss.topics.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.topics.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.topics.getInfo.html"
  },
  "flickr.groups.discuss.topics.getList": {
   "required": [
@@ -1386,7 +1386,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.discuss.topics.getList",
-  "url": "http://www.flickr.com/services/api/flickr.groups.discuss.topics.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.discuss.topics.getList.html"
  },
  "flickr.groups.getInfo": {
   "required": [
@@ -1418,7 +1418,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.groups.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.getInfo.html"
  },
  "flickr.groups.join": {
   "required": [
@@ -1476,7 +1476,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.join",
-  "url": "http://www.flickr.com/services/api/flickr.groups.join.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.join.html"
  },
  "flickr.groups.joinRequest": {
   "required": [
@@ -1536,7 +1536,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.joinRequest",
-  "url": "http://www.flickr.com/services/api/flickr.groups.joinRequest.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.joinRequest.html"
  },
  "flickr.groups.leave": {
   "required": [
@@ -1574,7 +1574,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 3
   },
   "name": "flickr.groups.leave",
-  "url": "http://www.flickr.com/services/api/flickr.groups.leave.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.leave.html"
  },
  "flickr.groups.members.getList": {
   "required": [
@@ -1610,7 +1610,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.groups.members.getList",
-  "url": "http://www.flickr.com/services/api/flickr.groups.members.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.members.getList.html"
  },
  "flickr.groups.pools.add": {
   "required": [
@@ -1676,7 +1676,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.pools.add",
-  "url": "http://www.flickr.com/services/api/flickr.groups.pools.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.pools.add.html"
  },
  "flickr.groups.pools.getContext": {
   "required": [
@@ -1726,7 +1726,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.pools.getContext",
-  "url": "http://www.flickr.com/services/api/flickr.groups.pools.getContext.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.pools.getContext.html"
  },
  "flickr.groups.pools.getGroups": {
   "optional": [
@@ -1749,7 +1749,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.groups.pools.getGroups",
-  "url": "http://www.flickr.com/services/api/flickr.groups.pools.getGroups.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.pools.getGroups.html"
  },
  "flickr.groups.pools.getPhotos": {
   "required": [
@@ -1799,7 +1799,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.pools.getPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.groups.pools.getPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.pools.getPhotos.html"
  },
  "flickr.groups.pools.remove": {
   "required": [
@@ -1835,7 +1835,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.groups.pools.remove",
-  "url": "http://www.flickr.com/services/api/flickr.groups.pools.remove.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.pools.remove.html"
  },
  "flickr.groups.search": {
   "required": [
@@ -1875,7 +1875,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.groups.search",
-  "url": "http://www.flickr.com/services/api/flickr.groups.search.html"
+  "url": "https://www.flickr.com/services/api/flickr.groups.search.html"
  },
  "flickr.interestingness.getList": {
   "optional": [
@@ -1901,7 +1901,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.interestingness.getList",
-  "url": "http://www.flickr.com/services/api/flickr.interestingness.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.interestingness.getList.html"
  },
  "flickr.machinetags.getNamespaces": {
   "optional": [
@@ -1931,7 +1931,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.machinetags.getNamespaces",
-  "url": "http://www.flickr.com/services/api/flickr.machinetags.getNamespaces.html"
+  "url": "https://www.flickr.com/services/api/flickr.machinetags.getNamespaces.html"
  },
  "flickr.machinetags.getPairs": {
   "optional": [
@@ -1970,7 +1970,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.machinetags.getPairs",
-  "url": "http://www.flickr.com/services/api/flickr.machinetags.getPairs.html"
+  "url": "https://www.flickr.com/services/api/flickr.machinetags.getPairs.html"
  },
  "flickr.machinetags.getPredicates": {
   "optional": [
@@ -2000,7 +2000,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.machinetags.getPredicates",
-  "url": "http://www.flickr.com/services/api/flickr.machinetags.getPredicates.html"
+  "url": "https://www.flickr.com/services/api/flickr.machinetags.getPredicates.html"
  },
  "flickr.machinetags.getRecentValues": {
   "optional": [
@@ -2023,7 +2023,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.machinetags.getRecentValues",
-  "url": "http://www.flickr.com/services/api/flickr.machinetags.getRecentValues.html"
+  "url": "https://www.flickr.com/services/api/flickr.machinetags.getRecentValues.html"
  },
  "flickr.machinetags.getValues": {
   "required": [
@@ -2068,7 +2068,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.machinetags.getValues",
-  "url": "http://www.flickr.com/services/api/flickr.machinetags.getValues.html"
+  "url": "https://www.flickr.com/services/api/flickr.machinetags.getValues.html"
  },
  "flickr.panda.getList": {
   "security": {
@@ -2077,7 +2077,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.panda.getList",
-  "url": "http://www.flickr.com/services/api/flickr.panda.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.panda.getList.html"
  },
  "flickr.panda.getPhotos": {
   "required": [
@@ -2104,7 +2104,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.panda.getPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.panda.getPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.panda.getPhotos.html"
  },
  "flickr.people.findByEmail": {
   "required": [
@@ -2126,7 +2126,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.findByEmail",
-  "url": "http://www.flickr.com/services/api/flickr.people.findByEmail.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.findByEmail.html"
  },
  "flickr.people.findByUsername": {
   "required": [
@@ -2148,7 +2148,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.findByUsername",
-  "url": "http://www.flickr.com/services/api/flickr.people.findByUsername.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.findByUsername.html"
  },
  "flickr.people.getGroups": {
   "required": [
@@ -2184,7 +2184,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.people.getGroups",
-  "url": "http://www.flickr.com/services/api/flickr.people.getGroups.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getGroups.html"
  },
  "flickr.people.getInfo": {
   "required": [
@@ -2224,7 +2224,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.people.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getInfo.html"
  },
  "flickr.people.getLimits": {
   "security": {
@@ -2233,7 +2233,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.people.getLimits",
-  "url": "http://www.flickr.com/services/api/flickr.people.getLimits.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getLimits.html"
  },
  "flickr.people.getPhotos": {
   "required": [
@@ -2290,7 +2290,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.getPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.people.getPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getPhotos.html"
  },
  "flickr.people.getPhotosOf": {
   "required": [
@@ -2318,7 +2318,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.getPhotosOf",
-  "url": "http://www.flickr.com/services/api/flickr.people.getPhotosOf.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getPhotosOf.html"
  },
  "flickr.people.getPublicGroups": {
   "required": [
@@ -2346,7 +2346,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.getPublicGroups",
-  "url": "http://www.flickr.com/services/api/flickr.people.getPublicGroups.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getPublicGroups.html"
  },
  "flickr.people.getPublicPhotos": {
   "required": [
@@ -2374,7 +2374,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.people.getPublicPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.people.getPublicPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getPublicPhotos.html"
  },
  "flickr.people.getUploadStatus": {
   "security": {
@@ -2383,7 +2383,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.people.getUploadStatus",
-  "url": "http://www.flickr.com/services/api/flickr.people.getUploadStatus.html"
+  "url": "https://www.flickr.com/services/api/flickr.people.getUploadStatus.html"
  },
  "flickr.photos.addTags": {
   "required": [
@@ -2414,7 +2414,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.addTags",
-  "url": "http://www.flickr.com/services/api/flickr.photos.addTags.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.addTags.html"
  },
  "flickr.photos.comments.addComment": {
   "required": [
@@ -2468,7 +2468,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.comments.addComment",
-  "url": "http://www.flickr.com/services/api/flickr.photos.comments.addComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.comments.addComment.html"
  },
  "flickr.photos.comments.deleteComment": {
   "required": [
@@ -2495,7 +2495,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.comments.deleteComment",
-  "url": "http://www.flickr.com/services/api/flickr.photos.comments.deleteComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.comments.deleteComment.html"
  },
  "flickr.photos.comments.editComment": {
   "required": [
@@ -2557,7 +2557,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.comments.editComment",
-  "url": "http://www.flickr.com/services/api/flickr.photos.comments.editComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.comments.editComment.html"
  },
  "flickr.photos.comments.getList": {
   "required": [
@@ -2625,7 +2625,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.comments.getList",
-  "url": "http://www.flickr.com/services/api/flickr.photos.comments.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.comments.getList.html"
  },
  "flickr.photos.comments.getRecentForContacts": {
   "optional": [
@@ -2644,7 +2644,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.comments.getRecentForContacts",
-  "url": "http://www.flickr.com/services/api/flickr.photos.comments.getRecentForContacts.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.comments.getRecentForContacts.html"
  },
  "flickr.photos.delete": {
   "required": [
@@ -2666,7 +2666,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 3
   },
   "name": "flickr.photos.delete",
-  "url": "http://www.flickr.com/services/api/flickr.photos.delete.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.delete.html"
  },
  "flickr.photos.geo.batchCorrectLocation": {
   "required": [
@@ -2731,7 +2731,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.batchCorrectLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.batchCorrectLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.batchCorrectLocation.html"
  },
  "flickr.photos.geo.correctLocation": {
   "required": [
@@ -2782,7 +2782,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.correctLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.correctLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.correctLocation.html"
  },
  "flickr.photos.geo.getLocation": {
   "required": [
@@ -2815,7 +2815,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.geo.getLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.getLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.getLocation.html"
  },
  "flickr.photos.geo.getPerms": {
   "required": [
@@ -2842,7 +2842,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.geo.getPerms",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.getPerms.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.getPerms.html"
  },
  "flickr.photos.geo.photosForLocation": {
   "required": [
@@ -2889,7 +2889,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.geo.photosForLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.photosForLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.photosForLocation.html"
  },
  "flickr.photos.geo.removeLocation": {
   "required": [
@@ -2916,7 +2916,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.removeLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.removeLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.removeLocation.html"
  },
  "flickr.photos.geo.setContext": {
   "required": [
@@ -2947,7 +2947,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.setContext",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.setContext.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.setContext.html"
  },
  "flickr.photos.geo.setLocation": {
   "required": [
@@ -3045,7 +3045,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.setLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.setLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.setLocation.html"
  },
  "flickr.photos.geo.setPerms": {
   "required": [
@@ -3093,7 +3093,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.geo.setPerms",
-  "url": "http://www.flickr.com/services/api/flickr.photos.geo.setPerms.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.geo.setPerms.html"
  },
  "flickr.photos.getAllContexts": {
   "required": [
@@ -3115,7 +3115,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getAllContexts",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getAllContexts.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getAllContexts.html"
  },
  "flickr.photos.getContactsPhotos": {
   "optional": [
@@ -3146,7 +3146,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getContactsPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getContactsPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getContactsPhotos.html"
  },
  "flickr.photos.getContactsPublicPhotos": {
   "required": [
@@ -3190,7 +3190,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getContactsPublicPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getContactsPublicPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getContactsPublicPhotos.html"
  },
  "flickr.photos.getContext": {
   "required": [
@@ -3234,7 +3234,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getContext",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getContext.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getContext.html"
  },
  "flickr.photos.getCounts": {
   "optional": [
@@ -3260,7 +3260,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getCounts",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getCounts.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getCounts.html"
  },
  "flickr.photos.getExif": {
   "required": [
@@ -3297,7 +3297,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getExif",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getExif.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getExif.html"
  },
  "flickr.photos.getFavorites": {
   "required": [
@@ -3329,7 +3329,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getFavorites",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getFavorites.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getFavorites.html"
  },
  "flickr.photos.getInfo": {
   "required": [
@@ -3381,7 +3381,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getInfo.html"
  },
  "flickr.photos.getNotInSet": {
   "optional": [
@@ -3416,7 +3416,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getNotInSet",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getNotInSet.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getNotInSet.html"
  },
  "flickr.photos.getPerms": {
   "required": [
@@ -3438,7 +3438,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getPerms",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getPerms.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getPerms.html"
  },
  "flickr.photos.getRecent": {
   "optional": [
@@ -3460,7 +3460,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getRecent",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getRecent.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getRecent.html"
  },
  "flickr.photos.getSizes": {
   "required": [
@@ -3487,7 +3487,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.getSizes",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getSizes.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getSizes.html"
  },
  "flickr.photos.getUntagged": {
   "optional": [
@@ -3522,7 +3522,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getUntagged",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getUntagged.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getUntagged.html"
  },
  "flickr.photos.getWithGeoData": {
   "optional": [
@@ -3561,7 +3561,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getWithGeoData",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getWithGeoData.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getWithGeoData.html"
  },
  "flickr.photos.getWithoutGeoData": {
   "optional": [
@@ -3600,7 +3600,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.getWithoutGeoData",
-  "url": "http://www.flickr.com/services/api/flickr.photos.getWithoutGeoData.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.getWithoutGeoData.html"
  },
  "flickr.photos.licenses.getInfo": {
   "security": {
@@ -3609,7 +3609,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.licenses.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.licenses.getInfo.html"
  },
  "flickr.photos.licenses.setLicense": {
   "required": [
@@ -3640,7 +3640,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.licenses.setLicense",
-  "url": "http://www.flickr.com/services/api/flickr.photos.licenses.setLicense.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.licenses.setLicense.html"
  },
  "flickr.photos.notes.add": {
   "required": [
@@ -3697,7 +3697,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.notes.add",
-  "url": "http://www.flickr.com/services/api/flickr.photos.notes.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.notes.add.html"
  },
  "flickr.photos.notes.delete": {
   "required": [
@@ -3724,7 +3724,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.notes.delete",
-  "url": "http://www.flickr.com/services/api/flickr.photos.notes.delete.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.notes.delete.html"
  },
  "flickr.photos.notes.edit": {
   "required": [
@@ -3776,7 +3776,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.notes.edit",
-  "url": "http://www.flickr.com/services/api/flickr.photos.notes.edit.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.notes.edit.html"
  },
  "flickr.photos.people.add": {
   "required": [
@@ -3855,7 +3855,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.people.add",
-  "url": "http://www.flickr.com/services/api/flickr.photos.people.add.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.people.add.html"
  },
  "flickr.photos.people.delete": {
   "required": [
@@ -3897,7 +3897,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.people.delete",
-  "url": "http://www.flickr.com/services/api/flickr.photos.people.delete.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.people.delete.html"
  },
  "flickr.photos.people.deleteCoords": {
   "required": [
@@ -3933,7 +3933,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.people.deleteCoords",
-  "url": "http://www.flickr.com/services/api/flickr.photos.people.deleteCoords.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.people.deleteCoords.html"
  },
  "flickr.photos.people.editCoords": {
   "required": [
@@ -4001,7 +4001,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.people.editCoords",
-  "url": "http://www.flickr.com/services/api/flickr.photos.people.editCoords.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.people.editCoords.html"
  },
  "flickr.photos.people.getList": {
   "required": [
@@ -4029,7 +4029,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.people.getList",
-  "url": "http://www.flickr.com/services/api/flickr.photos.people.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.people.getList.html"
  },
  "flickr.photos.recentlyUpdated": {
   "required": [
@@ -4056,7 +4056,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.recentlyUpdated",
-  "url": "http://www.flickr.com/services/api/flickr.photos.recentlyUpdated.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.recentlyUpdated.html"
  },
  "flickr.photos.removeTag": {
   "required": [
@@ -4078,7 +4078,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.removeTag",
-  "url": "http://www.flickr.com/services/api/flickr.photos.removeTag.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.removeTag.html"
  },
  "flickr.photos.search": {
   "optional": [
@@ -4329,7 +4329,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.search",
-  "url": "http://www.flickr.com/services/api/flickr.photos.search.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.search.html"
  },
  "flickr.photos.setContentType": {
   "required": [
@@ -4365,7 +4365,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setContentType",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setContentType.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setContentType.html"
  },
  "flickr.photos.setDates": {
   "required": [
@@ -4411,7 +4411,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setDates",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setDates.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setDates.html"
  },
  "flickr.photos.setMeta": {
   "required": [
@@ -4441,7 +4441,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setMeta",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setMeta.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setMeta.html"
  },
  "flickr.photos.setPerms": {
   "required": [
@@ -4488,7 +4488,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setPerms",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setPerms.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setPerms.html"
  },
  "flickr.photos.setSafetyLevel": {
   "required": [
@@ -4530,7 +4530,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setSafetyLevel",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setSafetyLevel.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setSafetyLevel.html"
  },
  "flickr.photos.setTags": {
   "required": [
@@ -4561,7 +4561,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.setTags",
-  "url": "http://www.flickr.com/services/api/flickr.photos.setTags.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.setTags.html"
  },
  "flickr.photos.suggestions.approveSuggestion": {
   "required": [
@@ -4576,7 +4576,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.suggestions.approveSuggestion",
-  "url": "http://www.flickr.com/services/api/flickr.photos.suggestions.approveSuggestion.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.suggestions.approveSuggestion.html"
  },
  "flickr.photos.suggestions.getList": {
   "optional": [
@@ -4595,7 +4595,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.photos.suggestions.getList",
-  "url": "http://www.flickr.com/services/api/flickr.photos.suggestions.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.suggestions.getList.html"
  },
  "flickr.photos.suggestions.rejectSuggestion": {
   "required": [
@@ -4610,7 +4610,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.suggestions.rejectSuggestion",
-  "url": "http://www.flickr.com/services/api/flickr.photos.suggestions.rejectSuggestion.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.suggestions.rejectSuggestion.html"
  },
  "flickr.photos.suggestions.removeSuggestion": {
   "required": [
@@ -4625,7 +4625,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.suggestions.removeSuggestion",
-  "url": "http://www.flickr.com/services/api/flickr.photos.suggestions.removeSuggestion.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.suggestions.removeSuggestion.html"
  },
  "flickr.photos.suggestions.suggestLocation": {
   "required": [
@@ -4666,7 +4666,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.suggestions.suggestLocation",
-  "url": "http://www.flickr.com/services/api/flickr.photos.suggestions.suggestLocation.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.suggestions.suggestLocation.html"
  },
  "flickr.photos.transform.rotate": {
   "required": [
@@ -4707,7 +4707,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photos.transform.rotate",
-  "url": "http://www.flickr.com/services/api/flickr.photos.transform.rotate.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.transform.rotate.html"
  },
  "flickr.photos.upload.checkTickets": {
   "required": [
@@ -4728,7 +4728,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photos.upload.checkTickets",
-  "url": "http://www.flickr.com/services/api/flickr.photos.upload.checkTickets.html"
+  "url": "https://www.flickr.com/services/api/flickr.photos.upload.checkTickets.html"
  },
  "flickr.photosets.addPhoto": {
   "required": [
@@ -4769,7 +4769,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.addPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.addPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.addPhoto.html"
  },
  "flickr.photosets.comments.addComment": {
   "required": [
@@ -4805,7 +4805,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.comments.addComment",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.comments.addComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.comments.addComment.html"
  },
  "flickr.photosets.comments.deleteComment": {
   "required": [
@@ -4827,7 +4827,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.comments.deleteComment",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.comments.deleteComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.comments.deleteComment.html"
  },
  "flickr.photosets.comments.editComment": {
   "required": [
@@ -4858,7 +4858,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.comments.editComment",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.comments.editComment.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.comments.editComment.html"
  },
  "flickr.photosets.comments.getList": {
   "required": [
@@ -4880,7 +4880,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photosets.comments.getList",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.comments.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.comments.getList.html"
  },
  "flickr.photosets.create": {
   "required": [
@@ -4926,7 +4926,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.create",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.create.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.create.html"
  },
  "flickr.photosets.delete": {
   "required": [
@@ -4948,7 +4948,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.delete",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.delete.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.delete.html"
  },
  "flickr.photosets.editMeta": {
   "required": [
@@ -4985,7 +4985,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.editMeta",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.editMeta.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.editMeta.html"
  },
  "flickr.photosets.editPhotos": {
   "required": [
@@ -5035,7 +5035,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.editPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.editPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.editPhotos.html"
  },
  "flickr.photosets.getContext": {
   "required": [
@@ -5080,7 +5080,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photosets.getContext",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.getContext.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.getContext.html"
  },
  "flickr.photosets.getInfo": {
   "required": [
@@ -5102,7 +5102,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photosets.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.getInfo.html"
  },
  "flickr.photosets.getList": {
   "optional": [
@@ -5136,7 +5136,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photosets.getList",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.getList.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.getList.html"
  },
  "flickr.photosets.getPhotos": {
   "required": [
@@ -5180,7 +5180,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.photosets.getPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.getPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.getPhotos.html"
  },
  "flickr.photosets.orderSets": {
   "required": [
@@ -5202,7 +5202,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.orderSets",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.orderSets.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.orderSets.html"
  },
  "flickr.photosets.removePhoto": {
   "required": [
@@ -5238,7 +5238,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.removePhoto",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.removePhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.removePhoto.html"
  },
  "flickr.photosets.removePhotos": {
   "required": [
@@ -5269,7 +5269,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.removePhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.removePhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.removePhotos.html"
  },
  "flickr.photosets.reorderPhotos": {
   "required": [
@@ -5300,7 +5300,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.reorderPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.reorderPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.reorderPhotos.html"
  },
  "flickr.photosets.setPrimaryPhoto": {
   "required": [
@@ -5331,7 +5331,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 2
   },
   "name": "flickr.photosets.setPrimaryPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.photosets.setPrimaryPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.photosets.setPrimaryPhoto.html"
  },
  "flickr.places.find": {
   "required": [
@@ -5367,7 +5367,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.find",
-  "url": "http://www.flickr.com/services/api/flickr.places.find.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.find.html"
  },
  "flickr.places.findByLatLon": {
   "required": [
@@ -5414,7 +5414,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.findByLatLon",
-  "url": "http://www.flickr.com/services/api/flickr.places.findByLatLon.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.findByLatLon.html"
  },
  "flickr.places.getChildrenWithPhotosPublic": {
   "optional": [
@@ -5450,7 +5450,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getChildrenWithPhotosPublic",
-  "url": "http://www.flickr.com/services/api/flickr.places.getChildrenWithPhotosPublic.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getChildrenWithPhotosPublic.html"
  },
  "flickr.places.getInfo": {
   "optional": [
@@ -5486,7 +5486,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getInfo",
-  "url": "http://www.flickr.com/services/api/flickr.places.getInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getInfo.html"
  },
  "flickr.places.getInfoByUrl": {
   "required": [
@@ -5513,7 +5513,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getInfoByUrl",
-  "url": "http://www.flickr.com/services/api/flickr.places.getInfoByUrl.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getInfoByUrl.html"
  },
  "flickr.places.getPlaceTypes": {
   "security": {
@@ -5522,7 +5522,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getPlaceTypes",
-  "url": "http://www.flickr.com/services/api/flickr.places.getPlaceTypes.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getPlaceTypes.html"
  },
  "flickr.places.getShapeHistory": {
   "optional": [
@@ -5558,7 +5558,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getShapeHistory",
-  "url": "http://www.flickr.com/services/api/flickr.places.getShapeHistory.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getShapeHistory.html"
  },
  "flickr.places.getTopPlacesList": {
   "required": [
@@ -5609,7 +5609,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.getTopPlacesList",
-  "url": "http://www.flickr.com/services/api/flickr.places.getTopPlacesList.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.getTopPlacesList.html"
  },
  "flickr.places.placesForBoundingBox": {
   "required": [
@@ -5660,7 +5660,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.placesForBoundingBox",
-  "url": "http://www.flickr.com/services/api/flickr.places.placesForBoundingBox.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.placesForBoundingBox.html"
  },
  "flickr.places.placesForContacts": {
   "optional": [
@@ -5743,7 +5743,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.places.placesForContacts",
-  "url": "http://www.flickr.com/services/api/flickr.places.placesForContacts.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.placesForContacts.html"
  },
  "flickr.places.placesForTags": {
   "required": [
@@ -5804,7 +5804,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.placesForTags",
-  "url": "http://www.flickr.com/services/api/flickr.places.placesForTags.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.placesForTags.html"
  },
  "flickr.places.placesForUser": {
   "optional": [
@@ -5878,7 +5878,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.places.placesForUser",
-  "url": "http://www.flickr.com/services/api/flickr.places.placesForUser.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.placesForUser.html"
  },
  "flickr.places.resolvePlaceId": {
   "required": [
@@ -5905,7 +5905,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.resolvePlaceId",
-  "url": "http://www.flickr.com/services/api/flickr.places.resolvePlaceId.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.resolvePlaceId.html"
  },
  "flickr.places.resolvePlaceURL": {
   "required": [
@@ -5932,7 +5932,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.resolvePlaceURL",
-  "url": "http://www.flickr.com/services/api/flickr.places.resolvePlaceURL.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.resolvePlaceURL.html"
  },
  "flickr.places.tagsForPlace": {
   "optional": [
@@ -5984,7 +5984,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.places.tagsForPlace",
-  "url": "http://www.flickr.com/services/api/flickr.places.tagsForPlace.html"
+  "url": "https://www.flickr.com/services/api/flickr.places.tagsForPlace.html"
  },
  "flickr.prefs.getContentType": {
   "security": {
@@ -5993,7 +5993,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.prefs.getContentType",
-  "url": "http://www.flickr.com/services/api/flickr.prefs.getContentType.html"
+  "url": "https://www.flickr.com/services/api/flickr.prefs.getContentType.html"
  },
  "flickr.prefs.getGeoPerms": {
   "security": {
@@ -6002,7 +6002,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.prefs.getGeoPerms",
-  "url": "http://www.flickr.com/services/api/flickr.prefs.getGeoPerms.html"
+  "url": "https://www.flickr.com/services/api/flickr.prefs.getGeoPerms.html"
  },
  "flickr.prefs.getHidden": {
   "security": {
@@ -6011,7 +6011,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.prefs.getHidden",
-  "url": "http://www.flickr.com/services/api/flickr.prefs.getHidden.html"
+  "url": "https://www.flickr.com/services/api/flickr.prefs.getHidden.html"
  },
  "flickr.prefs.getPrivacy": {
   "security": {
@@ -6020,7 +6020,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.prefs.getPrivacy",
-  "url": "http://www.flickr.com/services/api/flickr.prefs.getPrivacy.html"
+  "url": "https://www.flickr.com/services/api/flickr.prefs.getPrivacy.html"
  },
  "flickr.prefs.getSafetyLevel": {
   "security": {
@@ -6029,7 +6029,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.prefs.getSafetyLevel",
-  "url": "http://www.flickr.com/services/api/flickr.prefs.getSafetyLevel.html"
+  "url": "https://www.flickr.com/services/api/flickr.prefs.getSafetyLevel.html"
  },
  "flickr.push.getSubscriptions": {
   "errors": [
@@ -6045,7 +6045,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.push.getSubscriptions",
-  "url": "http://www.flickr.com/services/api/flickr.push.getSubscriptions.html"
+  "url": "https://www.flickr.com/services/api/flickr.push.getSubscriptions.html"
  },
  "flickr.push.getTopics": {
   "security": {
@@ -6054,7 +6054,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.push.getTopics",
-  "url": "http://www.flickr.com/services/api/flickr.push.getTopics.html"
+  "url": "https://www.flickr.com/services/api/flickr.push.getTopics.html"
  },
  "flickr.push.subscribe": {
   "required": [
@@ -6171,7 +6171,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.push.subscribe",
-  "url": "http://www.flickr.com/services/api/flickr.push.subscribe.html"
+  "url": "https://www.flickr.com/services/api/flickr.push.subscribe.html"
  },
  "flickr.push.unsubscribe": {
   "required": [
@@ -6227,7 +6227,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.push.unsubscribe",
-  "url": "http://www.flickr.com/services/api/flickr.push.unsubscribe.html"
+  "url": "https://www.flickr.com/services/api/flickr.push.unsubscribe.html"
  },
  "flickr.reflection.getMethodInfo": {
   "required": [
@@ -6249,7 +6249,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.reflection.getMethodInfo",
-  "url": "http://www.flickr.com/services/api/flickr.reflection.getMethodInfo.html"
+  "url": "https://www.flickr.com/services/api/flickr.reflection.getMethodInfo.html"
  },
  "flickr.reflection.getMethods": {
   "security": {
@@ -6258,7 +6258,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.reflection.getMethods",
-  "url": "http://www.flickr.com/services/api/flickr.reflection.getMethods.html"
+  "url": "https://www.flickr.com/services/api/flickr.reflection.getMethods.html"
  },
  "flickr.stats.getCollectionDomains": {
   "required": [
@@ -6309,7 +6309,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getCollectionDomains",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getCollectionDomains.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getCollectionDomains.html"
  },
  "flickr.stats.getCollectionReferrers": {
   "required": [
@@ -6369,7 +6369,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getCollectionReferrers",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getCollectionReferrers.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getCollectionReferrers.html"
  },
  "flickr.stats.getCollectionStats": {
   "required": [
@@ -6410,7 +6410,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getCollectionStats",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getCollectionStats.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getCollectionStats.html"
  },
  "flickr.stats.getCSVFiles": {
   "security": {
@@ -6419,7 +6419,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getCSVFiles",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getCSVFiles.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getCSVFiles.html"
  },
  "flickr.stats.getPhotoDomains": {
   "required": [
@@ -6470,7 +6470,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotoDomains",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotoDomains.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotoDomains.html"
  },
  "flickr.stats.getPhotoReferrers": {
   "required": [
@@ -6530,7 +6530,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotoReferrers",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotoReferrers.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotoReferrers.html"
  },
  "flickr.stats.getPhotosetDomains": {
   "required": [
@@ -6581,7 +6581,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotosetDomains",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotosetDomains.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotosetDomains.html"
  },
  "flickr.stats.getPhotosetReferrers": {
   "required": [
@@ -6641,7 +6641,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotosetReferrers",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotosetReferrers.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotosetReferrers.html"
  },
  "flickr.stats.getPhotosetStats": {
   "required": [
@@ -6682,7 +6682,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotosetStats",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotosetStats.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotosetStats.html"
  },
  "flickr.stats.getPhotoStats": {
   "required": [
@@ -6723,7 +6723,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotoStats",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotoStats.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotoStats.html"
  },
  "flickr.stats.getPhotostreamDomains": {
   "required": [
@@ -6765,7 +6765,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotostreamDomains",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotostreamDomains.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotostreamDomains.html"
  },
  "flickr.stats.getPhotostreamReferrers": {
   "required": [
@@ -6816,7 +6816,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotostreamReferrers",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotostreamReferrers.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotostreamReferrers.html"
  },
  "flickr.stats.getPhotostreamStats": {
   "required": [
@@ -6848,7 +6848,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPhotostreamStats",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPhotostreamStats.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPhotostreamStats.html"
  },
  "flickr.stats.getPopularPhotos": {
   "optional": [
@@ -6897,7 +6897,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getPopularPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getPopularPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getPopularPhotos.html"
  },
  "flickr.stats.getTotalViews": {
   "optional": [
@@ -6929,7 +6929,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.stats.getTotalViews",
-  "url": "http://www.flickr.com/services/api/flickr.stats.getTotalViews.html"
+  "url": "https://www.flickr.com/services/api/flickr.stats.getTotalViews.html"
  },
  "flickr.tags.getClusterPhotos": {
   "required": [
@@ -6948,7 +6948,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getClusterPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getClusterPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getClusterPhotos.html"
  },
  "flickr.tags.getClusters": {
   "required": [
@@ -6970,7 +6970,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getClusters",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getClusters.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getClusters.html"
  },
  "flickr.tags.getHotList": {
   "optional": [
@@ -6996,7 +6996,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getHotList",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getHotList.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getHotList.html"
  },
  "flickr.tags.getListPhoto": {
   "required": [
@@ -7018,7 +7018,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getListPhoto",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getListPhoto.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getListPhoto.html"
  },
  "flickr.tags.getListUser": {
   "optional": [
@@ -7040,7 +7040,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getListUser",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getListUser.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getListUser.html"
  },
  "flickr.tags.getListUserPopular": {
   "optional": [
@@ -7066,7 +7066,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getListUserPopular",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getListUserPopular.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getListUserPopular.html"
  },
  "flickr.tags.getListUserRaw": {
   "optional": [
@@ -7088,7 +7088,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getListUserRaw",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getListUserRaw.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getListUserRaw.html"
  },
  "flickr.tags.getMostFrequentlyUsed": {
   "security": {
@@ -7097,7 +7097,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.tags.getMostFrequentlyUsed",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getMostFrequentlyUsed.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getMostFrequentlyUsed.html"
  },
  "flickr.tags.getRelated": {
   "required": [
@@ -7119,7 +7119,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.tags.getRelated",
-  "url": "http://www.flickr.com/services/api/flickr.tags.getRelated.html"
+  "url": "https://www.flickr.com/services/api/flickr.tags.getRelated.html"
  },
  "flickr.test.echo": {
   "security": {
@@ -7128,7 +7128,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.test.echo",
-  "url": "http://www.flickr.com/services/api/flickr.test.echo.html"
+  "url": "https://www.flickr.com/services/api/flickr.test.echo.html"
  },
  "flickr.test.login": {
   "security": {
@@ -7137,7 +7137,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.test.login",
-  "url": "http://www.flickr.com/services/api/flickr.test.login.html"
+  "url": "https://www.flickr.com/services/api/flickr.test.login.html"
  },
  "flickr.test.null": {
   "security": {
@@ -7146,7 +7146,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 1
   },
   "name": "flickr.test.null",
-  "url": "http://www.flickr.com/services/api/flickr.test.null.html"
+  "url": "https://www.flickr.com/services/api/flickr.test.null.html"
  },
  "flickr.urls.getGroup": {
   "required": [
@@ -7168,7 +7168,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.getGroup",
-  "url": "http://www.flickr.com/services/api/flickr.urls.getGroup.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.getGroup.html"
  },
  "flickr.urls.getUserPhotos": {
   "optional": [
@@ -7195,7 +7195,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.getUserPhotos",
-  "url": "http://www.flickr.com/services/api/flickr.urls.getUserPhotos.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.getUserPhotos.html"
  },
  "flickr.urls.getUserProfile": {
   "optional": [
@@ -7222,7 +7222,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.getUserProfile",
-  "url": "http://www.flickr.com/services/api/flickr.urls.getUserProfile.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.getUserProfile.html"
  },
  "flickr.urls.lookupGallery": {
   "required": [
@@ -7237,7 +7237,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.lookupGallery",
-  "url": "http://www.flickr.com/services/api/flickr.urls.lookupGallery.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.lookupGallery.html"
  },
  "flickr.urls.lookupGroup": {
   "required": [
@@ -7259,7 +7259,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.lookupGroup",
-  "url": "http://www.flickr.com/services/api/flickr.urls.lookupGroup.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.lookupGroup.html"
  },
  "flickr.urls.lookupUser": {
   "required": [
@@ -7281,7 +7281,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    "requiredperms": 0
   },
   "name": "flickr.urls.lookupUser",
-  "url": "http://www.flickr.com/services/api/flickr.urls.lookupUser.html"
+  "url": "https://www.flickr.com/services/api/flickr.urls.lookupUser.html"
  }
 };
 
