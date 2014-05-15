@@ -248,7 +248,7 @@ module.exports = (function() {
         errors = {};
       }
 
-      var authed = security.needssigning === 1;
+      var authed = (security.needssigning === 1) || flickrOptions.force_auth;
 
       // do we need to HMAC-SHA1 sign this URL?
       if (authed) {

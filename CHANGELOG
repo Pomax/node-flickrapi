@@ -1,3 +1,11 @@
+v0.3.21
+  * Added "force_auth" as possible flickrOptions property,
+    which allows you to force authed API calls for functions
+    that do not require auth, but may generate more data if
+    authed (such as the photos.search function, which does
+    public searching without auth, but can return private
+    data when authed).
+
 v0.3.20
   * fixed some remaining http: protocol URLs to be https:
 

@@ -143,6 +143,10 @@ also has an `options` property, which looks like this:
   access_token_secret: "its corresponding secret",
   oauth_timestamp: "the timestamp for the last flickr API call",
   oauth_nonce: "the cryptographic nonce that request used",
+  force_auth: true or false (defaults to false) to indicate whether to force
+              oauth signing for functions that can be called both key-only
+              and authenticated for additional data access (like the photo
+              search function)
   afterDownsync: <optional, you can bind an arg-less callback function here>
   permissions: <optional, default value is 'read', see "on first run" below>
 }
