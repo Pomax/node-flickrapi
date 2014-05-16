@@ -23,10 +23,12 @@ var async = require("async"),
  * flickr, or from .json file if we already have it)
  * and get all the associated photographs.
  */
-function processPhoto(flickr, photo_idx, photo, next) {
+function processPhoto(flickr, options) {
   "use strict";
 
-  var id = photo.id,
+  var photo_idx = options.photo_idx,
+      photo = options.photo,
+      id = photo.id,
       secret = photo.secret,
       sizes = [],
       filename_cmt = flickr.options.locals.dirstructure.ia.photos.comments + "/" + id + ".json",
@@ -130,7 +132,7 @@ function processPhoto(flickr, photo_idx, photo, next) {
         // 2a: we do not.
         if(ondisk && ondisk.dates.lastupdate === metadata.dates.lastupdate) {
           // console.log("2a");
-          return download(flickr, ondisk, next);
+          return download(flickr, ondisk, options.next);
         }
 
         // 2b: we do.
@@ -141,7 +143,7 @@ function processPhoto(flickr, photo_idx, photo, next) {
               getSizes = photoFunctions.getSizes,
               gsFn = function() {
                 fs.writeFile(filename_md, JSON.prettyprint(metadata), function() {
-                  return download(flickr, metadata, next);
+                  return download(flickr, metadata, options.next);
                 });
               },
               gcxFn = function() { getSizes(gsFn); },
@@ -161,47 +163,50 @@ function processPhoto(flickr, photo_idx, photo, next) {
 /**
  * Processing all photographs one by one
  */
-function processPhotos(flickr, photo_idx, total) {
-  if(photo_idx >= total) {
+function processPhotos(flickr, options) {
+  if(options.photo_idx >= options.total) {
     console.log("done downloading photo metadata.");
-    return setTimeout(function() {
-      // move on to syncing sets
-      getSetMetadata(flickr);
-    }, 1);
+    if(options.callback) {
+      options.callback();
+    }
+    return;
   }
 
-  var photo = photos[photo_idx],
+  var photo_idx = options.photo_idx,
+      photo = photos[photo_idx],
       method = "flickr.photos.getInfo",
-      next = (function(flickr, photo_idx, total) {
-        var next_idx = photo_idx + 1;
+      next = (function(flickr, options) {
+        options.photo = false;
+        options.photo_idx++;
         return function() {
-          setTimeout(function() {
-            processPhotos(flickr, next_idx, total);
-          }, 1);
+          setTimeout(function() { processPhotos(flickr, options); }, 0);
         };
-      }(flickr, photo_idx, total));
+      }(flickr, options));
 
   if(!photo) {
     console.error("for some reason, photo " + photo_idx + " is undefined...");
     return next();
   }
 
-  processPhoto(flickr, photo_idx, photo, next);
+  options.photo = photo;
+  options.next = next;
+  processPhoto(flickr, options);
 }
 
 
 /**
  * this function grabs all photo definitions from Flickr
  */
-function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDeleted) {
-  if(tally >= total) {
+function aggregatePhotos(flickr, options) {
+
+  if(options.tally >= options.total) {
     console.log("done fetching photo information from Flickr.");
     console.log();
     console.log("Downloading photos and metadata from Flickr.");
-    progressBar = new progress('  [:bar] :current/:total', { total: total });
+    progressBar = new progress('  [:bar] :current/:total', { total: options.total });
     setTimeout(function() {
       // delete any photos that were deleted from flickr, if specified
-      if(removeDeleted) {
+      if(options.removeDeleted) {
         var ia = flickr.options.locals,
             dirs = ia.dirstructure,
             keys = ia.photo_keys.slice(),
@@ -227,28 +232,54 @@ function aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDe
         });
       }
       // Move on to processing our list of photos
-      processPhotos(flickr, 0, total);
+      processPhotos(flickr, {
+        photo_idx: 0,
+        total: options.total,
+        callback: options.callback
+      });
     }, 1);
     return;
   }
 
   flickr.photos.search({
-    user_id: user_id,
-    per_page: per_page,
-    page: page
+    user_id: options.user_id,
+    per_page: options.per_page,
+    page: options.page
   }, function(error, result) {
     var batch = result.photos.photo;
-    tally += batch.length;
-    progressBarAggregate.tick(per_page);
+    options.tally += batch.length;
+    options.page += 1;
+    progressBarAggregate.tick(options.per_page);
     photos = photos.concat(batch);
-    aggregatePhotos(flickr, user_id, per_page, page+1, tally, total, removeDeleted);
+    aggregatePhotos(flickr, options);
   });
 }
 
 /**
  * export just this function
  */
-module.exports = function(flickr, user_id, per_page, page, tally, total, removeDeleted) {
-  progressBarAggregate = new progress('  [:bar] :current/:total', { total: total });
-  aggregatePhotos(flickr, user_id, per_page, page, tally, total, removeDeleted);
+module.exports = function(flickr, next_function) {
+
+  flickr.photos.search({
+    user_id: flickr.options.user_id,
+  }, function(error, result) {
+    if(error) {
+      return console.log(error);
+    }
+
+    var total = parseInt(result.photos.total, 10);
+    console.log("Found " + total + " photos to downsync.");
+    progressBarAggregate = new progress('  [:bar] :current/:total', { total: total });
+
+    aggregatePhotos(flickr, {
+      user_id: flickr.options.user_id,
+      per_page: 100,
+      page: 1,
+      tally: 0,
+      total: total,
+      removeDeleted: flickr.options.removeDeleted,
+      callback: next_function
+    });
+
+  });
 };

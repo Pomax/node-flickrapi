@@ -147,6 +147,7 @@ also has an `options` property, which looks like this:
               oauth signing for functions that can be called both key-only
               and authenticated for additional data access (like the photo
               search function)
+  retry_queries: if this is defined, Flickr queries will be retried if they fail
   afterDownsync: <optional, you can bind an arg-less callback function here>
   permissions: <optional, default value is 'read', see "on first run" below>
 }

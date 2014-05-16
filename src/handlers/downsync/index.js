@@ -26,23 +26,29 @@ module.exports = function(location, removeDeleted) {
   // directory structure
   var data = require("../ia")(location);
 
-  /**
-   * Kick off the down-syncing process
-   */
+  // process calls
+  var photos = require("./photos");
+  var sets = require("./sets");
+  var collections = require("./collections");
+
+  // Kick off the down-syncing process
   return function(err, flickr) {
     if(err) { return console.log(err); }
+
     flickr.options.locals = data;
 
-    // grab all photo data.
-    console.log("downloading photo records from Flickr...");
-    flickr.photos.search({
-      user_id: flickr.options.user_id,
-    }, function(error, result) {
-      if(error) {
-        return console.log(error);
-      }
-      console.log("Found " + result.photos.total + " photos to downsync.");
-      aggregatePhotos(flickr, flickr.options.user_id, 100, 1, 0, parseInt(result.photos.total, 10), removeDeleted);
+    var completed = function() {
+      console.log("Finished downsyncing.");
+      var handler = flickr.options.afterDownsync;
+      if (handler) { handler(); }
+      else { process.exit(0); }
+    };
+
+    console.log();
+    collections(flickr, function() {
+      sets(flickr, function() {
+        photos(flickr, completed);
+      });
     });
   };
 };

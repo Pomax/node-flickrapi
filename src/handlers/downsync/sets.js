@@ -7,14 +7,15 @@ var fs = require("fs"),
 /**
  * Sets
  */
-function processPhotosets(flickr, set_idx, total) {
+function processPhotosets(flickr, set_idx, total, next_function) {
   "use strict";
 
   if(set_idx >= total) {
-    console.log("done fetching set metadata.");
-    return setTimeout(function() {
-      getCollectionMetadata(flickr);
-    }, 1);
+    console.log("done fetching set metadata.\n");
+    if (next_function) {
+      next_function();
+    }
+    return;
   }
 
   var set = sets[set_idx],
@@ -24,7 +25,7 @@ function processPhotosets(flickr, set_idx, total) {
         var next_id = set_idx +1;
         return function() {
           setTimeout(function() {
-            processPhotosets(flickr, next_id, total);
+            processPhotosets(flickr, next_id, total, next_function);
           }, 1);
         };
       }(flickr, set_idx, total));
@@ -52,7 +53,7 @@ function processPhotosets(flickr, set_idx, total) {
   });
 }
 
-function getSetMetadata(flickr) {
+function getSetMetadata(flickr, next_function) {
   flickr.photosets.getList({
     user_id: flickr.options.user_id,
     page: 1,
@@ -62,10 +63,9 @@ function getSetMetadata(flickr) {
       return console.log(error);
     }
     sets = result.photosets.photoset;
-    console.log();
     console.log("Downloading set metadata from Flickr.");
     progressBar = new progress('  [:bar] :current/:total', { total: sets.length });
-    processPhotosets(flickr, 0, sets.length);
+    processPhotosets(flickr, 0, sets.length, next_function);
   });
 }
 

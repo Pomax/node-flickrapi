@@ -7,13 +7,12 @@ var fs = require("fs"),
 /**
  * Collections
  */
-function processCollections(flickr, collection_idx, total) {
+function processCollections(flickr, collection_idx, total, next_function) {
   "use strict";
 
   if(collection_idx >= total) {
-    console.log("done fetching collection metadata.");
-    var handler = flickr.options.afterDownsync;
-    if (handler) { handler(); }
+    console.log("done fetching collection metadata.\n");
+    if (next_function) { next_function(); }
     return;
   }
 
@@ -22,7 +21,7 @@ function processCollections(flickr, collection_idx, total) {
       filename =flickr.options.locals.dirstructure.ia.collections + "/" + id + ".json",
       next = function() {
         setTimeout(function() {
-          processCollections(flickr, collection_idx+1, total);
+          processCollections(flickr, collection_idx+1, total, next_function);
         }, 1);
       };
 
@@ -32,17 +31,16 @@ function processCollections(flickr, collection_idx, total) {
   });
 }
 
-function getCollectionMetadata(flickr) {
+function getCollectionMetadata(flickr, next_function) {
   flickr.collections.getTree({
     user_id: flickr.options.user_id,
     page: 1,
     per_page: 500
   }, function(error, result) {
     collections = result.collections.collection;
-    console.log();
     console.log("Downloading collection metadata from Flickr.");
     progressBar = new progress('  [:bar] :current/:total', { total: collections.length });
-    processCollections(flickr, 0, collections.length);
+    processCollections(flickr, 0, collections.length, next_function);
   });
 }
 

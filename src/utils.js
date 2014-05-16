@@ -262,7 +262,7 @@ module.exports = (function() {
 
       // nope - plain API key will suffice
       else {
-        queryArguments.api_key = flickrOptions.api_key
+        queryArguments.api_key = flickrOptions.api_key;
       }
 
       // force JSON request
@@ -278,6 +278,9 @@ module.exports = (function() {
 
         if(!response) {
           error = "HTTP Error: no response for url [" + flickrURL + "]";
+          if (flickrOptions.retry_queries) {
+            return queryFlickr(queryArguments, flickrOptions, security, processResult, errors);
+          }
           return processResult(error);
         }
 

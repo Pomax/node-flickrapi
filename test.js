@@ -77,11 +77,12 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
        *    Drop in any code you want to test at this point.
        *
        */
-        flickr.photos.search({ tags: "red+panda" }, function(err,result) {
-          if(err) { return console.log("error:", err); }
-          console.log(result.photos.photo.length + " results found. First result:");
-          console.log(JSON.stringify(result.photos.photo[0],false,2));
-        });
+//        flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+ //          if(err) { return console.log("error:", err); }
+  //          console.log(result.photos.photo.length + " results found. First result:");
+   //         console.log(JSON.stringify(result.photos.photo[0],false,2));
+    //      });
+
       /**
        *
        *    The code above simply searches for red panda pictures

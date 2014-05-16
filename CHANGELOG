@@ -1,3 +1,10 @@
+v0.3.22
+  * Rewrote the downsync code to sommething a little more
+    sensible, and changed the downsync order from
+    photos/sets/collections to collections/sets/photos,
+    so that changes to the collection and set metadata aren't
+    held up by potentially thousands of photograph checks.
+
 v0.3.21
   * Added "force_auth" as possible flickrOptions property,
     which allows you to force authed API calls for functions

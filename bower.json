@@ -1,9 +1,13 @@
 {
   "name": "flickrapi",
-  "version": "0.3.21",
+  "version": "0.3.22",
   "homepage": "https://github.com/Pomax/node-flickrapi",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/Pomax/node-flickrapi.git"
+  },
   "authors": [
-    "Mike Kamermans <pomax@nihongoresources.com>"
+    "Mike 'Pomax' Kamermans <pomax@nihongoresources.com>"
   ],
   "description": "A JavaScript implementation of the full Flickr API",
   "main": "./browser/flickrapi.js",
