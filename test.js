@@ -14,7 +14,8 @@ var habitat = require("habitat"),
     Flickr = require("./src/FlickrApi"),
     FlickrOptions = env.get("FLICKR"),
     // node test => auth test; node test false => token only test
-    testAuthenticated = (process.argv[2] != "false");
+    testAuthenticated = (process.argv[2] != "false"),
+    server;
 
 // Set up a temporary oauth callback server if
 // we do not have authentication credentials yet.
@@ -77,11 +78,13 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
        *    Drop in any code you want to test at this point.
        *
        */
-//        flickr.photos.search({ tags: "red+panda" }, function(err,result) {
- //          if(err) { return console.log("error:", err); }
-  //          console.log(result.photos.photo.length + " results found. First result:");
-   //         console.log(JSON.stringify(result.photos.photo[0],false,2));
-    //      });
+
+      flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+         if(err) { return console.log("error:", err); }
+         console.log(result.photos.photo.length + " results found. First result:");
+          console.log(JSON.stringify(result.photos.photo[0],false,2));
+      });
+
 
       /**
        *
@@ -89,10 +92,13 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
        *
        */
 
-
       // Simple test code: downsync the user's content,
       // if the --downsync runtime argument was passed.
       if (process.argv.indexOf("--downsync")>-1) {
+        console.log("Starting downsync...");
+
+        // make sure we grab public + private data for a downsync
+        FlickrOptions.force_auth = true;
 
         FlickrOptions.afterDownsync = function() {
           console.log("\nDownsync finished.");

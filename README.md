@@ -241,6 +241,21 @@ This will give you an object with the following structure:
 Not sure what these objects look like? head over to your `./data/ia`
 directory and just open a .json file in your favourite text editor.
 
+The `loadLocally` function can take two arguments, namely a location
+where the ia data can be found, and an options object. If you want to
+pass in an options object you *must* supply a location, too.
+
+```
+flickrData = Flickr.loadLocally("./userdata", {
+  loadPrivate: false
+});
+```
+
+Currently the options object only has one meaningful property,
+`loadPrivate`, which determines whether or not photos and photosets
+that are marked "not public" in Flickr show up in the `photo_keys`
+and `photoset_keys` lists.
+
 ## On first run
 
 ### Fetching the API

@@ -183,23 +183,36 @@ module.exports = (function() {
   /**
    * I.A. builder
    */
-  return function(location) {
+  return function(location, options) {
+    options = options || {};
     var dirstructure = ensureDirectories(location);
 
     // photos are ranked by publication date
     var photos = readAll(dirstructure.ia.photos.root, "id", function(a,b,items) {
       return items[b].dates.posted - items[a].dates.posted;
     });
+
     // sets are ranked by creation date
     var photosets = readAll(dirstructure.ia.photosets, "id", function(a,b,items) {
       return items[b].date_create - items[a].date_create;
     });
+
     // collections are sorted alphabetically
     var collections = readAll(dirstructure.ia.collections, "id", function(a,b,items) {
       a = items[a].title;
       b = items[b].title;
       return a === b ? 0 : b < a ? -1 : -1;
     });
+
+    // filter out the private photos from the key index
+    if(!options.loadPrivate) {
+      photos.keys = photos.keys.filter(function(key) {
+        return photos.data[key].visibility.ispublic === 1;
+      });
+      photosets.keys = photosets.keys.filter(function(key) {
+        return photosets.data[key].visibility_can_see_set === 1;
+      });
+    }
 
     // perform cross-referencing
     crossReference(dirstructure, photos, photosets, collections);
