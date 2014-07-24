@@ -318,7 +318,7 @@ or put them straight into your source code to use the flickrapi:
 var FlickrOptions = {
       api_key: "your API key",
       secret: "your API key secret",
-      user_ud: "...",
+      user_id: "...",
       access_token: "...",
       access_token_secret: "..."
     }
