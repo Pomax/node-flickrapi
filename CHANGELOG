@@ -1,3 +1,6 @@
+v0.3.24
+  * The library can now be used to upload photos to Flickr.
+
 v0.3.23
   * private photos are now downloaded during --downsync, provided
     that the `force_auth` option is set in the flickr options, with

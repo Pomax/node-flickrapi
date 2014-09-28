@@ -59,6 +59,12 @@ module.exports = {
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   },
   /**
+   * If you want to upload, you're going to have to do it server side.
+   */
+  upload: function(uploadOptions, flickrOptions, processResult) {
+    return processResult(new Error("Uploading directly from the browser is not supported"));
+  },
+  /**
    * When contacting Flickr "regularly", permission levels greater than 0 (public access)
    * cannot be securely dealt with. read-only, write, and delete all require oauth
    * authentication keys, and these should never, ever, be stored at the client.

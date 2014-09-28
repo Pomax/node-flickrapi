@@ -130,8 +130,8 @@ module.exports = (function() {
     /**
      * Turn a url + query string into a Flickr API "base string".
      */
-    formBaseString: function(url, queryString) {
-      return ["GET", encodeURIComponent(url), encodeURIComponent(queryString)].join("&");
+    formBaseString: function(verb, url, queryString) {
+      return [verb, encodeURIComponent(url), encodeURIComponent(queryString)].join("&");
     },
 
     /**
@@ -270,7 +270,7 @@ module.exports = (function() {
 
       var url = "https://api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
-          data = this.formBaseString(url, queryString),
+          data = this.formBaseString("GET", url, queryString),
           signature = authed ? "&oauth_signature=" + this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret) : '',
           flickrURL = url + "?" + queryString + signature;
 
@@ -307,5 +307,81 @@ module.exports = (function() {
         processResult(false, body);
       });
     },
+
+    /**
+     * Call the Flickr API for uploading a photo. Uploading is always authenticated.
+     *
+     *  photo: The file to upload.
+     *
+     *  title (optional): The title of the photo.
+     *  description (optional): A description of the photo. May contain some limited HTML.
+     *  tags (optional): A space-seperated list of tags to apply to the photo.
+     *  is_public, is_friend, is_family (optional): Set to 0 for no, 1 for yes. Specifies who can view the photo.
+     *  safety_level (optional): Set to 1 for Safe, 2 for Moderate, or 3 for Restricted.
+     *  content_type (optional): Set to 1 for Photo, 2 for Screenshot, or 3 for Other.
+     *  hidden (optional): Set to 1 to keep the photo in global search results, 2 to hide from public searches.
+     *
+     */
+    upload: function(uploadOptions, flickrOptions, processResult) {
+      // upload oauth uses "everything except the photo itself"
+      if(!uploadOptions.photos && !uploadOptions.photo) {
+        return processResult("upload requires at least one photo is passed for uploading.");
+      }
+      if(!uploadOptions.photos) {
+        uploadOptions.photos = [ uploadOptions.photo ];
+      }
+      var photos = uploadOptions.photos;
+      var uploadids = [];
+      delete uploadOptions.photos;
+      var self = this;
+      (function next(err, result) {
+        if(err) { return processResult(err); }
+        if(result) { uploadids.push(result); }
+        if(photos.length === 0) { return processResult(false, uploadids); }
+        self.uploadtoFlickr(photos.splice(0,1)[0], flickrOptions, next);
+      }(false, false));
+    },
+
+    uploadtoFlickr: function(photoOptions, flickrOptions, callback) {
+      var photo = photoOptions.photo;
+      delete photoOptions.photo;
+      if(typeof photo === "string") { photo = fs.createReadStream(photo); }
+
+      console.log(photoOptions);
+
+      flickrOptions = this.setAuthVals(flickrOptions);
+      photoOptions.oauth_signature_method = "HMAC-SHA1";
+      photoOptions.oauth_consumer_key = flickrOptions.api_key;
+      photoOptions.oauth_token = flickrOptions.access_token;
+      photoOptions.oauth_nonce = flickrOptions.oauth_nonce;
+      photoOptions.oauth_timestamp = flickrOptions.oauth_timestamp;
+
+      // craft the authentication signature
+      var url = "https://up.flickr.com/services/upload/";
+      var queryString = this.formQueryString(photoOptions);
+      var data = this.formBaseString("POST", url, queryString);
+      photoOptions.oauth_signature = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret);
+
+      // now we can put the photo back in
+      photoOptions.photo = photo;
+
+      // and finally, form the URL we need to POST to
+      var signature = "&oauth_signature=" + photoOptions.oauth_signature;
+      var flickrURL = url + "?" + queryString + signature;
+
+      var req = request.post(flickrURL, function(error, response, body) {
+        // format:json does not actually work, so we need to grab the photo ID from the response XML:
+        // <?xml version="1.0" encoding="utf-8" ?>\n<rsp stat="ok">\n<photoid>.........</photoid>\n</rsp>\n
+        var data = undefined;
+        if(body.indexOf('rsp stat="ok"')>-1) {
+          data = parseInt(body.split("<photoid>")[1].split("</photoid>")[0], 10);
+        }
+        callback(error, data);
+      });
+      var form = req.form();
+      Object.keys(photoOptions).forEach(function(prop) {
+        form.append(prop, photoOptions[prop]);
+      });
+    }
   };
 }());

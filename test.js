@@ -14,8 +14,11 @@ var habitat = require("habitat"),
     Flickr = require("./src/FlickrApi"),
     FlickrOptions = env.get("FLICKR"),
     // node test => auth test; node test false => token only test
-    testAuthenticated = (process.argv[2] != "false"),
+    testAuthenticated = process.argv.indexOf("testAuthenticated") > -1,
+    testUpload = process.argv.indexOf("testUpload") > -1,
     server;
+
+console.log("testAuthenticated: "+testAuthenticated+", testUpload: "+testUpload);
 
 // Set up a temporary oauth callback server if
 // we do not have authentication credentials yet.
@@ -72,7 +75,6 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
         if(err) console.log("note: error connecting to the flickr API", err);
       });
 
-
       /**
        *
        *    Drop in any code you want to test at this point.
@@ -80,17 +82,42 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
        */
 
       flickr.photos.search({ tags: "red+panda" }, function(err,result) {
-         if(err) { return console.log("error:", err); }
-         console.log(result.photos.photo.length + " results found. First result:");
+          if(err) { return console.log("error:", err); }
+          console.log(result.photos.photo.length + " results found. First result:");
           console.log(JSON.stringify(result.photos.photo[0],false,2));
       });
 
-
       /**
-       *
        *    The code above simply searches for red panda pictures
-       *
        */
+
+      // Simple test code: upload a test photo to this Flickr account,
+      // if the test.js script was called with a "testUpload" argument.
+      if(testUpload) (function testUpload() {
+        var uploadOptions = {
+          photos: [
+            {
+              title: "test",
+              photo: __dirname + "/test.jpg"
+            },
+            {
+              title: "test2",
+              photo: __dirname + "/test.jpg"
+            }
+          ]
+        }
+
+        console.log("testing upload...");
+        Flickr.upload(uploadOptions, FlickrOptions, function(err, result) {
+          if(err) {
+            console.log("error");
+            console.log(error);
+          }
+
+          console.log("result");
+          console.log(result);
+        });
+      }());
 
       // Simple test code: downsync the user's content,
       // if the --downsync runtime argument was passed.
@@ -131,13 +158,14 @@ if(!testAuthenticated) Flickr.tokenOnly(FlickrOptions, function(error, flickr) {
          *    Drop in any code you want to test at this point.
          *
          */
-          flickr.photos.search({ tags: "red+panda" }, function(err,result) {
-            if(err) { return console.log("error:", err); }
-            console.log(result.photos.photo.length + " results found. First result:");
-            console.log(JSON.stringify(result.photos.photo[0],false,2));
-          });
+
+        flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+          if(err) { return console.log("error:", err); }
+          console.log(result.photos.photo.length + " results found. First result:");
+          console.log(JSON.stringify(result.photos.photo[0],false,2));
+        });
+
         /**
-         *
          *    The code above simply searches for red panda pictures
          */
 
