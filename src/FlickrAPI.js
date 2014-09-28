@@ -148,7 +148,8 @@ module.exports = (function Flickr() {
     loadLocally: require("./handlers/ia"),
     tokenOnly: tokenOnly,
     authenticate: authenticate,
-    downsync: require("./handlers/downsync")
+    downsync: require("./handlers/downsync"),
+    upload: Utils.uploadToFlickr.bind(Utils)
   };
 
 }());

@@ -10,6 +10,9 @@ module.exports = (function() {
    */
   var RequestAuthorization = function(options, requestCompleted) {
     options.permissions = options.permissions || "read";
+
+ console.log("requestion auth with ["+options.permissions+"] permissions");
+
     var oauth_token = options.oauth_token,
         oauth_token_secret = options.oauth_token_secret,
         authURL = "https://www.flickr.com/services/oauth/authorize",

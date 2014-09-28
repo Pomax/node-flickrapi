@@ -130,8 +130,8 @@ module.exports = (function() {
     /**
      * Turn a url + query string into a Flickr API "base string".
      */
-    formBaseString: function(url, queryString) {
-      return ["GET", encodeURIComponent(url), encodeURIComponent(queryString)].join("&");
+    formBaseString: function(verb, url, queryString) {
+      return [verb, encodeURIComponent(url), encodeURIComponent(queryString)].join("&");
     },
 
     /**
@@ -157,6 +157,19 @@ module.exports = (function() {
       hmac.update(data);
       var digest = hmac.digest("base64");
       return encodeURIComponent(digest);
+    },
+
+    /**
+     * OAuth header, for when that matters
+     */
+    header: function(url, signature, values) {
+      return   'oauth_consumer_key="' + values.oauth_consumer_key + '",'
+             + 'oauth_token="' + values.oauth_token + '",'
+             + 'oauth_signature_method="HMAC-SHA1",'
+             + 'oauth_signature="' + signature + '",'
+             + 'oauth_timestamp="' + values.oauth_timestamp + '",'
+             + 'oauth_nonce="' + values.oauth_nonce + '",'
+             + 'oauth_version="1.0"';
     },
 
     /**
@@ -270,7 +283,7 @@ module.exports = (function() {
 
       var url = "https://api.flickr.com/services/rest/",
           queryString = this.formQueryString(queryArguments),
-          data = this.formBaseString(url, queryString),
+          data = this.formBaseString("GET", url, queryString),
           signature = authed ? "&oauth_signature=" + this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret) : '',
           flickrURL = url + "?" + queryString + signature;
 
@@ -307,5 +320,108 @@ module.exports = (function() {
         processResult(false, body);
       });
     },
+
+    /**
+     * Call the Flickr API for uploading a photo. Uploading is always authenticated.
+     *
+     *  photo: The file to upload.
+     *
+     *  title (optional): The title of the photo.
+     *  description (optional): A description of the photo. May contain some limited HTML.
+     *  tags (optional): A space-seperated list of tags to apply to the photo.
+     *  is_public, is_friend, is_family (optional): Set to 0 for no, 1 for yes. Specifies who can view the photo.
+     *  safety_level (optional): Set to 1 for Safe, 2 for Moderate, or 3 for Restricted.
+     *  content_type (optional): Set to 1 for Photo, 2 for Screenshot, or 3 for Other.
+     *  hidden (optional): Set to 1 to keep the photo in global search results, 2 to hide from public searches.
+     *
+     */
+    uploadToFlickr: function(uploadOptions, flickrOptions, processResult) {
+
+      /*******
+        url vs. data vs. auth is different for uploading:
+
+        - the URL should only contain the oauth values, computed over all the args EXCEPT the "photo" property, which is the photo as binary data
+        - the upload endpoint is POSTed to, with the full uploadOptions as post data, including the "photo".
+
+      *******/
+
+      var photo = uploadOptions.photo;
+      delete uploadOptions.photo;
+      if(!photo) { return console.error("need photo to upload photo."); }
+
+      flickrOptions = this.setAuthVals(flickrOptions);
+
+      var url = "https://up.flickr.com/services/upload/";
+
+      var signOptions = {
+        oauth_signature_method: "HMAC-SHA1",
+        oauth_consumer_key: flickrOptions.api_key,
+        oauth_token: flickrOptions.access_token,
+        oauth_nonce: flickrOptions.oauth_nonce,
+        oauth_timestamp: flickrOptions.oauth_timestamp
+      };
+
+      Object.keys(uploadOptions).forEach(function(v) { signOptions[v] = uploadOptions[v]; });
+
+      uploadOptions.photo = photo;
+
+      var queryString = this.formQueryString(signOptions);
+
+console.log();
+console.log(queryString);
+console.log();
+
+      var data = this.formBaseString("POST", url, queryString);
+
+console.log();
+console.log(data);
+console.log();
+
+      var sig = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret);
+
+console.log();
+console.log(sig);
+console.log();
+
+      var signature = "&oauth_signature=" + sig;
+      var flickrURL = url + "?" + queryString + signature;
+
+      var authHeader = this.header(url, sig, signOptions);
+
+console.log();
+console.log("header = Authorization: " + authHeader);
+console.log();
+
+
+console.log();
+console.log(url);
+console.log();
+
+      uploadOptions.photo = photo;
+
+      request.post(
+        {
+          url: url,
+          header: {
+            "Authorization": authHeader
+          },
+          data: {
+            title: uploadOptions.title
+          }
+        }
+        ,
+        function(error, response, body) {
+          console.log("error");
+          console.log(error);
+          console.log("body");
+          console.log(body);
+          //console.log("response");
+          //console.log(response);
+          //processResult(error, body);
+        }
+      );
+
+    }
+
   };
 }());

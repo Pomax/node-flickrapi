@@ -17,6 +17,7 @@ var habitat = require("habitat"),
     testAuthenticated = (process.argv[2] != "false"),
     server;
 
+
 // Set up a temporary oauth callback server if
 // we do not have authentication credentials yet.
 if(!FlickrOptions.access_token || !FlickrOptions.access_token_secret) {
@@ -67,49 +68,19 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
   setupApp(flickr, function(err, result) {
     if (err) { console.error(err); process.exit(1); }
     else {
-      console.log("listening on port 3000 (press ctrl-c to exit).");
-      flickr.test.echo({"test": "test"}, function(err,result) {
-        if(err) console.log("note: error connecting to the flickr API", err);
+
+
+      console.log("testing upload...");
+      Flickr.upload({
+        photo: require("fs").readFileSync("test.jpg"),
+        title: "test"
+      }, FlickrOptions, function(err, result) {
+//        console.log("error:");
+//        console.log(error);
+//        console.log("result:");
+//        console.log(result);
       });
 
-
-      /**
-       *
-       *    Drop in any code you want to test at this point.
-       *
-       */
-
-      flickr.photos.search({ tags: "red+panda" }, function(err,result) {
-         if(err) { return console.log("error:", err); }
-         console.log(result.photos.photo.length + " results found. First result:");
-          console.log(JSON.stringify(result.photos.photo[0],false,2));
-      });
-
-
-      /**
-       *
-       *    The code above simply searches for red panda pictures
-       *
-       */
-
-      // Simple test code: downsync the user's content,
-      // if the --downsync runtime argument was passed.
-      if (process.argv.indexOf("--downsync")>-1) {
-        console.log("Starting downsync...");
-
-        // make sure we grab public + private data for a downsync
-        FlickrOptions.force_auth = true;
-
-        FlickrOptions.afterDownsync = function() {
-          console.log("\nDownsync finished.");
-          server.close();
-          process.exit(0);
-        };
-        var user = FlickrOptions.user_id.replace("%40","-"),
-            downsync = Flickr.downsync("data/" + user);
-        console.log("Downsyncing for user: " + user);
-        downsync(false, flickr);
-      }
     }
   });
 });

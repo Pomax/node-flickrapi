@@ -6,6 +6,7 @@
   "dependencies": {
     "async": "~0.2.10",
     "glob": "~3.2.6",
+    "oauth": "^0.9.12",
     "open": "0.0.x",
     "progress": "1.1.4",
     "prompt": "0.2.x",
