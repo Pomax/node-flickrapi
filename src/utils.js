@@ -353,10 +353,6 @@ module.exports = (function() {
 
       var url = "https://up.flickr.com/services/upload/";
 
-console.log();
-console.log(url);
-console.log();
-
       var signOptions = {
         oauth_signature_method: "HMAC-SHA1",
         oauth_consumer_key: flickrOptions.api_key,
@@ -373,59 +369,44 @@ console.log();
 
 console.log();
 console.log(queryString);
-console.log();
 
       var data = this.formBaseString("POST", url, queryString);
 
 console.log();
 console.log(data);
-console.log();
 
       var sig = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret);
 
 console.log();
 console.log(sig);
-console.log();
 
-      //var signature = "&oauth_signature=" + sig;
-      //var flickrURL = url + "?" + queryString + signature;
+      var signature = "&oauth_signature=" + sig;
+      var flickrURL = url + "?" + queryString + signature;
+
+console.log();
+console.log(flickrURL);
 
       var authHeader = this.header(url, sig, signOptions);
 
 console.log();
 console.log("header = Authorization: " + authHeader);
-console.log();
 
-
-      signOptions.photo = photo.toString('base64');
+      signOptions.oauth_signature = sig;
       signOptions.title = uploadOptions.title;
+      signOptions.photo = photo.toString('base64');
 
-      require('request-debug')(request);
-      request.post(
-        {
-          url: url,
-          headers: {
-            "Authorization": authHeader
-          },
+      var payloads = [{
+        'content-type': 'application/json',
+        body: JSON.stringify(signOptions)
+      }];
 
-          multipart: [{
-            'content-type': 'application/json',
-            body: JSON.stringify(signOptions)
-          }],
-          debug: true
-        }
-        ,
-        function(error, response, body) {
-          console.log("error");
-          console.log(error);
-          console.log("body");
-          console.log(body);
-          //console.log("response");
-          //console.log(response);
-          //processResult(error, body);
-        }
-      );
+      var postOptions = {
+        url: url,
+        headers: { "Authorization": authHeader },
+        multipart: payloads
+      };
 
+      request.post(postOptions, function(error, response, body) { processResult(error, body); });
     }
 
   };

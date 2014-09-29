@@ -11,6 +11,7 @@
  */
 var habitat = require("habitat"),
     env = habitat.load(),
+    fs = require("fs"),
     Flickr = require("./src/FlickrApi"),
     FlickrOptions = env.get("FLICKR"),
     // node test => auth test; node test false => token only test
@@ -68,18 +69,68 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
   setupApp(flickr, function(err, result) {
     if (err) { console.error(err); process.exit(1); }
     else {
-
-      console.log("testing upload...");
-      Flickr.upload({
-        photo: require("fs").readFileSync("test.jpg"),
-        title: "test"
-      }, FlickrOptions, function(err, result) {
-        console.log("error:");
-        console.log(err);
-        console.log("result:");
-        console.log(result);
+      console.log("listening on port 3000 (press ctrl-c to exit).");
+      flickr.test.echo({"test": "test"}, function(err,result) {
+        if(err) console.log("note: error connecting to the flickr API", err);
       });
 
+
+      /**
+       *
+       *    Drop in any code you want to test at this point.
+       *
+       */
+
+
+      (function testUpload() {
+        var uploadOptions = {
+          title: "test",
+          photo: fs.readFileSync("test.jpg").toString("base64")
+        }
+
+        Flickr.upload(uploadOptions, FlickrOptions, function(err, result) {
+          if(err) {
+            console.log("error");
+            console.log(error);
+          }
+
+          console.log("result");
+          console.log(result);
+
+          flickr.photos.search({ tags: "red+panda" }, function(err,result) {
+              if(err) { return console.log("error:", err); }
+              console.log(result.photos.photo.length + " results found. First result:");
+              console.log(JSON.stringify(result.photos.photo[0],false,2));
+          });
+
+        });
+      }());
+
+
+      /**
+       *
+       *    The code above simply searches for red panda pictures
+       *
+       */
+
+      // Simple test code: downsync the user's content,
+      // if the --downsync runtime argument was passed.
+      if (process.argv.indexOf("--downsync")>-1) {
+        console.log("Starting downsync...");
+
+        // make sure we grab public + private data for a downsync
+        FlickrOptions.force_auth = true;
+
+        FlickrOptions.afterDownsync = function() {
+          console.log("\nDownsync finished.");
+          server.close();
+          process.exit(0);
+        };
+        var user = FlickrOptions.user_id.replace("%40","-"),
+            downsync = Flickr.downsync("data/" + user);
+        console.log("Downsyncing for user: " + user);
+        downsync(false, flickr);
+      }
     }
   });
 });
