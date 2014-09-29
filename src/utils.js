@@ -353,6 +353,10 @@ module.exports = (function() {
 
       var url = "https://up.flickr.com/services/upload/";
 
+console.log();
+console.log(url);
+console.log();
+
       var signOptions = {
         oauth_signature_method: "HMAC-SHA1",
         oauth_consumer_key: flickrOptions.api_key,
@@ -361,9 +365,9 @@ module.exports = (function() {
         oauth_timestamp: flickrOptions.oauth_timestamp
       };
 
-      Object.keys(uploadOptions).forEach(function(v) { signOptions[v] = uploadOptions[v]; });
-
-      uploadOptions.photo = photo;
+      Object.keys(uploadOptions).forEach(function(v) {
+        signOptions[v] = uploadOptions[v];
+      });
 
       var queryString = this.formQueryString(signOptions);
 
@@ -383,8 +387,8 @@ console.log();
 console.log(sig);
 console.log();
 
-      var signature = "&oauth_signature=" + sig;
-      var flickrURL = url + "?" + queryString + signature;
+      //var signature = "&oauth_signature=" + sig;
+      //var flickrURL = url + "?" + queryString + signature;
 
       var authHeader = this.header(url, sig, signOptions);
 
@@ -393,21 +397,22 @@ console.log("header = Authorization: " + authHeader);
 console.log();
 
 
-console.log();
-console.log(url);
-console.log();
+      signOptions.photo = photo.toString('base64');
+      signOptions.title = uploadOptions.title;
 
-      uploadOptions.photo = photo;
-
+      require('request-debug')(request);
       request.post(
         {
           url: url,
-          header: {
+          headers: {
             "Authorization": authHeader
           },
-          data: {
-            title: uploadOptions.title
-          }
+
+          multipart: [{
+            'content-type': 'application/json',
+            body: JSON.stringify(signOptions)
+          }],
+          debug: true
         }
         ,
         function(error, response, body) {

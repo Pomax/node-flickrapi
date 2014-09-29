@@ -69,16 +69,15 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
     if (err) { console.error(err); process.exit(1); }
     else {
 
-
       console.log("testing upload...");
       Flickr.upload({
         photo: require("fs").readFileSync("test.jpg"),
         title: "test"
       }, FlickrOptions, function(err, result) {
-//        console.log("error:");
-//        console.log(error);
-//        console.log("result:");
-//        console.log(result);
+        console.log("error:");
+        console.log(err);
+        console.log("result:");
+        console.log(result);
       });
 
     }
