@@ -366,48 +366,20 @@ module.exports = (function() {
       });
 
       var queryString = this.formQueryString(signOptions);
-
-console.log();
-console.log(queryString);
-
       var data = this.formBaseString("POST", url, queryString);
-
-console.log();
-console.log(data);
-
       var sig = this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret);
-
-console.log();
-console.log(sig);
-
       var signature = "&oauth_signature=" + sig;
       var flickrURL = url + "?" + queryString + signature;
 
-console.log();
-console.log(flickrURL);
-
-      var authHeader = this.header(url, sig, signOptions);
-
-console.log();
-console.log("header = Authorization: " + authHeader);
-
       signOptions.oauth_signature = sig;
-      signOptions.title = uploadOptions.title;
-      signOptions.photo = photo.toString('base64');
+      signOptions.photo = photo;
 
-      var payloads = [{
-        'content-type': 'application/json',
-        body: JSON.stringify(signOptions)
-      }];
+      var req = request.post(flickrURL, function(error, response, body) { processResult(error, body); });
 
-      var postOptions = {
-        url: url,
-        headers: { "Authorization": authHeader },
-        multipart: payloads
-      };
-
-      request.post(postOptions, function(error, response, body) { processResult(error, body); });
+      var form = req.form();
+      Object.keys(signOptions).forEach(function(v) {
+        form.append(v, signOptions[v]);
+      });
     }
-
   };
 }());

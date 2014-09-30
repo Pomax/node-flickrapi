@@ -85,7 +85,7 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
       (function testUpload() {
         var uploadOptions = {
           title: "test",
-          photo: fs.readFileSync("test.jpg").toString("base64")
+          photo: fs.createReadStream(__dirname + "/test.jpg")
         }
 
         Flickr.upload(uploadOptions, FlickrOptions, function(err, result) {
