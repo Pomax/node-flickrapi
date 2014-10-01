@@ -54,6 +54,9 @@ Utils.queryFlickr = function (queryArguments, flickrOptions, security, processRe
     }
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   };
+Utils.upload = function (uploadOptions, flickrOptions, processResult) {
+    return processResult(new Error("Uploading directly from the browser is not supported"));
+  };
 Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
     var url = "https://api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
