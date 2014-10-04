@@ -21,7 +21,7 @@ module.exports = (function() {
         };
 
     var queryString = Utils.formQueryString(queryArguments);
-    var data = Utils.formBaseString(this.url, queryString);
+    var data = Utils.formBaseString("GET", this.url, queryString);
     var signature = Utils.sign(data, options.secret);
 
     var flickrURL = this.url + "?" + queryString + "&oauth_signature=" + signature;

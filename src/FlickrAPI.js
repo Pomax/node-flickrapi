@@ -44,7 +44,7 @@ module.exports = (function Flickr() {
           oauth_token: options.access_token
         },
         queryString = Utils.formQueryString(queryArguments),
-        data = Utils.formBaseString(url, queryString),
+        data = Utils.formBaseString("GET", url, queryString),
         signature = Utils.sign(data, options.secret, options.access_token_secret),
         flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
 
