@@ -112,7 +112,7 @@ module.exports = {
           // we get a response, and there were no errors
           if(!error) {
             try {
-              body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
+              body = body.trim().replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
               body = JSON.parse(body);
               if(body.stat !== "ok") {
                 // There was a request error, and the JSON .stat property

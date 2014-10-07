@@ -294,7 +294,7 @@ module.exports = (function() {
         // for this specific method call.
         if(!error) {
           try {
-            body = body.replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
+            body = body.trim().replace(/^jsonFlickrApi\(/,'').replace(/\}\)$/,'}');
             body = JSON.parse(body);
             if(body.stat !== "ok") {
               return processResult(new Error(body.message));
