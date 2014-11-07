@@ -3,7 +3,7 @@
 Utils.formQueryString = function (queryArguments) {
     var args = [],
         append = function(key) {
-          args.push(key + "=" + queryArguments[key]);
+          args.push(key + "=" + encodeURIComponent(queryArguments[key]));
         };
     Object.keys(queryArguments).sort().forEach(append);
     return args.join("&");
