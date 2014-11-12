@@ -143,7 +143,7 @@ module.exports = (function() {
           keyval;
       constituents.forEach(function(pair) {
         keyval = pair.split("=");
-        response[keyval[0]] = keyval[1];
+        response[keyval[0]] = decodeURIComponent(keyval[1]);
       });
       return response;
     },

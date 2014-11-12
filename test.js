@@ -87,6 +87,13 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
           console.log(JSON.stringify(result.photos.photo[0],false,2));
       });
 
+      flickr.photosets.getList({
+        user_id: "98392258@N00"
+      }, function(err, result) {
+        console.log(err);
+        console.log(result);
+      });
+
       /**
        *    The code above simply searches for red panda pictures
        */
