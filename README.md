@@ -56,6 +56,15 @@ $> npm install flickrapi --save
 ```
 After that, you have two choices, based on whether you want to authenticate or not. Both approaches require an API key, but using OAuth2 authentication means you get access to the full API, rather than only the public API.
 
+To suppress the progress bars in stdout you can include a `progress` attribute when initializing:
+
+```
+var flickr = new Flickr({
+    api_key: "1234ABCD1234ABCD1234ABCD1234ABCD",
+    progress: false
+});
+```
+
 ### No authentication, public API only
 
 ```
