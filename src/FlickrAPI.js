@@ -98,9 +98,6 @@ module.exports = (function Flickr() {
     // out-of-browser authentication unless specified otherwise
     if(!options.callback) { options.callback = "oob"; }
 
-    // optionally suppress progress bars
-    options.progress = options.progress === false ? false : true;
-
     // effect authentication
     checkToken(options, function(err, access) {
       var APIBuilder = require("./flickr-api-object");
@@ -141,7 +138,6 @@ module.exports = (function Flickr() {
     }
     var APIBuilder = require("./flickr-api-object");
     options.tokenonly = true;
-    options.progress = options.progress === false ? false : true;
     new APIBuilder(options, Utils, next);
   };
 

@@ -119,7 +119,7 @@ module.exports = (function() {
       var methods = result.methods.method.map(function(v) {
         return v._content;
       });
-      if(!progressBar && flickrOptions.progress) {
+      if(!progressBar && flickrOptions.progress !== false) {
         progressBar = new Progress('  fetching method signatures [:bar] :percent', { total: methods.length });
       }
       return parseMethods(flickrOptions, methods, 0, finished);
