@@ -471,4 +471,7 @@ optional boolean, console.logs the auth URL instead of opening a browser window 
 optional boolean, performs authentication without building the Flickr API object.
 
 ###silent
-optional boolean, supresses the default console logging on successful authentication.
+optional boolean, suppresses the default console logging on successful authentication.
+
+###progress
+optional boolean, suppresses the default progress bars writing to stdout
