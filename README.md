@@ -395,8 +395,11 @@ options = {
   // only performs authentication, without building the Flickr API.
   noAPI: true,
 
-  // supress the default console logging on successful authentication.
+  // suppress the default console logging on successful authentication.
   silent: true,
+
+  // suppress the default progress bars in stdout
+  progress: false
 
   ...
 }
