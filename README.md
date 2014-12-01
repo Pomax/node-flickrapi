@@ -398,7 +398,7 @@ options = {
   // suppress the default console logging on successful authentication.
   silent: true,
 
-  // suppress the default progress bars in stdout
+  // suppress writing progress bars to stdout
   progress: false
 
   ...
@@ -474,4 +474,4 @@ optional boolean, performs authentication without building the Flickr API object
 optional boolean, suppresses the default console logging on successful authentication.
 
 ###progress
-optional boolean, suppresses the default progress bars writing to stdout
+optional boolean, suppresses writing progress bars to stdout if set to `false`
