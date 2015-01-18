@@ -12,7 +12,7 @@ module.exports = (function() {
     options = Utils.setAuthVals(options);
 
     var queryArguments = {
-          oauth_callback:         encodeURIComponent(options.callback),
+          oauth_callback:         options.callback,
           oauth_consumer_key:     options.api_key,
           oauth_nonce:            options.oauth_nonce,
           oauth_timestamp:        options.oauth_timestamp,
