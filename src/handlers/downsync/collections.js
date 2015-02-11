@@ -37,7 +37,7 @@ function getCollectionMetadata(flickr, next_function) {
     page: 1,
     per_page: 500
   }, function(error, result) {
-    collections = result.collections.collection;
+    collections = result.collections.collection || [];
     console.log("Downloading collection metadata from Flickr.");
     progressBar = new progress('  [:bar] :current/:total', { total: collections.length });
     processCollections(flickr, 0, collections.length, next_function);
