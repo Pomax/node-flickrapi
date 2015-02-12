@@ -1,6 +1,6 @@
 {
   "name": "flickrapi",
-  "version": "0.3.23",
+  "version": "0.3.24",
   "homepage": "https://github.com/Pomax/node-flickrapi",
   "repository": {
     "type" : "git",
