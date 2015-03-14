@@ -28,7 +28,7 @@ module.exports = (function() {
         filename = mdir + "/" + method_name + ".json";
 
     // advance the progress bar
-    if(progressBar) {
+    if(progressBar && flickrOptions.progress) {
         progressBar.tick();
     }
 
