@@ -280,7 +280,7 @@ module.exports = (function() {
         if(!response) {
           error = "HTTP Error: no response for url [" + flickrURL + "]";
           if (flickrOptions.retry_queries) {
-            return queryFlickr(queryArguments, flickrOptions, security, processResult, errors);
+            return this.queryFlickr(queryArguments, flickrOptions, security, processResult, errors);
           }
           return processResult(error);
         }
@@ -306,7 +306,7 @@ module.exports = (function() {
         }
 
         processResult(false, body);
-      });
+      }.bind(this));
     },
 
     /**
