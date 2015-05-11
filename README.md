@@ -116,6 +116,43 @@ flickr.photos.search({
   // result is Flickr's response
 });
 ```
+## Call functions that don't *require* authentication, authenticated anyway
+
+Simply add an `authenticated: true` pair to your function call. Compare:
+
+```
+flickr.people.getPhotos({
+  api_key: ...
+  user_id: <your own ID>
+  page: 1,
+  per_page: 100
+}, function(err, result) {
+  /*
+    This will give public results only, even if we used
+    Flickr.authenticate(), because the function does not
+    *require* authentication to run. It just runs with
+    fewer permissions.
+  */
+});
+```
+
+To:
+
+```
+flickr.people.getPhotos({
+  api_key: ...
+  user_id: <your own ID>
+  authenticated: true,
+  page: 1,
+  per_page: 100
+}, function(err, result) {
+  /*
+    This will now give all public and private results,
+    because we explicitly ran this as an authenticated call
+  */ 
+});
+```
+
 
 ## Proxy the Flickr API
 

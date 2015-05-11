@@ -1,3 +1,9 @@
+v0.3.30
+  * API functions that have optional authentication (such as 
+    flickr.people.getPhotos) can now be told to explicitly use
+    authenticated calls, by passing in "authenticated: true"
+    as part of the function call options.
+
 v0.3.24
   * The library can now be used to upload photos to Flickr.
 

@@ -241,6 +241,7 @@ module.exports = (function() {
      * Call the Flickr API
      */
     queryFlickr: function(queryArguments, flickrOptions, security, processResult, errors) {
+      queryArguments = JSON.parse(JSON.stringify(queryArguments));
 
       if(arguments.length === 3) {
         processResult = arguments[2];
@@ -248,7 +249,7 @@ module.exports = (function() {
         errors = {};
       }
 
-      var authed = (security.needssigning === 1) || flickrOptions.force_auth;
+      var authed = (security.needssigning === 1) || queryArguments.authenticated || flickrOptions.force_auth;
 
       // do we need to HMAC-SHA1 sign this URL?
       if (authed) {

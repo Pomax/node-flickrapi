@@ -5,3 +5,5 @@ userdata
 node_modules
 .npmignore
 simpletest.js
+test2.js
+test3.js
