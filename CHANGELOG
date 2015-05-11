@@ -1,3 +1,6 @@
+v0.3.31
+  * Uploads can use tags either in string form or in array form.
+
 v0.3.30
   * API functions that have optional authentication (such as 
     flickr.people.getPhotos) can now be told to explicitly use

@@ -211,11 +211,14 @@ Flickr.authenticate(FlickrOptions, function(error, flickr) {
   var uploadOptions = {
     photos: [{
       title: "test",
-      tags: ["happy","fox"],
+      tags: [
+        "happy fox",
+        "test 1"
+      ],
       photo: __dirname + "/test.jpg"
     },{
       title: "test2",
-      tags: ["secondary", "test", "image"],
+      tags: "happy fox image \"test 2\" separate tags",
       photo: __dirname + "/test.jpg"
     }]
   };
