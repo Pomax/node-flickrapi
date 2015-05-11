@@ -348,7 +348,12 @@ module.exports = (function() {
       delete photoOptions.photo;
       if(typeof photo === "string") { photo = fs.createReadStream(photo); }
 
-      console.log(photoOptions);
+      // collapse tags, if used
+      if(photoOptions.tags && photoOptions.tags.forEach) {
+        photoOptions.tags = photoOptions.tags.map(function(v) {
+          return '"' + v + '"';
+        }).join(" ");
+      }
 
       flickrOptions = this.setAuthVals(flickrOptions);
       photoOptions.oauth_signature_method = "HMAC-SHA1";

@@ -105,11 +105,13 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
           photos: [
             {
               title: "test",
-              photo: __dirname + "/test.jpg"
+              photo: __dirname + "/test.jpg",
+              tags: ['happy fox', 'test 1']
             },
             {
               title: "test2",
-              photo: __dirname + "/test.jpg"
+              photo: __dirname + "/test.jpg",
+              tags: ['happy fox', 'test 2']
             }
           ]
         }
