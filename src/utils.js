@@ -378,8 +378,10 @@ module.exports = (function() {
       var req = request.post(flickrURL, function(error, response, body) {
         // format:json does not actually work, so we need to grab the photo ID from the response XML:
         // <?xml version="1.0" encoding="utf-8" ?>\n<rsp stat="ok">\n<photoid>.........</photoid>\n</rsp>\n
-        var data = undefined;
-        if(body.indexOf('rsp stat="ok"')>-1) {
+        var data;
+        if(!body) {
+          error = error || "No body found in response";
+        } else if (body.indexOf('rsp stat="ok"')>-1) {
           data = parseInt(body.split("<photoid>")[1].split("</photoid>")[0], 10);
         }
         callback(error, data);
