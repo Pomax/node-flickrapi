@@ -1,8 +1,12 @@
+v0.3.33
+  * Authenticate is now exiting, rather than wrapping the entire
+    life of the API object.
+
 v0.3.31
   * Uploads can use tags either in string form or in array form.
 
 v0.3.30
-  * API functions that have optional authentication (such as 
+  * API functions that have optional authentication (such as
     flickr.people.getPhotos) can now be told to explicitly use
     authenticated calls, by passing in "authenticated: true"
     as part of the function call options.
