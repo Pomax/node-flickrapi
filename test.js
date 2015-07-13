@@ -150,6 +150,8 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
   });
 });
 
+console.log("post authenticate");
+
 // Start up the Flickr API proxy, and call the test.echo
 // method to make sure we are actually able to talk to Flickr.
 // *** THIS PATH DOES NOT USE ANY AUTHENTICATION ***
@@ -182,3 +184,5 @@ if(!testAuthenticated) Flickr.tokenOnly(FlickrOptions, function(error, flickr) {
     }
   });
 });
+
+console.log("post tokenOnly");

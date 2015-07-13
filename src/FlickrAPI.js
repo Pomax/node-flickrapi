@@ -91,8 +91,11 @@ module.exports = (function Flickr() {
    */
   var authenticate = function(options, next) {
     if(!options) {
-      return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\n"+
-                            "Visit http://www.flickr.com/services/apps/create/apply to get one."));
+      process.nextTick(function(){
+        next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\n"+
+                       "Visit http://www.flickr.com/services/apps/create/apply to get one."));
+      });
+      return;
     }
 
     // out-of-browser authentication unless specified otherwise
@@ -120,7 +123,9 @@ module.exports = (function Flickr() {
           }
 
           // is this auth only, or also API object creation?
-          if(options.noAPI) { next(false); }
+          if(options.noAPI) {
+            process.nextTick(function() { next(false); });
+          }
           else { new APIBuilder(options, Utils, next); }
         });
       } else { new APIBuilder(options, Utils, next); }

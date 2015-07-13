@@ -18,7 +18,7 @@ module.exports = (function() {
     if(method_idx >= methods.length) {
       setTimeout(function() {
         require("./handlers/connectProxy.js").proxy(API);
-        finished(null, API);
+        process.nextTick(function() { finished(null, API); });
       }, 1);
       return;
     }
@@ -100,7 +100,8 @@ module.exports = (function() {
     flickrOptions,
     function(error, result) {
       if(error) {
-        return finished(new Error(error));
+        process.nextTick(function() { finished(new Error(error)); });
+        return;
       }
       fs.writeFileSync(filename, JSON.prettyprint(result));
       return handleResult(result);

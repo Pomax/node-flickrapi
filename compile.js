@@ -44,6 +44,7 @@
       });
     }
   };
+
   var stripDev = function(methods) {
     Object.keys(methods).forEach(function(methodName) {
       var data = methods[methodName];
@@ -107,9 +108,9 @@
 }).toString() + ";");
     buffer.write(" Flickr.prototype = {};");
 
-
     // Prototype from methods
     setupMethods(flickr);
+
     if (process.argv.indexOf("dev") === -1) { stripDev(methods); }
     buffer.write(" Flickr.methods = " + JSON.stringify(methods,false,1) + ";");
     var fn = (function() {
@@ -126,7 +127,6 @@
 }).toString();
     if (process.argv.indexOf("dev") > -1) { fn = fn.replace("generateAPIFunction","generateAPIDevFunction"); }
     buffer.write("\n(" + fn + "());\n");
-
 
     // option binding for individual instances
     buffer.write(" Flickr.prototype.bindOptions = " + (function(flickrOptions) {
@@ -148,6 +148,11 @@
 
     // write out the library to file
     var fs = require("fs");
-    fs.writeFileSync("./browser/"+filename+".js", buffer.getData());
+    filename = "./browser/"+filename+".js";
+    fs.writeFile(filename, buffer.getData(), function() {
+      console.log("written "+filename);
+      process.exit(0);
+    });
   });
+
 }());
