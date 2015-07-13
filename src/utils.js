@@ -138,6 +138,9 @@ module.exports = (function() {
      * Parse a Flickr API response.
      */
     parseRestResponse: function(body) {
+      if(!body) {
+        return false;
+      }
       var constituents = body.split("&"),
           response = {},
           keyval;

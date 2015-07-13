@@ -32,6 +32,10 @@ module.exports = (function() {
 
       // show response
       response = Utils.parseRestResponse(body);
+      if(!response) {
+        requestCompleted("no response received");
+      }
+
       console.log(response);
 
       if(response.oauth_problem) {
