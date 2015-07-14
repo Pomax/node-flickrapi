@@ -359,7 +359,16 @@ export FLICKR_ACCESS_TOKEN="72157634942121673-3e02b190b9720d7d"
 export FLICKR_ACCESS_TOKEN_SECRET="99c038c9fc77673e"
 ```
 
-Add these variables to your environment, or put them in an `.env` file for use with `process.env` or the `habitat` package or the like, or put them straight into your source code to use the flickrapi:
+These are namespaced environment variables, which works really well with env packages like [habitat(https://www.npmjs.com/package/habitat),
+so if you're going to use a namespace-aware enviroment parser, simply add these variables
+to your environment, or put them in an `.env` file and then parse them in.
+
+If you would prefer to use plain `process.env` consulting, remove the `FLICKR_` namespace
+prefix, and then pass `process.env` as options object.
+
+Alternatively, if you don't mind hardcoding values (but **be careful never to check that code
+in, because github gets mined by bots for credentials**) you can put them straight into your
+source code:
 
 ```
 var FlickrOptions = {
