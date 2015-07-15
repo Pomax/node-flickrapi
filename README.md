@@ -359,7 +359,7 @@ export FLICKR_ACCESS_TOKEN="72157634942121673-3e02b190b9720d7d"
 export FLICKR_ACCESS_TOKEN_SECRET="99c038c9fc77673e"
 ```
 
-These are namespaced environment variables, which works really well with env packages like [habitat(https://www.npmjs.com/package/habitat),
+These are namespaced environment variables, which works really well with env packages like [habitat](https://www.npmjs.com/package/habitat),
 so if you're going to use a namespace-aware enviroment parser, simply add these variables
 to your environment, or put them in an `.env` file and then parse them in.
 
