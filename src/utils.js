@@ -338,12 +338,14 @@ module.exports = (function() {
       var uploadids = [];
       delete uploadOptions.photos;
       var self = this;
+
       (function next(err, result) {
         if(err) { return processResult(err); }
         if(result) { uploadids.push(result); }
         if(photos.length === 0) { return processResult(false, uploadids); }
         self.uploadtoFlickr(photos.splice(0,1)[0], flickrOptions, next);
       }(false, false));
+
     },
 
     uploadtoFlickr: function(photoOptions, flickrOptions, callback) {
@@ -354,7 +356,7 @@ module.exports = (function() {
       // collapse tags, if used
       if(photoOptions.tags && photoOptions.tags.forEach) {
         photoOptions.tags = photoOptions.tags.map(function(v) {
-          return '"' + v + '"';
+          return '"' + v.replace(/'/g,'%27') + '"';
         }).join(" ");
       }
 
@@ -373,6 +375,9 @@ module.exports = (function() {
 
       // now we can put the photo back in
       photoOptions.photo = photo;
+
+      // restore the percentage encoded quotes in tags
+      photoOptions.tags = photoOptions.tags.replace(/%27/g,"'");
 
       // and finally, form the URL we need to POST to
       var signature = "&oauth_signature=" + photoOptions.oauth_signature;

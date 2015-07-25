@@ -1,3 +1,6 @@
+v0.3.35
+  * tags can now include the apostrophe (') character
+
 v0.3.33
   * Authenticate is now exiting, rather than wrapping the entire
     life of the API object.
