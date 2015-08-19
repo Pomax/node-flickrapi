@@ -12,7 +12,7 @@
 var habitat = require("habitat"),
     env = habitat.load(),
     Flickr = require("./src/FlickrApi"),
-    FlickrOptions = env.get("FLICKR"),
+    FlickrOptions = env.get("FLICKR", {}),
     // node test => auth test; node test false => token only test
     testAuthenticated = process.argv.indexOf("testAuthenticated") > -1,
     testUpload = process.argv.indexOf("testUpload") > -1,
