@@ -114,18 +114,31 @@ module.exports = (function() {
       return options;
     },
 
-    /**
-     * Collapse a number of oauth query arguments into an
-     * alphabetically sorted, URI-safe concatenated string.
-     */
-    formQueryString: function(queryArguments) {
-      var args = [],
-          append = function(key) {
-            args.push(key + "=" + encodeURIComponent(queryArguments[key]));
-          };
-      Object.keys(queryArguments).sort().forEach(append);
-      return args.join("&");
-    },
+   /**
+    * Properly encode query strings with RFC5987 values.
+    * Additionally, RFC3986 and Flickr require the exclamation point be escaped.
+    * Inspired by MDN: https://developer.mozilla.org/en/docs/Web/JavaScript/Reference/Global_Objects/encodeURIComponent
+    */
+   encodeRFC5987ValueChars: function(str) {
+     return encodeURIComponent(str).
+     replace(/['()!]/g, escape).
+     replace(/\*/g, '%2A').
+     replace(/%(?:7C|60|5E)/g, unescape);
+   },
+
+   /**
+    * Collapse a number of oauth query arguments into an
+    * alphabetically sorted, URI-safe concatenated string.
+    */
+   formQueryString: function(queryArguments) {
+     var Utils = this,
+         args = [],
+         append = function(key) {
+           args.push(key + "=" + Utils.encodeRFC5987ValueChars(queryArguments[key]));
+         };
+     Object.keys(queryArguments).sort().forEach(append);
+     return args.join("&");
+   },
 
     /**
      * Turn a url + query string into a Flickr API "base string".

@@ -4,14 +4,21 @@
  * src/utils.js, which heavily relies on being run in Node.js context.
  */
 module.exports = {
-  formQueryString: function(queryArguments) {
-    var args = [],
-        append = function(key) {
-          args.push(key + "=" + encodeURIComponent(queryArguments[key]));
-        };
-    Object.keys(queryArguments).sort().forEach(append);
-    return args.join("&");
-  },
+    encodeRFC5987ValueChars: function(str) {
+      return encodeURIComponent(str).
+      replace(/['()!]/g, escape).
+      replace(/\*/g, '%2A').
+      replace(/%(?:7C|60|5E)/g, unescape);
+    },
+    formQueryString: function(queryArguments) {
+      var Utils = this,
+          args = [],
+          append = function(key) {
+            args.push(key + "=" + Utils.encodeRFC5987ValueChars(queryArguments[key]));
+          };
+      Object.keys(queryArguments).sort().forEach(append);
+      return args.join("&");
+    },
   checkRequirements: function(method_name, required, callOptions, callback) {
     required = required || [];
     for(var r=0, last=required.length, arg; r<last; r++) {
