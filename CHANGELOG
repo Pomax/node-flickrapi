@@ -1,3 +1,6 @@
+v0.4.1
+  * URL data now conforms to RFC5987 (titles, descriptions, etc)
+
 v0.3.35
   * tags can now include the apostrophe (') character
 
