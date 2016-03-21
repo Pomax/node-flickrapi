@@ -104,9 +104,7 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
         var uploadOptions = {
           photos: [
             {
-              title: "test",
-              photo: __dirname + "/test.jpg",
-              tags: ['happy fox', 'test 1']
+              photo: __dirname + "/test.jpg"
             },
             {
               title: "test2",
