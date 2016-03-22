@@ -112,6 +112,10 @@ if(testAuthenticated) Flickr.authenticate(FlickrOptions, function(error, flickr)
               title: "test2",
               photo: __dirname + "/test.jpg",
               tags: ['happy fox', 'test 2']
+            },
+            // photo without tag or title
+            {
+              photo: __dirname + "/test.jpg"
             }
           ]
         }

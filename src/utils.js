@@ -395,8 +395,12 @@ module.exports = (function() {
       photoOptions.photo = photo;
 
       // restore the percentage encoded quotes in tags and titles
-      photoOptions.tags = photoOptions.tags.replace(/%27/g,"'");
-      photoOptions.title = photoOptions.title.replace(/%27/g,"'").replace(/%22/g,'"');
+      if (photoOptions.tags) {
+        photoOptions.tags = photoOptions.tags.replace(/%27/g,"'");
+      }
+      if (photoOptions.title) {
+        photoOptions.title = photoOptions.title.replace(/%27/g,"'").replace(/%22/g,'"');
+      }
 
       // and finally, form the URL we need to POST to
       var signature = "&oauth_signature=" + photoOptions.oauth_signature;
