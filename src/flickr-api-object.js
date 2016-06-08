@@ -24,7 +24,7 @@ module.exports = (function() {
     }
 
     var method_name = methods[method_idx],
-        mdir = "data/flickr/methods",
+        mdir = __dirname + "/data/flickr/methods",
         filename = mdir + "/" + method_name + ".json";
 
     // advance the progress bar
@@ -126,7 +126,7 @@ module.exports = (function() {
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
-    var mdir = "./data/flickr",
+    var mdir = __dirname + "/data/flickr",
         filename = mdir + "/flickr.reflection.getMethods.json";
     if(fs.existsSync(filename)) {
       var methodListing = JSON.parse(fs.readFileSync(filename));
