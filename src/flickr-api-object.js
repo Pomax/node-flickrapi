@@ -93,7 +93,8 @@ module.exports = (function() {
           return handleResult(methodDefinition);
         }
       }
-      catch (e) {}
+      catch (e) {
+      }
     }
 
     Utils.mkdir(mdir);
