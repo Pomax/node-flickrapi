@@ -86,13 +86,17 @@ module.exports = (function() {
     };
 
     // do we have this method definition cached?
-    if(fs.existsSync(filename)) {
-      var methodDefinition = JSON.parse(fs.readFileSync(filename));
-      return handleResult(methodDefinition);
-    } else {
-      Utils.mkdir(mdir);
+    if (fs.existsSync(filename)) {
+      try {
+        var methodDefinition = JSON.parse(fs.readFileSync(filename));
+        if (methodDefinition && methodDefinition.method && methodDefinition.arguments) {
+          return handleResult(methodDefinition);
+        }
+      }
+      catch (e) {}
     }
 
+    Utils.mkdir(mdir);
     Utils.queryFlickr({
       method: "flickr.reflection.getMethodInfo",
       method_name: method_name
@@ -127,9 +131,13 @@ module.exports = (function() {
 
     var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods",
         filename = mdir + "/flickr.reflection.getMethods.json";
+        
     if(fs.existsSync(filename)) {
-      var methodListing = JSON.parse(fs.readFileSync(filename));
-      return handleResults(methodListing);
+      try {
+        var methodListing = JSON.parse(fs.readFileSync(filename));
+        return handleResults(methodListing);
+      } catch(e) {
+      }
     }
 
     // get all functions
