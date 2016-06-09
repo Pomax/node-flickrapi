@@ -23,7 +23,7 @@ module.exports = (function() {
       return;
     }
     
-    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods",
+    var mdir = dataPath(flickrOptions),
         method_name = methods[method_idx],
         filename = mdir + "/" + method_name + ".json";
 
@@ -97,7 +97,6 @@ module.exports = (function() {
       }
     }
 
-    Utils.mkdir(mdir);
     Utils.queryFlickr({
       method: "flickr.reflection.getMethodInfo",
       method_name: method_name
@@ -110,6 +109,17 @@ module.exports = (function() {
       fs.writeFileSync(filename, JSON.prettyprint(result));
       return handleResult(result);
     });
+  }
+  
+  /**
+   * Construct and create the data storage path
+   */
+  function dataPath(flickrOptions) {
+    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods";
+    if(!fs.existsSync(mdir)) {
+      Utils.mkdir(mdir);
+    }
+    return mdir;
   }
 
   /**
@@ -130,7 +140,7 @@ module.exports = (function() {
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
-    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods",
+    var mdir = dataPath(flickrOptions),
         filename = mdir + "/flickr.reflection.getMethods.json";
         
     if(fs.existsSync(filename)) {
