@@ -136,7 +136,9 @@ module.exports = (function() {
     if(fs.existsSync(filename)) {
       try {
         var methodListing = JSON.parse(fs.readFileSync(filename));
-        return handleResults(methodListing);
+        if(methodListing && methodListing.methods) {
+            return handleResults(methodListing);
+        }
       } catch(e) {
       }
     }
