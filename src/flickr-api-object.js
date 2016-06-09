@@ -22,9 +22,9 @@ module.exports = (function() {
       }, 1);
       return;
     }
-
-    var method_name = methods[method_idx],
-        mdir = "data/flickr/methods",
+    
+    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods",
+        method_name = methods[method_idx],
         filename = mdir + "/" + method_name + ".json";
 
     // advance the progress bar
@@ -125,7 +125,7 @@ module.exports = (function() {
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
-    var mdir = "./data/flickr",
+    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods",
         filename = mdir + "/flickr.reflection.getMethods.json";
     if(fs.existsSync(filename)) {
       var methodListing = JSON.parse(fs.readFileSync(filename));
