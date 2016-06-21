@@ -44,9 +44,16 @@ var flickr = new Flickr({
 });
 ```
 
+If you use es6 `module` loader and you just use like this
+```
+import Flickr from './flickrapi/browser/flickrapi.dev.js'
+// do sth that use Flickr name
+```
+
 To make this work, have flickapi running on your server with a proxy route enabled, and you'll be able to make use of all the Flickr API calls, without having to put your credentials anywhere in your client-side source code.
 
 Proxy mode is explained [below](#Flickr_API_proxying_for_connect/express_apps), but is essentially a one-liner add to your regular connect/express app.
+
 
 ## As a module in a (larger) Node.js program
 
