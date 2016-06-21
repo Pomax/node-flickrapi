@@ -44,9 +44,9 @@ var flickr = new Flickr({
 });
 ```
 
-If you use es6 `module` loader and you just use like this
+If you use `module` loader and you just use like this:
 ```
-import Flickr from './flickrapi/browser/flickrapi.dev.js'
+import Flickr from 'flickrapi/browser/flickrapi.dev.js'
 // do sth that use Flickr name
 ```
 
