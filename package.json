@@ -20,9 +20,7 @@
     "habitat": "~1.1.0",
     "babel-core": "^6.5.2",
     "babel-loader": "^6.2.3",
-    "babel-plugin-react-transform": "^2.0.2",
     "babel-preset-es2015": "^6.5.0",
-    "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "webpack": "^1.13.1"
   },
@@ -42,6 +40,7 @@
     "url": "https://github.com/Pomax/node-flickrapi.git"
   },
   "scripts": {
-    "test": "node test"
+    "test": "node test",
+    "testWP": "cd browser && webpack --config --display-error-details webpack.config.js"
   }
 }

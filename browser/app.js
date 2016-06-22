@@ -1,11 +1,4 @@
-import Flickr from './flickrapi.dev'
-import './fromBrowser.js'
+// just load api file via es6 module
+import Flickr from './flickrapi'
 
-const testAPI = document.getElementById("testFlickrAPI")
-const testAPIProxy = document.getElementById("testFlickrAPIProxy")
-testAPI.onclick = function(evt){
-  testFlickrAPI()
-}
-testAPIProxy.onclick = function(evt){
-  testFlickrAPI(true)
-}
+// do something with Flickr
