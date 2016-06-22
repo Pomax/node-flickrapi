@@ -54,7 +54,6 @@ To make this work, have flickapi running on your server with a proxy route enabl
 
 Proxy mode is explained [below](#Flickr_API_proxying_for_connect/express_apps), but is essentially a one-liner add to your regular connect/express app.
 
-
 ## As a module in a (larger) Node.js program
 
 Install like any other package:

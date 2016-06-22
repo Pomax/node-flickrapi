@@ -7,7 +7,7 @@
 	// Pass this if window is not defined yet
 }(typeof window !== "undefined" ? window : this, function(window, noGlobal) {
 
-    //@CODE
+  //@CODE
 
 	// Register as a named AMD module
 	if (typeof define === "function" && define.amd) {

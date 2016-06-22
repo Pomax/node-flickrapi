@@ -41,6 +41,6 @@
   },
   "scripts": {
     "test": "node test",
-    "testWP": "cd browser && webpack --config --display-error-details webpack.config.js"
+    "testWP": "webpack --display-error-details --config ./browser/webpack.config.js"
   }
 }

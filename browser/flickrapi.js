@@ -7,7 +7,7 @@
 	// Pass this if window is not defined yet
 }(typeof window !== "undefined" ? window : this, function(window, noGlobal) {
 
-    
+  
  var Utils = {};
 Utils.encodeRFC5987ValueChars = function (str) {
       return encodeURIComponent(str).
@@ -202,8 +202,8 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     }
 };
  var Flickr = function (flickrOptions) {
-      this.bindOptions(flickrOptions);
-    };
+  this.bindOptions(flickrOptions);
+};
  Flickr.prototype = {};
  Flickr.methods = {
  "flickr.activity.userComments": {
@@ -1857,33 +1857,30 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
 };
 
 (function () {
-      Object.keys(Flickr.methods).forEach(function(method) {
-        var level = method.split(".").slice(1);
-        var e = Flickr.prototype,
-          key;
-        while (level.length > 1) {
-          key = level.splice(0, 1)[0];
-          if (!e[key]) {
-            e[key] = {};
-          }
-          e = e[key];
-        }
-        e[level] = Utils.generateAPIFunction(Flickr.methods[method]);
-      });
-    }());
+  Object.keys(Flickr.methods).forEach(function(method) {
+    var level = method.split(".").slice(1);
+    var e = Flickr.prototype, key;
+    while(level.length > 1) {
+      key = level.splice(0,1)[0];
+      if(!e[key]) { e[key] = {}; }
+      e = e[key];
+    }
+    e[level] = Utils.generateAPIFunction(Flickr.methods[method]);
+  });
+}());
 
  Flickr.prototype.bindOptions = function (flickrOptions) {
-      this.flickrOptions = flickrOptions;
-      (function bindOptions(obj, props) {
-        Object.keys(props).forEach(function(key) {
-          if (key === "flickrOptions") return;
-          if (typeof obj[key] === "object") {
-            bindOptions(obj[key], props[key]);
-            obj[key].flickrOptions = flickrOptions;
-          }
-        });
-      }(this, Flickr.prototype));
-    };
+  this.flickrOptions = flickrOptions;
+  (function bindOptions(obj, props) {
+    Object.keys(props).forEach(function(key) {
+      if (key === "flickrOptions") return;
+      if (typeof obj[key] === "object") {
+        bindOptions(obj[key], props[key]);
+        obj[key].flickrOptions = flickrOptions;
+      }
+    });
+  }(this, Flickr.prototype));
+};
 
 	// Register as a named AMD module
 	if (typeof define === "function" && define.amd) {

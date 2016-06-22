@@ -1,5 +1,6 @@
+var webpack = require('webpack');
 module.exports = {
-    entry: "./app.js",
+    entry: __dirname+"/app.js",
     output: {
         path: __dirname,
         filename: "bundle.js"
@@ -17,5 +18,6 @@ module.exports = {
                 presets: ['es2015', 'stage-0']
             }
         }]
-    }
+    },
+    plugins: [new webpack.optimize.UglifyJsPlugin()]
 };
