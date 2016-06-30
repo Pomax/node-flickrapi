@@ -1,13 +1,20 @@
 (function() {
  var Utils = {};
+Utils.encodeRFC5987ValueChars = function (str) {
+      return encodeURIComponent(str).
+      replace(/['()!]/g, escape).
+      replace(/\*/g, '%2A').
+      replace(/%(?:7C|60|5E)/g, unescape);
+    };
 Utils.formQueryString = function (queryArguments) {
-    var args = [],
-        append = function(key) {
-          args.push(key + "=" + encodeURIComponent(queryArguments[key]));
-        };
-    Object.keys(queryArguments).sort().forEach(append);
-    return args.join("&");
-  };
+      var Utils = this,
+          args = [],
+          append = function(key) {
+            args.push(key + "=" + Utils.encodeRFC5987ValueChars(queryArguments[key]));
+          };
+      Object.keys(queryArguments).sort().forEach(append);
+      return args.join("&");
+    };
 Utils.checkRequirements = function (method_name, required, callOptions, callback) {
     required = required || [];
     for(var r=0, last=required.length, arg; r<last; r++) {
@@ -114,6 +121,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     xhr.send(postdata ? JSON.stringify(postdata) : null);
   };
  Utils.errors = {
+    "95": {
+        "code": 95,
+        "message": "SSL is required",
+        "_content": "SSL is required to access the Flickr API."
+    },
     "96": {
         "code": 96,
         "message": "Invalid signature",
@@ -433,12 +445,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The ID of the collection to fetch information for."
    }
   ],
-  "optional": [
-   {
-    "name": "secure_image_embeds",
-    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -511,10 +517,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "sort",
     "_content": "The order in which to sort the returned contacts. Defaults to name. The possible values are: name and time."
-   },
-   {
-    "name": "fields",
-    "_content": "The fields can have the following args:\r\nrealname, friend, family,path_alias,location,public_photos_count,can_tag"
    }
   ],
   "errors": [
@@ -566,10 +568,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "per_page",
     "_content": "Number of photos to return per page. If this argument is omitted, it defaults to 1000. The maximum allowed value is 1000."
-   },
-   {
-    "name": "show_more",
-    "_content": "Include additional information for each contact, such as realname, is_friend, is_family, path_alias and location."
    }
   ],
   "errors": [
@@ -589,14 +587,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  },
  "flickr.contacts.getTaggingSuggestions": {
   "optional": [
-   {
-    "name": "include_self",
-    "_content": "Return calling user in the list of suggestions. Default: true."
-   },
-   {
-    "name": "include_address_book",
-    "_content": "Include suggestions from the user's address book. Default: false"
-   },
    {
     "name": "per_page",
     "_content": "Number of contacts to return per page. If this argument is omitted, all contacts will be returned."
@@ -662,20 +652,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The user who counts the photo as a favorite."
    }
   ],
-  "optional": [
-   {
-    "name": "num_prev",
-    "_content": ""
-   },
-   {
-    "name": "num_next",
-    "_content": ""
-   },
-   {
-    "name": "extras",
-    "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -708,20 +684,12 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The NSID of the user to fetch the favorites list for. If this argument is omitted, the favorites list for the calling user is returned."
    },
    {
-    "name": "jump_to",
-    "_content": ""
-   },
-   {
     "name": "min_fave_date",
     "_content": "Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp."
    },
    {
     "name": "max_fave_date",
     "_content": "Maximum date that a photo was favorited on. The date should be in the form of a unix timestamp."
-   },
-   {
-    "name": "get_user_info",
-    "_content": "Include info for the user who's favorites are being returned."
    }
   ],
   "errors": [
@@ -732,9 +700,9 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    }
   ],
   "security": {
-   "needslogin": 1,
-   "needssigning": 1,
-   "requiredperms": 1
+   "needslogin": 0,
+   "needssigning": 0,
+   "requiredperms": 0
   },
   "name": "flickr.favorites.getList",
   "url": "https://www.flickr.com/services/api/flickr.favorites.getList.html"
@@ -747,10 +715,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    }
   ],
   "optional": [
-   {
-    "name": "jump_to",
-    "_content": ""
-   },
    {
     "name": "min_fave_date",
     "_content": "Minimum date that a photo was favorited on. The date should be in the form of a unix timestamp."
@@ -780,12 +744,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "photo_id",
     "_content": "The id of the photo to remove from the user's favorites."
-   }
-  ],
-  "optional": [
-   {
-    "name": "user_id",
-    "_content": "NSID of the user whose favorites the photo should be removed from. This only works if the calling user owns the photo."
    }
   ],
   "errors": [
@@ -1110,6 +1068,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  "flickr.groups.discuss.replies.add": {
   "required": [
    {
+    "name": "group_id",
+    "_content": "Pass in the group id to where the topic belongs. Can be NSID or group alias. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get faster performance. "
+   },
+   {
     "name": "topic_id",
     "_content": "The ID of the topic to post a comment to."
    },
@@ -1146,6 +1108,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  "flickr.groups.discuss.replies.delete": {
   "required": [
    {
+    "name": "group_id",
+    "_content": "Pass in the group id to where the topic belongs. Can be NSID or group alias. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get faster performance. "
+   },
+   {
     "name": "topic_id",
     "_content": "The ID of the topic the post is in."
    },
@@ -1181,6 +1147,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  },
  "flickr.groups.discuss.replies.edit": {
   "required": [
+   {
+    "name": "group_id",
+    "_content": "Pass in the group id to where the topic belongs. Can be NSID or group alias. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get faster performance. "
+   },
    {
     "name": "topic_id",
     "_content": "The ID of the topic the post is in."
@@ -1232,6 +1202,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  "flickr.groups.discuss.replies.getInfo": {
   "required": [
    {
+    "name": "group_id",
+    "_content": "Pass in the group id to where the topic belongs. Can be NSID or group alias. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get faster performance. "
+   },
+   {
     "name": "topic_id",
     "_content": "The ID of the topic the post is in."
    },
@@ -1262,6 +1236,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  },
  "flickr.groups.discuss.replies.getList": {
   "required": [
+   {
+    "name": "group_id",
+    "_content": "Pass in the group id to where the topic belongs. Can be NSID or group alias. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get faster performance. "
+   },
    {
     "name": "topic_id",
     "_content": "The ID of the topic to fetch replies for."
@@ -1296,7 +1274,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
   "required": [
    {
     "name": "group_id",
-    "_content": "The NSID of the group to add a topic to.\r\n"
+    "_content": "The NSID or path alias of the group to add a topic to.\r\n"
    },
    {
     "name": "subject",
@@ -1340,6 +1318,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  "flickr.groups.discuss.topics.getInfo": {
   "required": [
    {
+    "name": "group_id",
+    "_content": "NSID or group alias of the group to which the topic belongs. Making this parameter optional for legacy reasons, but it is highly recommended to pass this in to get better performance. "
+   },
+   {
     "name": "topic_id",
     "_content": "The ID for the topic to edit."
    }
@@ -1363,7 +1345,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
   "required": [
    {
     "name": "group_id",
-    "_content": "The NSID of the group to fetch information for."
+    "_content": "The NSID or path alias of the group to fetch information for."
    }
   ],
   "optional": [
@@ -1400,12 +1382,12 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
   ],
   "optional": [
    {
-    "name": "lang",
-    "_content": "The language of the group name and description to fetch.  If the language is not found, the primary language of the group will be returned.\r\n\r\nValid values are the same as <a href=\"/services/feeds/\">in feeds</a>."
+    "name": "group_path_alias",
+    "_content": "The path alias of the group. One of this or the group_id param is required"
    },
    {
-    "name": "secure_image_embeds",
-    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
+    "name": "lang",
+    "_content": "The language of the group name and description to fetch.  If the language is not found, the primary language of the group will be returned.\r\n\r\nValid values are the same as <a href=\"/services/feeds/\">in feeds</a>."
    }
   ],
   "errors": [
@@ -1413,6 +1395,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "1",
     "message": "Group not found",
     "_content": "The group NSID passed did not refer to a group that the calling user can see - either an invalid group is or a group that can't be seen by the calling user."
+   },
+   {
+    "code": "2",
+    "message": "Group is private",
+    "_content": "This is a private group."
    }
   ],
   "security": {
@@ -1471,6 +1458,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "10",
     "message": "Account in maximum number of groups",
     "_content": "The account is a member of the maximum number of groups."
+   },
+   {
+    "code": "11",
+    "message": "User unable to join",
+    "_content": "This user is unable to join this group."
    }
   ],
   "security": {
@@ -1692,20 +1684,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The nsid of the group who's pool to fetch the photo's context for."
    }
   ],
-  "optional": [
-   {
-    "name": "num_prev",
-    "_content": ""
-   },
-   {
-    "name": "num_next",
-    "_content": ""
-   },
-   {
-    "name": "extras",
-    "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -1740,10 +1718,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "per_page",
     "_content": "Number of groups to return per page. If this argument is omitted, it defaults to 400. The maximum allowed value is 400."
-   },
-   {
-    "name": "extras",
-    "_content": "can take the value icon_urls_deep and return the various buddy icon sizes for the group. It can only be done by blessed APIs"
    }
   ],
   "security": {
@@ -1769,14 +1743,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "user_id",
     "_content": "The nsid of a user. Specifiying this parameter will retrieve for you only those photos that the user has contributed to the group pool."
-   },
-   {
-    "name": "safe_search",
-    "_content": "Safe search setting:\r\n<ul>\r\n<li>1 for safe.</li>\r\n<li>2 for moderate.</li>\r\n<li>3 for restricted.</li>\r\n</ul>"
-   },
-   {
-    "name": "jump_to",
-    "_content": ""
    }
   ],
   "errors": [
@@ -1794,6 +1760,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "3",
     "message": "Unknown user",
     "_content": "The user specified by user_id does not exist."
+   },
+   {
+    "code": "4",
+    "message": "Group/pool is member only",
+    "_content": ""
    }
   ],
   "security": {
@@ -1855,14 +1826,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "page",
     "_content": "The page of results to return. If this argument is ommited, it defaults to 1. "
-   },
-   {
-    "name": "user_id",
-    "_content": "NSID of the user, if you want to restrict your search by the groups this user is a member of. NOTE : This is experimental, and only search within the currently signed in user's groups is supported. "
-   },
-   {
-    "name": "safe_search",
-    "_content": "safe_search =1 means only safe groups\r\nsafe_search =2 means all groups\r\nsafe_search =3 means only 18+ groups\r\nDefault is 1. \r\n"
    }
   ],
   "errors": [
@@ -1885,10 +1848,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "date",
     "_content": "A specific date, formatted as YYYY-MM-DD, to return interesting photos for."
-   },
-   {
-    "name": "use_panda",
-    "_content": "Always ask the pandas for interesting photos. This is a temporary argument to allow developers to update their code."
    }
   ],
   "errors": [
@@ -2047,10 +2006,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "page",
     "_content": "The page of results to return. If this argument is omitted, it defaults to 1."
-   },
-   {
-    "name": "usage",
-    "_content": "Minimum usage count."
    }
   ],
   "errors": [
@@ -2164,14 +2119,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "extras",
     "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: <code>privacy</code>, <code>throttle</code>, <code>restrictions</code>"
-   },
-   {
-    "name": "page",
-    "_content": "Page number for the groups"
-   },
-   {
-    "name": "per_page",
-    "_content": "Number of groups per page"
    }
   ],
   "errors": [
@@ -2194,24 +2141,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "user_id",
     "_content": "The NSID of the user to fetch information about."
-   },
-   {
-    "name": "url",
-    "_content": "As an alternative to user_id, load a member based on URL, either photos or people URL."
-   }
-  ],
-  "optional": [
-   {
-    "name": "fb_connected",
-    "_content": "If set to 1, it checks if the user is connected to Facebook and returns that information back."
-   },
-   {
-    "name": "storage",
-    "_content": "If set to 1, it returns the storage information about the user, like the storage used and storage available."
-   },
-   {
-    "name": "datecreate",
-    "_content": "If set to 1, it returns the timestamp of the user's account creation, in MySQL DATETIME format."
    }
   ],
   "errors": [
@@ -2430,24 +2359,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "Text of the comment"
    }
   ],
-  "optional": [
-   {
-    "name": "secure_image_embeds",
-    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
-   },
-   {
-    "name": "expand_bbml",
-    "_content": "Expand bbml in response"
-   },
-   {
-    "name": "bbml_need_all_photo_sizes",
-    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
-   },
-   {
-    "name": "primary_photo_longest_dimension",
-    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -2511,32 +2422,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "Update the comment to this text."
    }
   ],
-  "optional": [
-   {
-    "name": "use_text_for_links",
-    "_content": "Use text for links"
-   },
-   {
-    "name": "expand_bbml",
-    "_content": "Expand bbml"
-   },
-   {
-    "name": "full_result",
-    "_content": "If the caller wants the full result to be returned (as flickr.photos.comments.getComment), then this parameter should be passed in as 1."
-   },
-   {
-    "name": "secure_image_embeds",
-    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
-   },
-   {
-    "name": "bbml_need_all_photo_sizes",
-    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
-   },
-   {
-    "name": "primary_photo_longest_dimension",
-    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -2577,42 +2462,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "max_comment_date",
     "_content": "Maximum date that a comment was added. The date should be in the form of a unix timestamp."
-   },
-   {
-    "name": "page",
-    "_content": ""
-   },
-   {
-    "name": "per_page",
-    "_content": ""
-   },
-   {
-    "name": "include_faves",
-    "_content": ""
-   },
-   {
-    "name": "sort",
-    "_content": "Get the comments sorted. If value is date-posted-desc,  the comments are returned in reverse chronological order. The default is chronological."
-   },
-   {
-    "name": "secure_image_embeds",
-    "_content": "This argument will secure the external image embeds in all the markup and return a secure<Field> back in addition to the <Field>"
-   },
-   {
-    "name": "offset",
-    "_content": ""
-   },
-   {
-    "name": "limit",
-    "_content": ""
-   },
-   {
-    "name": "bbml_need_all_photo_sizes",
-    "_content": "If the API needs all photo sizes added as attributes to the bbml. Use this with expand_bbml, but dont use it with use_text_for_links. Also when you give this one, you can specify primary_photo_longest_dimension or a default of 240 will be assumed"
-   },
-   {
-    "name": "primary_photo_longest_dimension",
-    "_content": "When used with bbml_need_all_photo_sizes, it specifies the maximum dimension of width and height to be used as the <img src /> url"
    }
   ],
   "errors": [
@@ -2975,34 +2824,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "context",
     "_content": "Context is a numeric value representing the photo's geotagginess beyond latitude and longitude. For example, you may wish to indicate that a photo was taken \"indoors\" or \"outdoors\". <br /><br />\r\nThe current list of context IDs is :<br /><br/>\r\n<ul>\r\n<li><strong>0</strong>, not defined.</li>\r\n<li><strong>1</strong>, indoors.</li>\r\n<li><strong>2</strong>, outdoors.</li>\r\n</ul><br />\r\nThe default context for geotagged photos is 0, or \"not defined\"\r\n"
-   },
-   {
-    "name": "bookmark_id",
-    "_content": "Associate a geo bookmark with this photo."
-   },
-   {
-    "name": "is_public",
-    "_content": ""
-   },
-   {
-    "name": "is_contact",
-    "_content": ""
-   },
-   {
-    "name": "is_friend",
-    "_content": ""
-   },
-   {
-    "name": "is_family",
-    "_content": ""
-   },
-   {
-    "name": "foursquare_id",
-    "_content": "The venue ID for a Foursquare location."
-   },
-   {
-    "name": "woeid",
-    "_content": "A Where On Earth (WOE) ID. (If passed in, will override the default venue based on the lat/lon.)"
    }
   ],
   "errors": [
@@ -3202,28 +3023,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The id of the photo to fetch the context for."
    }
   ],
-  "optional": [
-   {
-    "name": "num_prev",
-    "_content": ""
-   },
-   {
-    "name": "num_next",
-    "_content": ""
-   },
-   {
-    "name": "extras",
-    "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: <code>description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o</code>"
-   },
-   {
-    "name": "order_by",
-    "_content": "Accepts <code>datetaken</code> or <code>dateposted</code> and returns results in the proper order."
-   },
-   {
-    "name": "view_as",
-    "_content": "Can take values public to indicate that the profile has to be viewed as public and returns context only in public setting"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -3276,10 +3075,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "secret",
     "_content": "The secret for the photo. If the correct secret is passed then permissions checking is skipped. This enables the 'sharing' of individual photos by passing around the id and secret."
-   },
-   {
-    "name": "extras",
-    "_content": ""
    }
   ],
   "errors": [
@@ -3345,30 +3140,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "secret",
     "_content": "The secret for the photo. If the correct secret is passed then permissions checking is skipped. This enables the 'sharing' of individual photos by passing around the id and secret."
-   },
-   {
-    "name": "humandates",
-    "_content": ""
-   },
-   {
-    "name": "privacy_filter",
-    "_content": ""
-   },
-   {
-    "name": "get_contexts",
-    "_content": ""
-   },
-   {
-    "name": "get_geofences",
-    "_content": "Return geofence information in the photo's location property"
-   },
-   {
-    "name": "datecreate",
-    "_content": "If set to 1, it returns the timestamp of the user's account creation, in MySQL DATETIME format.\r\n"
-   },
-   {
-    "name": "extras",
-    "_content": ""
    }
   ],
   "errors": [
@@ -3444,12 +3215,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
   "url": "https://www.flickr.com/services/api/flickr.photos.getPerms.html"
  },
  "flickr.photos.getRecent": {
-  "optional": [
-   {
-    "name": "jump_to",
-    "_content": ""
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -3871,12 +3636,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The NSID of the person to remove from the photo."
    }
   ],
-  "optional": [
-   {
-    "name": "email",
-    "_content": "An email address for an invited user."
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -3965,12 +3724,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The height (in pixels) of the box around the person."
    }
   ],
-  "optional": [
-   {
-    "name": "email",
-    "_content": "An email address for an 'invited' person in a photo"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -4011,12 +3764,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "photo_id",
     "_content": "The id of the photo to get a list of people for."
-   }
-  ],
-  "optional": [
-   {
-    "name": "extras",
-    "_content": "Accepts the following extras: icon_urls, icon_urls_deep, paid_products\r\n\r\nicon_urls, icon_urls_deep: returns the persons buddy icon urls\r\npaid_products: returns if the person is pro or has a add on."
    }
   ],
   "errors": [
@@ -4158,18 +3905,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The id of a group who's pool to search.  If specified, only matching photos posted to the group's pool will be returned."
    },
    {
-    "name": "faves",
-    "_content": "boolean. Pass faves=1 along with your user_id to search within your favorites"
-   },
-   {
-    "name": "camera",
-    "_content": "Limit results by camera.  Camera names must be in the <a href=\"http://www.flickr.com/cameras\">Camera Finder</a> normalized form.  <a href=\"http://flickr.com/services/api/flickr.cameras.getList\">flickr.cameras.getList()</a> returns a list of searchable cameras."
-   },
-   {
-    "name": "jump_to",
-    "_content": "Jump, jump!"
-   },
-   {
     "name": "contacts",
     "_content": "Search your contacts. Either 'all' or 'ff' for just friends and family. (Experimental)"
    },
@@ -4218,40 +3953,8 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "Limit the scope of the search to only photos that are in a <a href=\"http://www.flickr.com/help/galleries/\">gallery</a>?  Default is false, search all photos."
    },
    {
-    "name": "person_id",
-    "_content": "The id of a user.  Will return photos where the user has been people tagged.  A call signed as the person_id in question will return *all* photos the user in, otherwise returns public photos."
-   },
-   {
     "name": "is_getty",
     "_content": "Limit the scope of the search to only photos that are for sale on Getty. Default is false."
-   },
-   {
-    "name": "username",
-    "_content": "username/character name of the person whose photos you want to search. "
-   },
-   {
-    "name": "exif_min_exposure",
-    "_content": ""
-   },
-   {
-    "name": "exif_max_exposure",
-    "_content": ""
-   },
-   {
-    "name": "exif_min_aperture",
-    "_content": ""
-   },
-   {
-    "name": "exif_max_aperture",
-    "_content": ""
-   },
-   {
-    "name": "exif_min_focallen",
-    "_content": ""
-   },
-   {
-    "name": "exif_max_focallen",
-    "_content": ""
    }
   ],
   "errors": [
@@ -4406,6 +4109,21 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "3",
     "message": "Invalid granularity",
     "_content": "The value passed for 'granularity' was not a valid flickr date granularity."
+   },
+   {
+    "code": "4",
+    "message": "Invalid date_posted",
+    "_content": "The date posted is invalid, its in the past."
+   },
+   {
+    "code": "5",
+    "message": "Invalid Date Taken Format",
+    "_content": "The date taken is not in the format that we support."
+   },
+   {
+    "code": "6",
+    "message": "Invalid Date Taken",
+    "_content": "The date taken passed is invalid. It may be in the future or way in the past. "
    }
   ],
   "security": {
@@ -4421,14 +4139,16 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "photo_id",
     "_content": "The id of the photo to set information for."
-   },
+   }
+  ],
+  "optional": [
    {
     "name": "title",
-    "_content": "The title for the photo."
+    "_content": "The title for the photo. At least one of title or description must be set."
    },
    {
     "name": "description",
-    "_content": "The description for the photo."
+    "_content": "The description for the photo. At least one of title or description must be set."
    }
   ],
   "errors": [
@@ -4436,6 +4156,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "1",
     "message": "Photo not found",
     "_content": "The photo id passed was not the id of a photo belonging to the calling user. It might be an invalid id, or the photo might be owned by another user. "
+   },
+   {
+    "code": "2",
+    "message": "At least one of title or description must be set",
+    "_content": "Since title and description is now optional, at least one of them must be sent. "
    }
   ],
   "security": {
@@ -4463,7 +4188,9 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "is_family",
     "_content": "1 to make the photo visible to family when private, 0 to not."
-   },
+   }
+  ],
+  "optional": [
    {
     "name": "perm_comment",
     "_content": "who can add comments to the photo and it's notes. one of:<br />\r\n<code>0</code>: nobody<br />\r\n<code>1</code>: friends &amp; family<br />\r\n<code>2</code>: contacts<br />\r\n<code>3</code>: everybody"
@@ -4719,12 +4446,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "A comma-delimited list of ticket ids"
    }
   ],
-  "optional": [
-   {
-    "name": "batch_id",
-    "_content": ""
-   }
-  ],
   "security": {
    "needslogin": 0,
    "needssigning": 0,
@@ -4900,10 +4621,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "description",
     "_content": "A description of the photoset. May contain limited html."
-   },
-   {
-    "name": "full_result",
-    "_content": "If this is set, we get the same result as a getList API would give, along with extras: url_sq,url_t,url_s,url_m"
    }
   ],
   "errors": [
@@ -5051,20 +4768,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "The id of the photoset for which to fetch the photo's context."
    }
   ],
-  "optional": [
-   {
-    "name": "num_prev",
-    "_content": ""
-   },
-   {
-    "name": "num_next",
-    "_content": ""
-   },
-   {
-    "name": "extras",
-    "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: description, license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_z, url_l, url_o"
-   }
-  ],
   "errors": [
    {
     "code": "1",
@@ -5090,6 +4793,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "photoset_id",
     "_content": "The ID of the photoset to fetch information for."
+   },
+   {
+    "name": "user_id",
+    "_content": "The user_id here is the owner of the set passed in photoset_id. This is optional, but passing this gives better performance. "
    }
   ],
   "errors": [
@@ -5097,6 +4804,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "1",
     "message": "Photoset not found",
     "_content": "The photoset id was not valid."
+   },
+   {
+    "code": "2",
+    "message": "User not found",
+    "_content": ""
    }
   ],
   "security": {
@@ -5146,6 +4858,10 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "photoset_id",
     "_content": "The id of the photoset to return the photos for."
+   },
+   {
+    "name": "user_id",
+    "_content": "The user_id here is the owner of the set passed in photoset_id. This is optional, but passing this gives better performance. "
    }
   ],
   "optional": [
@@ -5154,16 +4870,16 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "_content": "A comma-delimited list of extra information to fetch for each returned record. Currently supported fields are: license, date_upload, date_taken, owner_name, icon_server, original_format, last_update, geo, tags, machine_tags, o_dims, views, media, path_alias, url_sq, url_t, url_s, url_m, url_o"
    },
    {
-    "name": "privacy_filter",
-    "_content": "Return photos only matching a certain privacy level. This only applies when making an authenticated call to view a photoset you own. Valid values are:\r\n<ul>\r\n<li>1 public photos</li>\r\n<li>2 private photos visible to friends</li>\r\n<li>3 private photos visible to family</li>\r\n<li>4 private photos visible to friends &amp; family</li>\r\n<li>5 completely private photos</li>\r\n</ul>\r\n"
-   },
-   {
     "name": "per_page",
     "_content": "Number of photos to return per page. If this argument is omitted, it defaults to 500. The maximum allowed value is 500."
    },
    {
     "name": "page",
     "_content": "The page of results to return. If this argument is omitted, it defaults to 1."
+   },
+   {
+    "name": "privacy_filter",
+    "_content": "Return photos only matching a certain privacy level. This only applies when making an authenticated call to view a photoset you own. Valid values are:\r\n<ul>\r\n<li>1 public photos</li>\r\n<li>2 private photos visible to friends</li>\r\n<li>3 private photos visible to family</li>\r\n<li>4 private photos visible to friends &amp; family</li>\r\n<li>5 completely private photos</li>\r\n</ul>\r\n"
    },
    {
     "name": "media",
@@ -5175,6 +4891,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     "code": "1",
     "message": "Photoset not found",
     "_content": "The photoset id passed was not a valid photoset id."
+   },
+   {
+    "code": "2",
+    "message": "User not found",
+    "_content": ""
    }
   ],
   "security": {
@@ -5341,20 +5062,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "query",
     "_content": "The query string to use for place ID lookups"
-   }
-  ],
-  "optional": [
-   {
-    "name": "bbox",
-    "_content": "A bounding box for limiting the area to query."
-   },
-   {
-    "name": "extras",
-    "_content": "Secret sauce."
-   },
-   {
-    "name": "safe",
-    "_content": "Do we want sexy time words in our venue results?"
    }
   ],
   "errors": [
@@ -5629,10 +5336,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "place_type_id",
     "_content": "The numeric ID for a specific place type to cluster photos by. <br /><br />\r\n\r\nValid place type IDs are :\r\n\r\n<ul>\r\n<li><strong>22</strong>: neighbourhood</li>\r\n<li><strong>7</strong>: locality</li>\r\n<li><strong>8</strong>: region</li>\r\n<li><strong>12</strong>: country</li>\r\n<li><strong>29</strong>: continent</li>\r\n</ul>\r\n<br /><span style=\"font-style:italic;\">(While optional, you must pass either a valid place type or place type ID.)</span>\r\n"
-   },
-   {
-    "name": "recursive",
-    "_content": "Perform a recursive place type search. For example, if you search for neighbourhoods in a given bounding box but there are no results the method will also query for localities and so on until one or more valid places are found.<br /<br /> \r\nRecursive searches do not change the bounding box size restrictions for the initial place type passed to the method."
    }
   ],
   "errors": [
@@ -5770,7 +5473,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    },
    {
     "name": "tags",
-    "_content": "A comma-delimited list of tags. Photos with one or more of the tags listed will be returned."
+    "_content": "A comma-delimited list of tags. Photos with one or more of the tags listed will be returned.\r\n<br /><br />\r\n<span style=\"font-style:italic;\">(While optional, you must pass either a valid tag or machine_tag</span>"
    },
    {
     "name": "tag_mode",
@@ -5778,7 +5481,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    },
    {
     "name": "machine_tags",
-    "_content": "Aside from passing in a fully formed machine tag, there is a special syntax for searching on specific properties :\r\n\r\n<ul>\r\n  <li>Find photos using the 'dc' namespace :    <code>\"machine_tags\" => \"dc:\"</code></li>\r\n\r\n  <li> Find photos with a title in the 'dc' namespace : <code>\"machine_tags\" => \"dc:title=\"</code></li>\r\n\r\n  <li>Find photos titled \"mr. camera\" in the 'dc' namespace : <code>\"machine_tags\" => \"dc:title=\\\"mr. camera\\\"</code></li>\r\n\r\n  <li>Find photos whose value is \"mr. camera\" : <code>\"machine_tags\" => \"*:*=\\\"mr. camera\\\"\"</code></li>\r\n\r\n  <li>Find photos that have a title, in any namespace : <code>\"machine_tags\" => \"*:title=\"</code></li>\r\n\r\n  <li>Find photos that have a title, in any namespace, whose value is \"mr. camera\" : <code>\"machine_tags\" => \"*:title=\\\"mr. camera\\\"\"</code></li>\r\n\r\n  <li>Find photos, in the 'dc' namespace whose value is \"mr. camera\" : <code>\"machine_tags\" => \"dc:*=\\\"mr. camera\\\"\"</code></li>\r\n\r\n </ul>\r\n\r\nMultiple machine tags may be queried by passing a comma-separated list. The number of machine tags you can pass in a single query depends on the tag mode (AND or OR) that you are querying with. \"AND\" queries are limited to (16) machine tags. \"OR\" queries are limited\r\nto (8)."
+    "_content": "Aside from passing in a fully formed machine tag, there is a special syntax for searching on specific properties :\r\n\r\n<ul>\r\n  <li>Find photos using the 'dc' namespace :    <code>\"machine_tags\" => \"dc:\"</code></li>\r\n\r\n  <li> Find photos with a title in the 'dc' namespace : <code>\"machine_tags\" => \"dc:title=\"</code></li>\r\n\r\n  <li>Find photos titled \"mr. camera\" in the 'dc' namespace : <code>\"machine_tags\" => \"dc:title=\\\"mr. camera\\\"</code></li>\r\n\r\n  <li>Find photos whose value is \"mr. camera\" : <code>\"machine_tags\" => \"*:*=\\\"mr. camera\\\"\"</code></li>\r\n\r\n  <li>Find photos that have a title, in any namespace : <code>\"machine_tags\" => \"*:title=\"</code></li>\r\n\r\n  <li>Find photos that have a title, in any namespace, whose value is \"mr. camera\" : <code>\"machine_tags\" => \"*:title=\\\"mr. camera\\\"\"</code></li>\r\n\r\n  <li>Find photos, in the 'dc' namespace whose value is \"mr. camera\" : <code>\"machine_tags\" => \"dc:*=\\\"mr. camera\\\"\"</code></li>\r\n\r\n </ul>\r\n\r\nMultiple machine tags may be queried by passing a comma-separated list. The number of machine tags you can pass in a single query depends on the tag mode (AND or OR) that you are querying with. \"AND\" queries are limited to (16) machine tags. \"OR\" queries are limited\r\nto (8).\r\n<br /><br />\r\n<span style=\"font-style:italic;\">(While optional, you must pass either a valid tag or machine_tag)</span>"
    },
    {
     "name": "machine_tag_mode",
@@ -6118,22 +5821,6 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
    {
     "name": "tags",
     "_content": "A comma-separated list of strings to be used for tag subscriptions. Photos with one or more of the tags listed will be included in the subscription. Only valid if the <code>topic</code> is <code>tags</code>."
-   },
-   {
-    "name": "machine_tags",
-    "_content": "A comma-separated list of strings to be used for machine tag subscriptions. Photos with one or more of the machine tags listed will be included in the subscription. Currently the format must be <code>namespace:tag_name=value</code> Only valid if the <code>topic</code> is <code>tags</code>."
-   },
-   {
-    "name": "update_type",
-    "_content": ""
-   },
-   {
-    "name": "output_format",
-    "_content": ""
-   },
-   {
-    "name": "mailto",
-    "_content": ""
    }
   ],
   "errors": [

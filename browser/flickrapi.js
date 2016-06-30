@@ -1,13 +1,20 @@
 (function() {
  var Utils = {};
+Utils.encodeRFC5987ValueChars = function (str) {
+      return encodeURIComponent(str).
+      replace(/['()!]/g, escape).
+      replace(/\*/g, '%2A').
+      replace(/%(?:7C|60|5E)/g, unescape);
+    };
 Utils.formQueryString = function (queryArguments) {
-    var args = [],
-        append = function(key) {
-          args.push(key + "=" + encodeURIComponent(queryArguments[key]));
-        };
-    Object.keys(queryArguments).sort().forEach(append);
-    return args.join("&");
-  };
+      var Utils = this,
+          args = [],
+          append = function(key) {
+            args.push(key + "=" + Utils.encodeRFC5987ValueChars(queryArguments[key]));
+          };
+      Object.keys(queryArguments).sort().forEach(append);
+      return args.join("&");
+    };
 Utils.checkRequirements = function (method_name, required, callOptions, callback) {
     required = required || [];
     for(var r=0, last=required.length, arg; r<last; r++) {
@@ -114,6 +121,11 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
     xhr.send(postdata ? JSON.stringify(postdata) : null);
   };
  Utils.errors = {
+    "95": {
+        "code": 95,
+        "message": "SSL is required",
+        "_content": "SSL is required to access the Flickr API."
+    },
     "96": {
         "code": 96,
         "message": "Invalid signature",
@@ -363,9 +375,9 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  },
  "flickr.favorites.getList": {
   "security": {
-   "needslogin": 1,
-   "needssigning": 1,
-   "requiredperms": 1
+   "needslogin": 0,
+   "needssigning": 0,
+   "requiredperms": 0
   },
   "name": "flickr.favorites.getList"
  },

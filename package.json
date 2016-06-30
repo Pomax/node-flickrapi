@@ -22,7 +22,7 @@
   "main": "./src/FlickrAPI",
   "license": "MIT",
   "engines": {
-    "node": ">=0.8"
+    "node": ">=0.12"
   },
   "keywords": [
     "flickrapi",
