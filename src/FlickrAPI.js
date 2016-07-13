@@ -48,7 +48,7 @@ module.exports = (function Flickr() {
         signature = Utils.sign(data, options.secret, options.access_token_secret),
         flickrURL = url + "?" + queryString + "&oauth_signature=" + signature;
 
-    request.get(flickrURL, function(error, response, body) {
+    request.defaults(options.requestOptions).get(flickrURL, function(error, response, body) {
       if(error) {
         callback(error);
       }
@@ -100,6 +100,7 @@ module.exports = (function Flickr() {
 
     // out-of-browser authentication unless specified otherwise
     if(!options.callback) { options.callback = "oob"; }
+    if(!options.requestOptions) options.requestOptions = {};
 
     // effect authentication
     checkToken(options, function(err, access) {
@@ -141,6 +142,8 @@ module.exports = (function Flickr() {
       return next(new Error("Please pass an valid Flickr API key and secret to the Flickr module.\n"+
                             "Visit http://www.flickr.com/services/apps/create/apply to get one."));
     }
+
+    if(!options.requestOptions) options.requestOptions = {};
     var APIBuilder = require("./flickr-api-object");
     options.tokenonly = true;
     new APIBuilder(options, Utils, next);

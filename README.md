@@ -94,6 +94,25 @@ Flickr.authenticate(flickrOptions, function(error, flickr) {
 });
 ```
 
+### As flickrapi internally uses the request module, you can also pass default options for request
+
+```
+var Flickr = require("flickrapi"),
+    flickrOptions = {
+      api_key: "API key that you get from Flickr",
+      secret: "API key secret that you get from Flickr",
+      requestOptions: {
+        timeout: 20000
+      }
+    };
+
+Flickr.tokenOnly(flickrOptions, function(error, flickr) {
+  // we can now use "flickr" as our API object,
+  // but we can only call public methods and access public data
+});
+
+```
+
 # The end.
 
 That's it, that's all the quickstart guiding you need. For more detailed information, keep reading. If you just wanted to get up and running, then the preceding text should have gotten you there!
@@ -149,7 +168,7 @@ flickr.people.getPhotos({
   /*
     This will now give all public and private results,
     because we explicitly ran this as an authenticated call
-  */ 
+  */
 });
 ```
 
@@ -524,3 +543,6 @@ optional boolean, suppresses the default console logging on successful authentic
 
 ###progress
 optional boolean, suppresses writing progress bars to stdout if set to `false`
+
+###requestOptions
+adds ability to pass default options for [request](https://github.com/request/request) module
