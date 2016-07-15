@@ -94,7 +94,8 @@ Flickr.authenticate(flickrOptions, function(error, flickr) {
 });
 ```
 
-### As flickrapi internally uses the request module, you can also pass default options for request
+### As flickrapi internally uses the request module, you can also pass default options for request that are accepted by request.defaults() as documented in the [request module](https://github.com/request/request#convenience-methods)
+
 
 ```
 var Flickr = require("flickrapi"),
@@ -102,7 +103,8 @@ var Flickr = require("flickrapi"),
       api_key: "API key that you get from Flickr",
       secret: "API key secret that you get from Flickr",
       requestOptions: {
-        timeout: 20000
+        timeout: 20000,
+        /* other default options accepted by request.defaults */
       }
     };
 

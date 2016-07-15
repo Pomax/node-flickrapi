@@ -8,6 +8,7 @@
   options argument: {
     api_key: "your api key from flickr",
     secret: "your api key secret from flickr",
+    requestOptions: "object containing any value accepted by request.defaults()" optional
     user_id: negotiated through first-time authenticate() call
     access_token: negotiated through first-time authenticate() call
     access_token_secret: negotiated through first-time authenticate() call
