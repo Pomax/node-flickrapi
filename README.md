@@ -94,7 +94,7 @@ Flickr.authenticate(flickrOptions, function(error, flickr) {
 });
 ```
 
-### As flickrapi internally uses the request module, you can also pass default options for request that are accepted by request.defaults() as documented in the [request module](https://github.com/request/request#convenience-methods)
+### As flickrapi internally uses the request module, you can also pass default options for request that are accepted by request.defaults() as documented in the [request module](https://github.com/request/request#requestdefaultsoptions)
 
 
 ```
@@ -547,4 +547,4 @@ optional boolean, suppresses the default console logging on successful authentic
 optional boolean, suppresses writing progress bars to stdout if set to `false`
 
 ###requestOptions
-adds ability to pass default options for [request](https://github.com/request/request) module
+adds ability to pass default options for [request](https://github.com/request/request#requestdefaultsoptions) module
