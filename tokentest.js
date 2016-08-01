@@ -1,6 +1,6 @@
 var habitat = require("habitat"),
     env = habitat.load(),
-    Flickr = require("./src/FlickrApi"),
+    Flickr = require("./src/FlickrAPI"),
     FlickrOptions = env.get("FLICKR");
 
 Flickr.tokenOnly(FlickrOptions, function(error, flickr) {
