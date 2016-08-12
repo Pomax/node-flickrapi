@@ -11,6 +11,7 @@
     user_id: negotiated through first-time authenticate() call
     access_token: negotiated through first-time authenticate() call
     access_token_secret: negotiated through first-time authenticate() call
+    data_path: optional custom path for storing downloaded api data
   }
 
   callback argument: function(err, result)

@@ -524,3 +524,6 @@ optional boolean, suppresses the default console logging on successful authentic
 
 ###progress
 optional boolean, suppresses writing progress bars to stdout if set to `false`
+
+###data_path
+optional string, custom path to write api function data 

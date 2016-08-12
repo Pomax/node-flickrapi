@@ -22,9 +22,9 @@ module.exports = (function() {
       }, 1);
       return;
     }
-
-    var method_name = methods[method_idx],
-        mdir = "data/flickr/methods",
+    
+    var mdir = dataPath(flickrOptions),
+        method_name = methods[method_idx],
         filename = mdir + "/" + method_name + ".json";
 
     // advance the progress bar
@@ -86,11 +86,15 @@ module.exports = (function() {
     };
 
     // do we have this method definition cached?
-    if(fs.existsSync(filename)) {
-      var methodDefinition = JSON.parse(fs.readFileSync(filename));
-      return handleResult(methodDefinition);
-    } else {
-      Utils.mkdir(mdir);
+    if (fs.existsSync(filename)) {
+      try {
+        var methodDefinition = JSON.parse(fs.readFileSync(filename));
+        if (methodDefinition && methodDefinition.method && methodDefinition.arguments) {
+          return handleResult(methodDefinition);
+        }
+      }
+      catch (e) {
+      }
     }
 
     Utils.queryFlickr({
@@ -106,6 +110,17 @@ module.exports = (function() {
       fs.writeFileSync(filename, JSON.prettyprint(result));
       return handleResult(result);
     });
+  }
+  
+  /**
+   * Construct and create the data storage path
+   */
+  function dataPath(flickrOptions) {
+    var mdir = (flickrOptions.data_path || "./data") + "/flickr/methods";
+    if(!fs.existsSync(mdir)) {
+      Utils.mkdir(mdir);
+    }
+    return mdir;
   }
 
   /**
@@ -126,11 +141,17 @@ module.exports = (function() {
       return parseMethods(flickrOptions, methods, 0, finished);
     };
 
-    var mdir = "./data/flickr",
+    var mdir = dataPath(flickrOptions),
         filename = mdir + "/flickr.reflection.getMethods.json";
+        
     if(fs.existsSync(filename)) {
-      var methodListing = JSON.parse(fs.readFileSync(filename));
-      return handleResults(methodListing);
+      try {
+        var methodListing = JSON.parse(fs.readFileSync(filename));
+        if(methodListing && methodListing.methods) {
+            return handleResults(methodListing);
+        }
+      } catch(e) {
+      }
     }
 
     // get all functions
