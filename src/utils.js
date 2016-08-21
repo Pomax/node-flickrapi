@@ -291,7 +291,7 @@ module.exports = (function() {
           signature = authed ? "&oauth_signature=" + this.sign(data, flickrOptions.secret, flickrOptions.access_token_secret) : '',
           flickrURL = url + "?" + queryString + signature;
 
-      request.get(flickrURL, function(error, response, body) {
+      request.defaults(flickrOptions.requestOptions).get(flickrURL, function(error, response, body) {
 
         if(!response) {
           error = "HTTP Error: no response for url [" + flickrURL + "]";
