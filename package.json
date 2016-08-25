@@ -1,8 +1,8 @@
 {
-  "name": "flickrapi",
+  "name": "flickrapi-move-data-dir",
   "version": "0.3.27",
-  "author": "Pomax <pomax@nihongoresources.com>",
-  "description": "A Node.js, and client-side, implementation of the Flickr API (for use with an API key, server-side oauth enabled)",
+  "author": "Ben Lowry <benlowry@outlook.com>",
+  "description": "Modified flickrapi that lets you relocate the 'data' folder",
   "dependencies": {
     "async": "~0.2.10",
     "glob": "~3.2.6",
@@ -32,7 +32,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Pomax/node-flickrapi.git"
+    "url": "https://github.com/benlowry/flickrapi"
   },
   "scripts": {
     "test": "node test"
