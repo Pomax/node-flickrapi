@@ -2,7 +2,7 @@ var fs = require("fs"),
   path = require("path");
 
 module.exports = function(root, pattern) {
-  function walk(dir, pattern) {
+  function walk(dir) {
     if (!fs.existsSync(dir)) {
       return;
     }
@@ -22,8 +22,9 @@ module.exports = function(root, pattern) {
         files.push(fullpath);
       }
     }
+    return files
   }
 
   var files = [];
-  return walk(root, pattern);
+  return walk(root);
 }
