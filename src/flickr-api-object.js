@@ -86,7 +86,7 @@ module.exports = (function() {
       parseMethods(flickrOptions, methods, method_idx+1, finished);
     };
 
-    var cacheKey = 'methods/' + method_name + '.json';
+    var cacheKey = "methods/" + method_name + ".json";
     if(cache[cacheKey]) {
       return handleResult(cache[cacheKey]);
     }
@@ -131,8 +131,8 @@ module.exports = (function() {
       }
       return parseMethods(flickrOptions, methods, 0, finished);
     };
-    
-    var cacheKey = 'flickr.reflection.getMethods.json';
+
+    var cacheKey = "flickr.reflection.getMethods.json";
     if(cache[cacheKey]) {
       return handleResults(cache[cacheKey]);
     }

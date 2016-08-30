@@ -3,7 +3,7 @@ var fs = require("fs"),
   "flickr.reflection.getMethods.json": JSON.parse(fs.readFileSync(__dirname + "/data/flickr/flickr.reflection.getMethods.json"));
 }
 
-var jsonFiles = fs.readdirSync("./data/flickr/methods")
+var jsonFiles = fs.readdirSync("./data/flickr/methods");
 for(var i=0, len=jsonFiles.length; i<len; i++) {
   var filename = jsonFiles[i],
     lastDot = filename.lastIndexOf(".");
