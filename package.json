@@ -4,7 +4,6 @@
   "author": "Pomax <pomax@nihongoresources.com>",
   "description": "A Node.js, and client-side, implementation of the Flickr API (for use with an API key, server-side oauth enabled)",
   "dependencies": {
-    "async": "~0.2.10",
     "glob": "~3.2.6",
     "open": "0.0.x",
     "progress": "1.1.4",

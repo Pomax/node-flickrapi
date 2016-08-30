@@ -1,5 +1,4 @@
-var async = require("async"),
-    fs = require("fs"),
+var fs = require("fs"),
     download = require("./download").downloadPhoto,
     getSetMetadata = require("./sets"),
     glob = require("glob"),
