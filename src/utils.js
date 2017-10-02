@@ -408,10 +408,14 @@ module.exports = (function() {
       var flickrURL = url + "?" + queryString + signature;
 
       var req = request.post(flickrURL, function(error, response, body) {
-	      if(!body) return callback("No body found in response");
+        if(!body) {
+          return callback("No body found in response");
+	}
         var data = JSON.parse(parser.toJson(body));
-	      if (data.rsp.stat === "fail") return callback(data.rsp.err,null);
-        callback(null, data.rsp.photoid);
+        if (data.rsp.stat === "fail") {
+          return callback(data.rsp.err,null);
+	}
+        callback(null, parseInt(data.rsp.photoid));
       });
       var form = req.form();
       Object.keys(photoOptions).forEach(function(prop) {
