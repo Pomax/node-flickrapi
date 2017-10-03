@@ -409,11 +409,11 @@ module.exports = (function() {
 
       var req = request.post(flickrURL, function(error, response, body) {
         if(!body) {
-          return callback("No body found in response");
+          return callback("No body found in response", null);
 	}
         var data = JSON.parse(parser.toJson(body));
         if (data.rsp.stat === "fail") {
-          return callback(data.rsp.err,null);
+          return callback(data.rsp.err, null);
 	}
         callback(null, parseInt(data.rsp.photoid));
       });
