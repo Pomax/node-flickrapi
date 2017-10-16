@@ -11,6 +11,7 @@ module.exports = (function() {
   var crypto = require("crypto"),
       fs = require("fs"),
       request = require("request"),
+      parser = require('xml2json'),
       statusCodes = {
         400: "Bad Request",
         401: "Unauthorized",
@@ -407,15 +408,14 @@ module.exports = (function() {
       var flickrURL = url + "?" + queryString + signature;
 
       var req = request.post(flickrURL, function(error, response, body) {
-        // format:json does not actually work, so we need to grab the photo ID from the response XML:
-        // <?xml version="1.0" encoding="utf-8" ?>\n<rsp stat="ok">\n<photoid>.........</photoid>\n</rsp>\n
-        var data;
         if(!body) {
-          error = error || "No body found in response";
-        } else if (body.indexOf('rsp stat="ok"')>-1) {
-          data = parseInt(body.split("<photoid>")[1].split("</photoid>")[0], 10);
-        }
-        callback(error, data);
+          return callback("No body found in response", null);
+	}
+        var data = JSON.parse(parser.toJson(body));
+        if (data.rsp.stat === "fail") {
+          return callback(data.rsp.err, null);
+	}
+        callback(null, parseInt(data.rsp.photoid));
       });
       var form = req.form();
       Object.keys(photoOptions).forEach(function(prop) {

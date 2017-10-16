@@ -9,7 +9,8 @@
     "open": "0.0.x",
     "progress": "1.1.4",
     "prompt": "0.2.x",
-    "request": "2.26.x"
+    "request": "2.26.x",
+    "xml2json": "^0.11.0"
   },
   "devDependencies": {
     "express": "~3.4.7",
