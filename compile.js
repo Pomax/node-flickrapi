@@ -13,7 +13,11 @@
       flickrOptions = env.get("FLICKR"),
       APIBuilder = require("./src/flickr-api-object.js"),
       Utils = require("./src/utils.js"),
-      filename = "flickrapi";
+      filename = "flickrapi",
+      fs = require("fs"),
+      wrapper = fs.readFileSync("./src/wrapper.js", "utf8").split("//@CODE\n"),
+      wrapperStart = wrapper[0],
+      wrapperEnd = wrapper[1];
 
   if(process.argv.indexOf("dev") > -1) {
     filename = "flickrapi.dev";
@@ -95,7 +99,8 @@
     }
 
     delete flickr.options;
-    buffer.write("(function() {");
+    // buffer.write("(function() {");
+    buffer.write(wrapperStart);
 
     // library-specific Utils
     buffer.write(" var Utils = {};");
@@ -143,8 +148,9 @@
 }).toString() + ";");
 
     // end of library
-    buffer.write("\n window.Flickr = Flickr;");
-    buffer.write("}());");
+    // buffer.write("\n window.Flickr = Flickr;");
+    // buffer.write("}());");
+    buffer.write(wrapperEnd);
 
     // write out the library to file
     var fs = require("fs");
