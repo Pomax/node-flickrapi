@@ -15,7 +15,7 @@ Script-load the `browser/flickrapi.dev.js` library for development work, and use
 You can access Flickr by creating an API instance as:
 
 ```
-var flickr = new Flickr({
+var flickr = Flickr.tokenOnly({
   api_key: "1234ABCD1234ABCD1234ABCD1234ABCD"
 });
 ```
@@ -59,7 +59,8 @@ After that, you have two choices, based on whether you want to authenticate or n
 To suppress the progress bars in stdout you can include a `progress` attribute when initializing:
 
 ```
-var flickr = new Flickr({
+var Flickr = require('flickrapi');
+var flickr = Flickr.tokenOnly({ // or Flickr.authenticate
     api_key: "1234ABCD1234ABCD1234ABCD1234ABCD",
     progress: false
 });
