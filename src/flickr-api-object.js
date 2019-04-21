@@ -6,6 +6,7 @@ module.exports = (function() {
   "use strict";
 
   var fs = require("fs"),
+      cache = require(__dirname + "/../built-api.js"),
       Progress = require("progress"),
       progressBar,
       API = {},
@@ -85,6 +86,11 @@ module.exports = (function() {
       parseMethods(flickrOptions, methods, method_idx+1, finished);
     };
 
+    var cacheKey = "methods/" + method_name + ".json";
+    if(cache[cacheKey]) {
+      return handleResult(cache[cacheKey]);
+    }
+
     // do we have this method definition cached?
     if(fs.existsSync(filename)) {
       var methodDefinition = JSON.parse(fs.readFileSync(filename));
@@ -125,6 +131,11 @@ module.exports = (function() {
       }
       return parseMethods(flickrOptions, methods, 0, finished);
     };
+
+    var cacheKey = "flickr.reflection.getMethods.json";
+    if(cache[cacheKey]) {
+      return handleResults(cache[cacheKey]);
+    }
 
     var mdir = "./data/flickr",
         filename = mdir + "/flickr.reflection.getMethods.json";

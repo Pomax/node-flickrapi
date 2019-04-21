@@ -1,8 +1,7 @@
-var async = require("async"),
-    fs = require("fs"),
+var fs = require("fs"),
     download = require("./download").downloadPhoto,
     getSetMetadata = require("./sets"),
-    glob = require("glob"),
+    glob = require("../glob.js"),
     progress = require("progress"),
     progressBarAggregate,
     progressBar,
@@ -222,12 +221,8 @@ function aggregatePhotos(flickr, options) {
         }
         // prune the remaining photos
         keys.forEach(function(key) {
-          var match = dirs.root + "/**/" + key + ".*";
-          glob(match, function (err, files) {
-            if(err) { return console.error(err); }
-            files.forEach(function(file) {
-              fs.unlink( file, function(err, result){ if(err) { console.error(err); }});
-            });
+          glob(dirs.root, key).forEach(function(file) {
+            fs.unlink( file, function(err){ if(err) { console.error(err); }});
           });
         });
       }
