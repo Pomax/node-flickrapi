@@ -1,12 +1,12 @@
 (function() {
  var Utils = {};
-Utils.encodeRFC5987ValueChars = function (str) {
+Utils.encodeRFC5987ValueChars = function(str) {
       return encodeURIComponent(str).
       replace(/['()!]/g, escape).
       replace(/\*/g, '%2A').
       replace(/%(?:7C|60|5E)/g, unescape);
     };
-Utils.formQueryString = function (queryArguments) {
+Utils.formQueryString = function(queryArguments) {
       var Utils = this,
           args = [],
           append = function(key) {
@@ -15,7 +15,7 @@ Utils.formQueryString = function (queryArguments) {
       Object.keys(queryArguments).sort().forEach(append);
       return args.join("&");
     };
-Utils.checkRequirements = function (method_name, required, callOptions, callback) {
+Utils.checkRequirements = function(method_name, required, callOptions, callback) {
     required = required || [];
     for(var r=0, last=required.length, arg; r<last; r++) {
       arg = required[r];
@@ -25,14 +25,14 @@ Utils.checkRequirements = function (method_name, required, callOptions, callback
       }
     }
   };
-Utils.generateAPIFunction = function (method) {
+Utils.generateAPIFunction = function(method) {
     return function(callOptions, callback) {
       if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
       var queryArguments = Utils.generateQueryArguments(method.name, this.flickrOptions, callOptions);
       Utils.queryFlickr(queryArguments, this.flickrOptions, method.security, callback);
     };
   };
-Utils.generateAPIDevFunction = function (method) {
+Utils.generateAPIDevFunction = function(method) {
     return function(callOptions, callback) {
       if(callOptions && !callback) { callback = callOptions; callOptions = {}; }
       Utils.checkRequirements(method.name, method.required, callOptions, callback);
@@ -40,7 +40,7 @@ Utils.generateAPIDevFunction = function (method) {
       Utils.queryFlickr(queryArguments, this.flickrOptions, method.security, callback, method.errors);
     };
   };
-Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions) {
+Utils.generateQueryArguments = function(method_name, flickrOptions, callOptions) {
     // set up authorized method access
     var queryArguments = {
       method: method_name,
@@ -55,16 +55,16 @@ Utils.generateQueryArguments = function (method_name, flickrOptions, callOptions
     });
     return queryArguments;
   };
-Utils.queryFlickr = function (queryArguments, flickrOptions, security, processResult) {
+Utils.queryFlickr = function(queryArguments, flickrOptions, security, processResult) {
     if(flickrOptions.endpoint) {
       return this.queryProxyEndpoint(queryArguments, flickrOptions, processResult);
     }
     return this.queryFlickrAPI(queryArguments, flickrOptions, security, processResult);
   };
-Utils.upload = function (uploadOptions, flickrOptions, processResult) {
+Utils.upload = function(uploadOptions, flickrOptions, processResult) {
     return processResult(new Error("Uploading directly from the browser is not supported"));
   };
-Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, processResult) {
+Utils.queryFlickrAPI = function(queryArguments, flickrOptions, security, processResult) {
     var url = "https://api.flickr.com/services/rest/",
         queryString = this.formQueryString(queryArguments),
         flickrURL = url + "?" + queryString;
@@ -75,12 +75,12 @@ Utils.queryFlickrAPI = function (queryArguments, flickrOptions, security, proces
     }
     this.handleURLRequest("GET", flickrURL, processResult);
   };
-Utils.queryProxyEndpoint = function (queryArguments, flickrOptions, processResult) {
+Utils.queryProxyEndpoint = function(queryArguments, flickrOptions, processResult) {
     var queryString = this.formQueryString(queryArguments),
         url = flickrOptions.endpoint + "?" + queryString;
     this.handleURLRequest("POST", url, processResult, queryArguments);
   };
-Utils.handleURLRequest = function (verb, url, processResult, postdata) {
+Utils.handleURLRequest = function(verb, url, processResult, postdata) {
     var xhr = new XMLHttpRequest();
     xhr.open(verb, url, true);
     if(postdata) {
@@ -192,7 +192,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
         "_content": "One or more arguments contained a URL that has been used for abuse on Flickr."
     }
 };
- var Flickr = function (flickrOptions) {
+ var Flickr = function(flickrOptions) {
   this.bindOptions(flickrOptions);
 };
  Flickr.prototype = {};
@@ -6975,7 +6975,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
  }
 };
 
-(function () {
+(function() {
   Object.keys(Flickr.methods).forEach(function(method) {
     var level = method.split(".").slice(1);
     var e = Flickr.prototype, key;
@@ -6988,7 +6988,7 @@ Utils.handleURLRequest = function (verb, url, processResult, postdata) {
   });
 }());
 
- Flickr.prototype.bindOptions = function (flickrOptions) {
+ Flickr.prototype.bindOptions = function(flickrOptions) {
   this.flickrOptions = flickrOptions;
   (function bindOptions(obj, props) {
     Object.keys(props).forEach(function(key) {
