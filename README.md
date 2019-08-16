@@ -1,4 +1,6 @@
-## THIS PROJECT HAS BEEN ARCHIVED, YOU ALMOST CERTAINLY WANT TO USE THE [Flickr-SDK](https://github.com/Flickr/flickr-sdk) PACKAGE INSTEAD ###
+# THIS PROJECT HAS BEEN ARCHIVED, YOU ALMOST CERTAINLY WANT TO USE THE [Flickr-SDK](https://github.com/Flickr/flickr-sdk) PACKAGE INSTEAD ###
+
+---
 
 # A Node.js and browser Flickr API library
 
