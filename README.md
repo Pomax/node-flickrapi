@@ -1,3 +1,5 @@
+## THIS PROJECT HAS BEEN ARCHIVED, YOU ALMOST CERTAINLY WANT TO USE THE [Flickr-SDK](https://github.com/Flickr/flickr-sdk) PACKAGE INSTEAD ###
+
 # A Node.js and browser Flickr API library
 
 With oauth authentication for Flickr API keys if you're using it server-side (authenticated calls from the browser are too insecure to support for the moment, and will throw an error).
